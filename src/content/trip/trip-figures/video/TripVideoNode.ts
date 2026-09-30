@@ -16,7 +16,7 @@ interface TripVideoNode {
 
 interface TripVideoProperties {
   src: string;
-  poster: string;
+  dataPoster: string;
   controls: true;
   preload: "none";
   playsInline: true;
@@ -30,7 +30,7 @@ export function tripVideoNode({path, alt}: TripVideoSource): TripVideoNode {
       hName: "video",
       hProperties: {
         src: path,
-        poster: path.replace(/\.mp4$/i, ".jpg"),
+        dataPoster: path.replace(/\.mp4$/i, ".jpg"),
         controls: true,
         preload: "none",
         playsInline: true,

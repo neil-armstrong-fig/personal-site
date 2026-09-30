@@ -77,8 +77,15 @@ index, or create commits unless the developer explicitly asks.
 - `pnpm trip:videos <trip-slug>` — the same for `videos.json`: metadata-free MP4s and posters in `public/trips/<slug>/`
   (uses the bundled `@ffmpeg-installer/ffmpeg`)
 - `pnpm lighthouse` — Lighthouse CI against `dist/` (run `pnpm build` first): SEO/accessibility/best practices ≥95,
-  performance ≥90, LCP ≤2.5 s, CLS ≤0.1 on the mobile preset. It runs in its own workflow
+  performance ≥90, LCP ≤2.5 s (≤3 s for the heavy `tokyo-to-seoul` trip pages, set per URL in `assertMatrix`), CLS ≤0.1 on the mobile preset. It runs in its own workflow
   (`.github/workflows/lighthouse.yml`); run it locally for changes that could affect performance, not after every edit.
+  Under WSL it picks up the Windows Chrome and cannot connect: set `CHROME_PATH` to Playwright's Linux Chromium
+  (`~/.cache/ms-playwright/chromium-*/chrome-linux64/chrome`) and run `pnpm exec lhci autorun` with
+  `--collect.settings.chromeFlags="--no-sandbox --headless=new --disable-gpu --disable-dev-shm-usage"`.
+  LCP is simulated on slow 4G, so it counts every request started before the observed paint, including lazy images
+  near the viewport and ~131 KB of fonts: a page's budget is the `/about/` baseline (~1.8 s) plus its early bytes.
+- `pnpm build` keeps Astro's content cache, so a change to a remark/rehype plugin needs `pnpm exec astro build --force`
+  before the built HTML reflects it.
 - `pnpm preview` — preview the production build
 
 Do not run formatters in write mode without checking the worktree and the task scope.
@@ -446,7 +453,8 @@ folder is the worked example.
 6. **Publish.** Copy the chosen article under the frontmatter of `src/content/trip/entries/<slug>/index.md`, keeping
    the cover and its `coverAlt`. One figure per line, with non-blank alt text and a caption: images as
    `![alt](./_assets/x.jpg "Caption")`, clips as `![alt](/trips/<slug>/x.mp4 "Caption")` (root-absolute; a relative
-   `.mp4` is not processed). Videos use `preload="none"` with a poster and never autoplay. Every photo or video the developer
+   `.mp4` is not processed). Videos use `preload="none"` and never autoplay; the `.jpg` poster is emitted as `data-poster` and
+   applied by script near the viewport, because browsers fetch `poster` eagerly and a clip-heavy chapter then fails LCP. Every photo or video the developer
    selected — each `photos.json`/`videos.json` entry, and everything he tagged `@filename` in the draft — must end
    up in the published article; never process one into `_assets/`/`public/trips/<slug>/` and then quietly leave it
    out. If a selected photo or video is later cut, remove its manifest entry and delete the stale derivative in the
@@ -500,7 +508,10 @@ folder is the worked example.
 - Set SVG geometry (`stroke-width`, `stroke-linecap`, `stroke-dasharray`) as attributes and colour with
   utilities.
 - Use Newsreader for editorial headings, Inter for body/UI, and system monospace sparingly.
-- Self-host fonts and keep the shipped font set small.
+- Self-host fonts and keep the shipped font set small. The two woff2 files are the originals narrowed with fontTools
+  `instancer`: weight limited to 400–700 (the `@font-face` range) and Inter's optical size pinned at 14, with every glyph
+  kept. Newsreader keeps its optical-size axis because headings rely on it. Re-derive them that way rather than shipping
+  the full variable fonts, since font bytes count directly against LCP.
 - Use real trip photography and project-owned imagery; do not add generic stock photos.
 - Avoid astronaut/moon references, generic terminal aesthetics, neon gradients, and excessive animation.
 - Meaningful content must remain available without client-side JavaScript.

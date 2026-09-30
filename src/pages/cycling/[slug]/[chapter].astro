@@ -169,7 +169,9 @@ function nextChapterLink(nextChapter: OptionalTripChapter, currentTripPath: stri
 </CyclingTripLayout>
 
 <script>
+  import {initialiseLazyVideoPosters} from "@src/pages/cycling/_components/lazy-video-posters/LazyVideoPosters";
   import {initialiseRouteMaps} from "@src/pages/cycling/_components/route-maps/RouteMaps";
 
+  initialiseLazyVideoPosters();
   initialiseRouteMaps();
 </script>

@@ -99,10 +99,9 @@ function buildMapLabel(): string {
       class="absolute inset-0 h-full w-full object-cover"
       src={fallbackImage}
       alt={fallbackAlt}
-      widths={[640, 960, 1280, 1600]}
+      widths={[480, 750, 960, 1280, 1600]}
       sizes="(min-width: 76rem) 76rem, 100vw"
-      loading="eager"
-      fetchpriority="high"
+      loading="lazy"
       data-trip-route-map-fallback
     />
   )}

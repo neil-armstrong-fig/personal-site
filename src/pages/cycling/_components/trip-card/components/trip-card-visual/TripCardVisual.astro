@@ -73,7 +73,7 @@ function resolveStoryImage(tripId: string, path: string): OptionalImage {
         class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none"
         src={coverImage}
         alt={coverAlt}
-        widths={[240, 400, 560]}
+        widths={[240, 280, 400, 560]}
         sizes="(min-width: 64rem) 15rem, (min-width: 48rem) 20vw, 38vw"
         loading={loading}
         fetchpriority={fetchPriority}
@@ -86,7 +86,7 @@ function resolveStoryImage(tripId: string, path: string): OptionalImage {
           class="absolute inset-0 h-full w-full object-cover"
           src={storyImage}
           alt={storyFigure.alt}
-          widths={[240, 400, 560]}
+          widths={[240, 280, 400, 560]}
           sizes="(min-width: 64rem) 15rem, (min-width: 48rem) 20vw, 38vw"
           loading="lazy"
         />
