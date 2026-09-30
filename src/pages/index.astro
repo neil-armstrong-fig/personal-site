@@ -29,14 +29,15 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
         <Eyebrow>Belfast · Northern Ireland</Eyebrow>
 
         <h1 class="mb-6 max-w-[38rem] text-[clamp(1.6rem,1.3rem+1.3vw,2.3rem)] leading-[1.2] tracking-[-0.025em]">
-          I’m Neil Armstrong, a software architect in Belfast. I build and rebuild critical systems without breaking
-          them, and I prove it with tests anyone can read.
+          I’m Neil Armstrong, a software architect in Belfast. I build new products and transform critical systems, with
+          architecture and tests that let teams keep shipping.
         </h1>
 
         <p class="mb-8 max-w-[36rem] text-[1.1rem]">
-          I’m a genuinely full stack developer. For more than a decade I’ve led teams across React front ends, AWS
-          serverless, Java/Kotlin back ends, native Android, and 3D in the browser. I care as much about what people
-          need from the software as how it’s built, and I use AI tools with a person accountable for every result.
+          I’m a genuinely full stack developer. For more than a decade I’ve taken products from early prototypes to
+          production and led complex modernisations across React front ends, AWS serverless, Java/Kotlin back ends,
+          native Android, and 3D in the browser. I work closely with product and design, and I use AI tools with a
+          person accountable for every result.
         </p>
 
         <div class="flex flex-wrap gap-3">
@@ -69,8 +70,8 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
       <SectionHeading
         level={2}
         eyebrow="Professional work"
-        heading="Systems I’ve delivered"
-        intro="Anonymised case studies from client work, each with what I did and how I knew it worked."
+        heading="Products and systems I’ve delivered"
+        intro="Selected anonymised case studies spanning new products, unusual interfaces, and careful transformation of critical systems."
       />
 
       <FeaturedCaseStudies caseStudies={caseStudies} />
@@ -112,13 +113,13 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
       <div>
         <Eyebrow>Open to conversations</Eyebrow>
 
-        <h2 class="mb-0 max-w-[16ch]">Got a system nobody dares touch?</h2>
+        <h2 class="mb-0 max-w-[16ch]">Building something new, or changing something difficult?</h2>
       </div>
 
       <div class="grid justify-items-start gap-6">
         <p class="mb-0 max-w-[34rem]">
-          I’m open to conversations about modernising legacy systems, leading delivery teams, and building test-driven
-          architecture.
+          I’m open to conversations about product engineering, software architecture, leading delivery teams, and
+          careful modernisation.
         </p>
 
         <Button variant="light" href={siteConfig.socialLinks.linkedIn.href}>

@@ -2,39 +2,20 @@
 import type {CollectionEntry} from "astro:content";
 
 import ProfessionalCaseStudyCard from "@src/pages/software/_components/professional-case-study-card/ProfessionalCaseStudyCard.astro";
+import {selectHomepageCaseStudies} from "./homepage-case-studies/SelectHomepageCaseStudies";
 
 interface Props {
   caseStudies: CollectionEntry<"professionalCaseStudies">[];
 }
 
 const {caseStudies} = Astro.props;
-const visibleCount = 3;
+const homepageCaseStudies = selectHomepageCaseStudies(caseStudies);
 ---
 
-<!--
-  Every eligible case study is in the HTML so crawlers and no-JavaScript visitors see them all; the extras are
-  hidden, and a small script shuffles the list and reveals a different three on each visit.
--->
-<ul class="grid list-none gap-4 p-0 md:grid-cols-3" data-featured-case-studies data-visible-count={visibleCount}>
-  {caseStudies.map((caseStudy, index) => (
-    <li hidden={index >= visibleCount} data-featured-case-study>
+<ul class="grid list-none gap-4 p-0 md:grid-cols-3">
+  {homepageCaseStudies.map(caseStudy => (
+    <li>
       <ProfessionalCaseStudyCard caseStudy={caseStudy} level={3} />
     </li>
   ))}
 </ul>
-
-<script>
-  import {shuffled} from "./random-order/RandomOrder";
-
-  const list = document.querySelector<HTMLUListElement>("[data-featured-case-studies]");
-
-  if (list !== null) {
-    const visibleCount = Number(list.dataset.visibleCount);
-    const items = Array.from(list.querySelectorAll<HTMLLIElement>("[data-featured-case-study]"));
-
-    shuffled(items).forEach((item, index) => {
-      item.hidden = index >= visibleCount;
-      list.append(item);
-    });
-  }
-</script>

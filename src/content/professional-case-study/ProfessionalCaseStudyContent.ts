@@ -5,6 +5,7 @@ interface ProfessionalCaseStudyContent {
   summary: string;
   careerPeriod: string;
   sortOrder: number;
+  homepageOrder?: number;
   technologies: string[];
   draft: boolean;
   seoTitle?: string;
@@ -19,6 +20,7 @@ export function createProfessionalCaseStudyContentSchema(): z.ZodType<Profession
     summary: requiredText,
     careerPeriod: requiredText,
     sortOrder: z.number().int().positive(),
+    homepageOrder: z.number().int().positive().optional(),
     technologies: z.array(requiredText).min(1),
     draft: z.boolean(),
     seoTitle: requiredText.optional(),

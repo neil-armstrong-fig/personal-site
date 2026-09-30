@@ -6,10 +6,13 @@ export function assertRequestedCopy(html: string, route: string): void {
   const expectedByRoute: ExpectedCopyByRoute = {
     "/": [
       "I’m Neil Armstrong, a software architect in Belfast",
-      "Systems I’ve delivered",
+      "Products and systems I’ve delivered",
+      "Reinventing audio installation software",
+      "A serverless insurance platform",
+      "Build it again, but better",
       "Projects built in the open",
       "Read Tokyo to Seoul",
-      "Got a system nobody dares touch?",
+      "Building something new, or changing something difficult?",
     ],
     "/about/": ["<h1>About Neil Armstrong</h1>", "cross-functional teams", "domain-specific languages"],
     "/cycling/": ["Pedals instead of pull requests"],
@@ -19,7 +22,8 @@ export function assertRequestedCopy(html: string, route: string): void {
       "What I have delivered",
       "Build it again, but better",
       "What sets me apart",
-      "Tests are the specification",
+      "Make the idea real early",
+      "Tests enable change",
       '"@type":"CollectionPage"',
     ],
   };
@@ -30,6 +34,10 @@ export function assertRequestedCopy(html: string, route: string): void {
 
   if (route === "/" && html.includes("Software with clear boundaries and lasting value")) {
     throw new Error(`${route} still contains the retired homepage heading.`);
+  }
+
+  if (route === "/" && html.includes("Got a system nobody dares touch?")) {
+    throw new Error(`${route} still contains the legacy-only conversation heading.`);
   }
 
   if (route === "/software/build-it-again-better/" && html.includes('"@type":"SoftwareSourceCode"')) {

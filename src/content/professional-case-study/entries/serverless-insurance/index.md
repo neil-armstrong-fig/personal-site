@@ -3,6 +3,7 @@ title: "A serverless insurance platform"
 summary: "Delivering a full digital motor-insurance journey on AWS serverless in twelve months, and the developer experience that made that pace possible."
 careerPeriod: "2021–2022"
 sortOrder: 5
+homepageOrder: 2
 technologies:
   - TypeScript
   - AWS CDK

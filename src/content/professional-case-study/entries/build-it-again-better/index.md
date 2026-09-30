@@ -3,6 +3,7 @@ title: "Build it again, but better"
 summary: "Rebuilding a critical loan-processing application and more than 50 Lambda functions, with acceptance tests as proof that nothing regressed."
 careerPeriod: "2025–2026"
 sortOrder: 1
+homepageOrder: 3
 technologies:
   - TypeScript
   - React

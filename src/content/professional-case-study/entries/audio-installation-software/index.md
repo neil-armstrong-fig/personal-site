@@ -3,6 +3,7 @@ title: "Reinventing audio installation software"
 summary: "Leading a ground-up rethink of professional-audio installation software, then carrying its core idea into a released companion tool that extended the team's contract."
 careerPeriod: "2022–2024"
 sortOrder: 4
+homepageOrder: 1
 technologies:
   - TypeScript
   - React

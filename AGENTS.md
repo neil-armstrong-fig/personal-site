@@ -486,8 +486,8 @@ folder is the worked example.
 - Follow the editorial-plus-outdoors direction already established in the site.
 - Work mobile first: base utilities describe the small viewport, with breakpoint utilities adding only
   the larger-layout changes.
-- Use the palette defined in `src/styles/global.css`: warm ecru `#F5F0E6`, ink navy `#18262D`,
-  forest `#244B3B`, petrol `#1F5960`, copper `#98462F`, and moss `#7B8D6B`.
+- Use the palette defined in `src/styles/global.css`: cool off-white `#F4F7F6`, muted sage `#E1E9E6`, ink navy
+  `#18262D`, forest `#244B3B`, petrol `#1F5960`, copper `#98462F`, and moss `#7B8D6B`.
 - Use copper sparingly so it complements rather than imitates the subject's hair. Use moss only for
   non-text decoration unless a specific pairing is independently shown to meet its contrast target.
 - Validate contrast for the actual component states; token-level contrast is guidance, not a
