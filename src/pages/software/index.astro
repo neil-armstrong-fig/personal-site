@@ -8,22 +8,33 @@ import {getPublishedProjects} from "@src/content/project/GetPublishedProjects";
 import HowIWork from "./_components/how-i-work/HowIWork.astro";
 import ProfessionalCaseStudyCard from "./_components/professional-case-study-card/ProfessionalCaseStudyCard.astro";
 import ProjectCard from "./_components/project-card/ProjectCard.astro";
+import {buildSoftwareCollectionPageNode} from "./_components/software-collection-page-node/SoftwareCollectionPageNode";
 
 const projects = await getPublishedProjects();
 const professionalCaseStudies = await getPublishedProfessionalCaseStudies();
+const description =
+  "Software architecture and engineering work by Neil Armstrong: product-minded delivery, acceptance-tested rewrites, event-driven AWS systems, and open-source case studies.";
 ---
 
 <BaseLayout
-  title="Software | Neil Armstrong"
-  description="Software architecture and engineering work by Neil Armstrong: product-minded delivery, acceptance-tested rewrites, event-driven AWS systems, and open-source case studies."
+  title="Software architecture and engineering | Neil Armstrong"
+  description={description}
+  structuredData={[
+    buildSoftwareCollectionPageNode({
+      description,
+      path: "/software/",
+      professionalCaseStudies,
+      projects,
+    }),
+  ]}
 >
   <Section>
     <Container>
       <SectionHeading
         compact
         eyebrow="Software"
-        heading="Engineering with tests at the centre"
-        intro="I’m an architect who cares who the product is for. I take ownership of complex systems, and I prove they work with tests written in the language of the product."
+        heading="Software architecture and engineering"
+        intro="I’m Neil Armstrong, a Belfast software architect and developer who cares who the product is for. I take ownership of complex systems, and I prove they work with tests written in the language of the product."
       />
     </Container>
   </Section>

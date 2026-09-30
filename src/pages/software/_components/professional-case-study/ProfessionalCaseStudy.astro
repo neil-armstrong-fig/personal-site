@@ -5,6 +5,7 @@ import type {CollectionEntry} from "astro:content";
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
 import ArticleLayout from "@src/pages/software/_components/article-layout/ArticleLayout.astro";
 import ProfessionalCaseStudyCard from "@src/pages/software/_components/professional-case-study-card/ProfessionalCaseStudyCard.astro";
+import {buildProfessionalCaseStudyNode} from "@src/pages/software/_components/professional-case-study/professional-case-study-node/ProfessionalCaseStudyNode";
 import {buildBreadcrumbListNode} from "@src/pages/_components/breadcrumb-list-node/BreadcrumbListNode";
 
 interface Props {
@@ -25,6 +26,12 @@ const {Content} = await render(caseStudy);
   heading={title}
   intro={summary}
   structuredData={[
+    buildProfessionalCaseStudyNode({
+      headline: title,
+      description: seoDescription,
+      path,
+      technologies,
+    }),
     buildBreadcrumbListNode([
       {name: "Software", path: "/software/"},
       {name: title, path},

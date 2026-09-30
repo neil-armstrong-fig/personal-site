@@ -1,7 +1,8 @@
 # neilarmstrong.dev
 
-Source for [neilarmstrong.dev](https://neilarmstrong.dev), a static Astro personal website about software and
-long-distance cycling.
+Source for [neilarmstrong.dev](https://neilarmstrong.dev), the personal website of Neil Armstrong, a software
+architect and developer in Belfast. It contains software case studies, open-source projects, and long-distance
+cycling stories.
 
 ```sh
 pnpm install --frozen-lockfile

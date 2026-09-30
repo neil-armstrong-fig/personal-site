@@ -65,6 +65,8 @@ index, or create commits unless the developer explicitly asks.
 - `pnpm test` — automated tests
 - `pnpm build` — quality gate, production build, and built-output validation
 - `pnpm validate:build` — validate built links and essential SEO invariants in `dist/`
+- `pnpm indexnow:submit` — read the deployed canonical sitemap and notify IndexNow after a successful production
+  deployment; the public validation key is `public/indexnow-key.txt`
 - `pnpm strava:sync` — pull activities with the credentials in `.env`, keep raw responses in `private-source/`,
   and write a coordinate-free `strava.json` snapshot plus privacy-trimmed `routes.json` into each trip folder
 - `pnpm strava:sync-media` — rate-limit and cache Strava activity photo lists and originals under

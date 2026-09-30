@@ -19,6 +19,7 @@
     "build": "pnpm checks && astro build && pnpm validate:build",
     "validate:build": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts src/scripts/validate-build/ValidateBuild.ts",
     "lighthouse": "lhci autorun",
+    "indexnow:submit": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts src/scripts/submit-index-now/SubmitIndexNow.ts",
     "strava:sync": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts --env-file=.env src/scripts/sync-strava/SyncStrava.ts",
     "strava:sync-media": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts --env-file=.env src/scripts/sync-strava-media/SyncStravaMedia.ts",
     "trip:photos": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts src/scripts/process-trip-photos/ProcessTripPhotos.ts",

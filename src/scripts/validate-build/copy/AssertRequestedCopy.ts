@@ -11,13 +11,16 @@ export function assertRequestedCopy(html: string, route: string): void {
       "Read Tokyo to Seoul",
       "Got a system nobody dares touch?",
     ],
-    "/about/": ["<h1>About</h1>", "cross-functional teams", "domain-specific languages"],
+    "/about/": ["<h1>About Neil Armstrong</h1>", "cross-functional teams", "domain-specific languages"],
     "/cycling/": ["Pedals instead of pull requests"],
     "/software/": [
+      "Software architecture and engineering",
+      "I’m Neil Armstrong, a Belfast software architect and developer",
       "What I have delivered",
       "Build it again, but better",
       "What sets me apart",
       "Tests are the specification",
+      '"@type":"CollectionPage"',
     ],
   };
 
@@ -31,5 +34,9 @@ export function assertRequestedCopy(html: string, route: string): void {
 
   if (route === "/software/build-it-again-better/" && html.includes('"@type":"SoftwareSourceCode"')) {
     throw new Error(`${route} must not claim SoftwareSourceCode structured data for professional work.`);
+  }
+
+  if (route === "/software/build-it-again-better/" && !html.includes('"@type":"Article"')) {
+    throw new Error(`${route} must describe professional work as an Article.`);
   }
 }
