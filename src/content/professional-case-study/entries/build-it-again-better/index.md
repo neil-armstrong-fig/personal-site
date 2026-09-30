@@ -68,6 +68,7 @@ The first task was to pull the Lambdas into a repository, make the code reusable
 - **Real configuration.** Environment variables injected properly, and plain text credentials moved into Secrets Manager.
 - **Less code.** Dead code deleted and complex logic rewritten as small functions.
 - **Atomic, deterministic deployments.** The same code goes to both environments, configured through Terraform.
+- **Opt-in permissions.** Infrastructure moved to a strict, opt-in permission model in Terraform, and I worked with the DevOps team to customise and update their core modules.
 - **Minification**, which cut the average bundle from about 10 MB to about 200 KB and improved cold starts.
 
 A migration like this would normally have taken me closer to four months just to reach an MVP, without the TypeScript and everything else. With our approach to AI and the expertise behind it, it took four weeks with no regressions. This time the repository had an `AGENTS.md` from the start.
