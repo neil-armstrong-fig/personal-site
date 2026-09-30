@@ -1,0 +1,58 @@
+---
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import type {RideMedia} from "@src/content/trip/strava/ride-media/types/RideMedia";
+import type {TripSnapshotOuting} from "@src/content/trip/strava/snapshot/types/TripSnapshotOuting";
+import {formatTripDistance} from "@src/pages/cycling/_components/measurements/TripDistance";
+import {formatActivityDate} from "@src/pages/cycling/_components/ride-log/components/activity-date/ActivityDate";
+import {stravaActivityUrl} from "@src/pages/cycling/_components/ride-log/components/activity-url/StravaActivityUrl";
+import ActivityHighlight from "@src/pages/cycling/_components/ride-log/components/activity-highlight/ActivityHighlight.astro";
+import ActivityRouteMap from "@src/pages/cycling/_components/ride-log/components/activity-route-map/ActivityRouteMap.astro";
+
+interface Props {
+  outing: TripSnapshotOuting;
+  hasFerries: boolean;
+  hasRoute: boolean;
+  hasTransit: boolean;
+  media?: RideMedia;
+}
+
+const {outing, hasFerries, hasRoute, hasTransit, media} = Astro.props;
+const distance = formatTripDistance(outing.distanceMetres / 1000);
+const url = stravaActivityUrl(outing);
+---
+
+<article class="h-full border border-moss/50 bg-paper p-5">
+  <time class="font-mono text-xs font-bold tracking-[0.08em] text-petrol uppercase" datetime={outing.date}>
+    {formatActivityDate(outing.date)}
+  </time>
+
+  <p class="mt-2 mb-2 font-serif text-xl font-[550] leading-tight">
+    {url === undefined && outing.name}
+    {url !== undefined && <ExternalLink href={url}>{outing.name}</ExternalLink>}
+  </p>
+
+  <p class="mb-0 text-sm">
+    {distance.metric} · {distance.imperial}
+    {url !== undefined && (
+      <>
+        {" · "}
+        <ExternalLink href={url}>View on Strava</ExternalLink>
+      </>
+    )}
+  </p>
+
+  {(hasRoute || media !== undefined) && (
+    <div class:list={["mt-5 grid gap-4", hasRoute && media !== undefined && "sm:grid-cols-2"]}>
+      {media !== undefined && <ActivityHighlight media={media} />}
+      {hasRoute && (
+        <ActivityRouteMap
+          activityId={outing.id}
+          activityKind={outing.kind}
+          activityName={outing.name}
+          hasFerries={hasFerries}
+          hasTransit={hasTransit}
+        />
+      )}
+    </div>
+  )}
+</article>

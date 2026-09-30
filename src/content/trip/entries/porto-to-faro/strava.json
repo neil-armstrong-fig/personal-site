@@ -1,0 +1,79 @@
+{
+  "days": [
+    {
+      "id": 11369434972,
+      "date": "2024-05-09",
+      "name": "PTF: Porto bike and weather test",
+      "distanceMetres": 65465,
+      "elevationMetres": 771,
+      "movingTimeSeconds": 8721,
+      "public": true,
+      "bonus": true
+    },
+    {
+      "id": 11385880271,
+      "date": "2024-05-11",
+      "name": "PTF-1: Race for the ferry, but always time to help someone with a puncture 😊",
+      "distanceMetres": 136173,
+      "elevationMetres": 434,
+      "movingTimeSeconds": 16657,
+      "public": true
+    },
+    {
+      "id": 11394879232,
+      "date": "2024-05-12",
+      "name": "PTF-2: Hills and absolutely glorious bike paths",
+      "distanceMetres": 134320,
+      "elevationMetres": 1051,
+      "movingTimeSeconds": 18985,
+      "public": true
+    },
+    {
+      "id": 11400463277,
+      "date": "2024-05-13",
+      "name": "PTF-3: Cycle lanes traded for main roads and hills 🥲",
+      "distanceMetres": 99620,
+      "elevationMetres": 1115,
+      "movingTimeSeconds": 14187,
+      "public": true
+    },
+    {
+      "id": 11408894321,
+      "date": "2024-05-14",
+      "name": "PTF: Lisbon side quest",
+      "distanceMetres": 138115,
+      "elevationMetres": 1290,
+      "movingTimeSeconds": 19330,
+      "public": true,
+      "bonus": true
+    },
+    {
+      "id": 11424750676,
+      "date": "2024-05-16",
+      "name": "PTF-4: Just like a ferry(ies) tail",
+      "distanceMetres": 134789,
+      "elevationMetres": 1092,
+      "movingTimeSeconds": 18127,
+      "public": true
+    },
+    {
+      "id": 11432674923,
+      "date": "2024-05-17",
+      "name": "PTF-5: Porto to Faro done!",
+      "distanceMetres": 166804,
+      "elevationMetres": 1838,
+      "movingTimeSeconds": 22779,
+      "public": true
+    }
+  ],
+  "legs": [],
+  "outings": [],
+  "totals": {
+    "days": 5,
+    "transitionDays": 0,
+    "bonusRides": 2,
+    "distanceMetres": 875286,
+    "elevationMetres": 7591,
+    "movingTimeSeconds": 118786
+  }
+}

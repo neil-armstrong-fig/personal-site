@@ -1,0 +1,96 @@
+---
+import SiteBackdrop from "@src/layouts/components/site-backdrop/SiteBackdrop.astro";
+import SiteFooter from "@src/layouts/components/site-footer/SiteFooter.astro";
+import SiteHeader from "@src/layouts/components/site-header/SiteHeader.astro";
+import SkipLink from "@src/layouts/components/skip-link/SkipLink.astro";
+import JsonLd from "./components/json-ld/JsonLd.astro";
+import {siteConfig} from "@src/site/SiteConfig";
+import {buildPersonNode} from "@src/layouts/structured-data/PersonNode";
+import {buildWebSiteNode} from "@src/layouts/structured-data/WebSiteNode";
+import type {JsonLdNode} from "@src/site/structured-data/types/JsonLdNode";
+import {absoluteUrl} from "@src/site/urls/AbsoluteUrl";
+import interFontUrl from "@src/assets/fonts/inter-latin-variable.woff2?url";
+import newsreaderFontUrl from "@src/assets/fonts/newsreader-latin-variable.woff2?url";
+import "@src/styles/global.css";
+
+type OpenGraphType = "website" | "article" | "profile";
+
+interface Props {
+  title: string;
+  description: string;
+  openGraphType?: OpenGraphType;
+  structuredData?: readonly JsonLdNode[];
+  noindex?: boolean;
+}
+
+const {title, description, openGraphType = "website", structuredData = [], noindex = false} = Astro.props;
+const canonicalUrl = absoluteUrl(Astro.url.pathname);
+const socialImageUrl = absoluteUrl("/default-social-card.png");
+const socialImageAlt = `${siteConfig.identity.name}, ${siteConfig.identity.publicTitle.toLowerCase()} in Belfast`;
+---
+
+<!doctype html>
+<html
+  lang="en-GB"
+  class="scroll-smooth bg-paper text-ink scheme-light [font-synthesis:none] [text-rendering:optimizeLegibility] motion-reduce:scroll-auto"
+>
+  <head>
+    <meta charset="UTF-8" />
+
+    <meta name="viewport" content="width=device-width" />
+
+    <link rel="preload" href={newsreaderFontUrl} as="font" type="font/woff2" crossorigin />
+
+    <link rel="preload" href={interFontUrl} as="font" type="font/woff2" crossorigin />
+
+    <title>{title}</title>
+
+    <meta name="description" content={description} />
+
+    <link rel="canonical" href={canonicalUrl} />
+
+    {noindex && <meta name="robots" content="noindex" />}
+
+    <meta property="og:site_name" content={siteConfig.identity.name} />
+
+    <meta property="og:locale" content="en_GB" />
+
+    <meta property="og:type" content={openGraphType} />
+
+    <meta property="og:title" content={title} />
+
+    <meta property="og:description" content={description} />
+
+    <meta property="og:url" content={canonicalUrl} />
+
+    <meta property="og:image" content={socialImageUrl} />
+
+    <meta property="og:image:width" content="1200" />
+
+    <meta property="og:image:height" content="630" />
+
+    <meta property="og:image:alt" content={socialImageAlt} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <JsonLd nodes={[buildWebSiteNode(), buildPersonNode(), ...structuredData]} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+  </head>
+
+  <body class="relative flex min-h-svh min-w-80 flex-col text-[clamp(1rem,0.97rem+0.15vw,1.125rem)] leading-[1.65]">
+    <SkipLink />
+
+    <SiteBackdrop />
+
+    <SiteHeader />
+
+    <main id="main-content" class="flex-1">
+      <slot />
+    </main>
+
+    <SiteFooter />
+  </body>
+</html>

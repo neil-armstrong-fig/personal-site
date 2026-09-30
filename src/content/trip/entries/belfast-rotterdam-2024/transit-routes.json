@@ -1,0 +1,20 @@
+{
+  "transitRoutes": [
+    {
+      "id": "belfast-rotterdam-2024-eindhoven-rotterdam-train",
+      "activityId": 12358292078,
+      "name": "Train from Eindhoven to Rotterdam",
+      "sourceUrl": "https://assets.travelsupport-p.cla.ns.nl/stations/vertrekstaten/EHV-3.pdf",
+      "points": [
+        [51.4433, 5.4813],
+        [51.5233, 5.2141],
+        [51.5606, 5.083],
+        [51.5956, 4.78],
+        [51.6914, 4.6635],
+        [51.8077, 4.6686],
+        [51.879, 4.531],
+        [51.9245, 4.4689]
+      ]
+    }
+  ]
+}

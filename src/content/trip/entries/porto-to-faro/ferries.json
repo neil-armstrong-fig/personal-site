@@ -1,0 +1,39 @@
+{
+  "ferries": [
+    {
+      "id": "porto-to-faro-sao-jacinto-forte-da-barra",
+      "name": "São Jacinto to Forte da Barra",
+      "sourceUrl": "https://www.aveirobus.pt/sites/default/files/horarios/aveirobus-site-horarioferry-l13-20240806.pdf",
+      "activityId": 11385880271,
+      "points": [
+        [40.66094, -8.73014],
+        [40.6555, -8.7299],
+        [40.65009, -8.73061]
+      ]
+    },
+    {
+      "id": "porto-to-faro-cais-do-sodre-seixal",
+      "name": "Cais do Sodré to Seixal",
+      "sourceUrl": "https://ttsl.pt/passageiros/horarios-de-ligacoes-fluviais/ligacao-seixal-cais-do-sodre/",
+      "activityId": 11424750676,
+      "points": [
+        [38.70547, -9.14497],
+        [38.683, -9.13],
+        [38.662, -9.112],
+        [38.6473, -9.09558]
+      ]
+    },
+    {
+      "id": "porto-to-faro-setubal-troia",
+      "name": "Setúbal to Tróia",
+      "sourceUrl": "https://www.atlanticferries.pt/",
+      "activityId": 11424750676,
+      "points": [
+        [38.52204, -8.88511],
+        [38.5, -8.877],
+        [38.482, -8.87],
+        [38.46681, -8.86307]
+      ]
+    }
+  ]
+}

@@ -1,0 +1,142 @@
+---
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import type {TripFerryRoute} from "@src/content/trip/ferries/types/TripFerryRoute";
+import type {RideMedia} from "@src/content/trip/strava/ride-media/types/RideMedia";
+import type {TripSnapshot} from "@src/content/trip/strava/snapshot/types/TripSnapshot";
+import type {TripTransitGap} from "@src/content/trip/transit-gaps/types/TripTransitGap";
+import type {TripTransitRoute} from "@src/content/trip/transit-routes/types/TripTransitRoute";
+import ActivityCard from "./components/activity-card/ActivityCard.astro";
+import OutingCard from "./components/outing-card/OutingCard.astro";
+import {groupDaysByLeg} from "./day-groups/TripDayGroups";
+
+interface Props {
+  ferries: readonly TripFerryRoute[];
+  snapshot: TripSnapshot;
+  routeActivityIds: string[];
+  routesUrl: string;
+  rideMedia: Readonly<Record<string, RideMedia>>;
+  transitGaps: readonly TripTransitGap[];
+  transitRoutes: readonly TripTransitRoute[];
+}
+
+const {ferries, snapshot, routeActivityIds, routesUrl, rideMedia, transitGaps, transitRoutes} = Astro.props;
+const routeActivityIdSet = new Set(routeActivityIds);
+const ferryActivityIdSet = new Set(
+  ferries.flatMap(ferry => {
+    if (ferry.activityId === undefined) {
+      return [];
+    }
+
+    return [ferry.activityId];
+  }),
+);
+const transitActivityIdSet = new Set([
+  ...transitGaps.map(transitGap => transitGap.activityId),
+  ...transitRoutes.map(transitRoute => transitRoute.activityId),
+]);
+const groups = groupDaysByLeg(snapshot.days);
+const legNames = new Map(snapshot.legs.map(leg => [leg.number, leg.name]));
+const activityCount = snapshot.days.length;
+
+function activityLabel(count: number): string {
+  if (count === 1) {
+    return "activity";
+  }
+
+  return "activities";
+}
+
+function groupLabel(leg?: number): string {
+  if (leg === undefined) {
+    return "Rides";
+  }
+
+  return `Leg ${leg}`;
+}
+---
+
+<section
+  class="border-t border-moss/60 pt-12"
+  aria-labelledby="ride-log-heading"
+  data-ride-log
+  data-routes-url={routesUrl}
+>
+  <header class="mb-8 max-w-copy">
+    <Eyebrow>The reference</Eyebrow>
+
+    <h2 id="ride-log-heading" class="text-[clamp(2.5rem,2rem+2vw,4rem)]">
+      Ride log
+    </h2>
+
+    <p>
+      Interested in the details? I’ve logged every activity on{" "}
+      <ExternalLink href="https://www.strava.com">Strava</ExternalLink>.
+    </p>
+  </header>
+
+  <details class="group border-y border-moss/60 bg-paper-muted/45">
+    <summary class="cursor-pointer list-none px-5 py-5 font-semibold marker:content-none hover:bg-paper-muted/70 [&::-webkit-details-marker]:hidden">
+      <span class="flex items-center justify-between gap-4">
+        <span>
+          Open {activityCount} {activityLabel(activityCount)}
+        </span>
+
+        <span
+          class="font-mono text-xl leading-none group-open:rotate-45 motion-reduce:transform-none"
+          aria-hidden="true"
+        >
+          +
+        </span>
+      </span>
+    </summary>
+
+    <div class="border-t border-moss/60 px-5 py-8">
+      {groups.map(group => (
+        <section class="mb-10 last:mb-0" aria-label={groupLabel(group.leg)}>
+          {group.leg !== undefined && (
+            <h3 class="mb-5 text-[clamp(1.65rem,1.4rem+0.8vw,2.2rem)]">
+              Leg {group.leg}: {legNames.get(group.leg)}
+            </h3>
+          )}
+
+          <ol class="grid list-decimal gap-y-5 pl-7 marker:font-mono marker:text-sm marker:font-bold marker:text-copper md:grid-cols-2 md:gap-x-12 md:pl-9">
+            {group.days.map(day => (
+              <li class="pl-1">
+                <ActivityCard
+                  day={day}
+                  hasFerries={ferryActivityIdSet.has(day.id)}
+                  hasRoute={routeActivityIdSet.has(String(day.id))}
+                  hasTransit={transitActivityIdSet.has(day.id)}
+                  media={rideMedia[String(day.id)]}
+                />
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+
+      {snapshot.outings.length > 0 && (
+        <section class="mt-12" aria-labelledby="outings-heading">
+          <h3 id="outings-heading" class="mb-5 text-[clamp(1.65rem,1.4rem+0.8vw,2.2rem)]">
+            Walks and hikes
+          </h3>
+
+          <ul class="grid list-none gap-y-5 p-0 md:grid-cols-2 md:gap-x-12">
+            {snapshot.outings.map(outing => (
+              <li>
+                <OutingCard
+                  outing={outing}
+                  hasFerries={ferryActivityIdSet.has(outing.id)}
+                  hasRoute={routeActivityIdSet.has(String(outing.id))}
+                  hasTransit={transitActivityIdSet.has(outing.id)}
+                  media={rideMedia[String(outing.id)]}
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  </details>
+</section>

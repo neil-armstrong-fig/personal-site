@@ -1,0 +1,15 @@
+{
+  "transitGaps": [
+    {"activityId": 14030898000, "minimumGapMetres": 1000},
+    {"activityId": 14056840372, "minimumGapMetres": 6000},
+    {"activityId": 14093490990, "minimumGapMetres": 1000},
+    {"activityId": 14106199112, "minimumGapMetres": 1000},
+    {"activityId": 14153996305, "minimumGapMetres": 1000},
+    {"activityId": 14196345657, "minimumGapMetres": 1000},
+    {"activityId": 14220657924, "minimumGapMetres": 5000},
+    {"activityId": 14252523003, "minimumGapMetres": 1000},
+    {"activityId": 14271295257, "minimumGapMetres": 1000},
+    {"activityId": 14311434339, "minimumGapMetres": 1000},
+    {"activityId": 14325260871, "minimumGapMetres": 1000}
+  ]
+}

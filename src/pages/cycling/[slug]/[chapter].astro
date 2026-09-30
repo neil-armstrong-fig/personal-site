@@ -1,0 +1,175 @@
+---
+import {render} from "astro:content";
+import type {CollectionEntry} from "astro:content";
+import type {GetStaticPaths} from "astro";
+
+import {getPublishedTripChapters} from "@src/content/trip/trip-chapter/GetPublishedTripChapters";
+import {getPublishedTrips} from "@src/content/trip/GetPublishedTrips";
+import {getTripFerries} from "@src/content/trip/ferries/GetTripFerries";
+import {getTripSnapshot} from "@src/content/trip/strava/snapshot/GetTripSnapshot";
+import {getTripRoutes} from "@src/content/trip/strava/routes/GetTripRoutes";
+import {getTripTransitGaps} from "@src/content/trip/transit-gaps/GetTripTransitGaps";
+import {getTripTransitRoutes} from "@src/content/trip/transit-routes/GetTripTransitRoutes";
+import {filterByTripChapterDateRange} from "@src/content/trip/trip-chapter/FilterByTripChapterDateRange";
+import {parseTripChapterId} from "@src/content/trip/trip-chapter/ParseTripChapterId";
+import {findNeighbours} from "@src/pages/cycling/_components/neighbours/FindNeighbours";
+import {buildBlogPostingNode} from "@src/pages/cycling/_components/blog-posting-node/BlogPostingNode";
+import {buildBreadcrumbListNode} from "@src/pages/_components/breadcrumb-list-node/BreadcrumbListNode";
+import {buildTripMapActivities} from "@src/pages/cycling/_components/trip-route-map/activities/BuildTripMapActivities";
+import type {TripMapActivity} from "@src/pages/cycling/_components/trip-route-map/types/TripMapActivity";
+import CyclingTripLayout from "@src/pages/cycling/_components/cycling-trip-layout/CyclingTripLayout.astro";
+import RouteVisual from "@src/pages/cycling/_components/route-visual/RouteVisual.astro";
+import TripChapterLinks from "@src/pages/cycling/_components/trip-chapter-links/TripChapterLinks.astro";
+import TripStats from "@src/pages/cycling/_components/trip-stats/TripStats.astro";
+
+export const getStaticPaths = (async () => {
+  const trips = await getPublishedTrips();
+  const tripsWithChapters = await Promise.all(
+    trips.map(async trip => ({trip, chapters: await getPublishedTripChapters(trip.id)})),
+  );
+
+  return tripsWithChapters.flatMap(({trip, chapters}) =>
+    chapters.map(chapter => ({
+      params: {slug: trip.id, chapter: parseTripChapterId(chapter.id).chapterSlug},
+      props: {trip, chapters, chapter},
+    })),
+  );
+}) satisfies GetStaticPaths;
+
+interface Props {
+  trip: CollectionEntry<"trips">;
+  chapters: CollectionEntry<"tripChapters">[];
+  chapter: CollectionEntry<"tripChapters">;
+}
+
+const {trip, chapters, chapter} = Astro.props;
+const {title, seoDescription, coverImage, coverAlt} = chapter.data;
+const tripPath = `/cycling/${trip.id}/`;
+const chapterSlug = parseTripChapterId(chapter.id).chapterSlug;
+const path = `${tripPath}${chapterSlug}/`;
+const totalParts = chapters.length + 1;
+const heading = `Part ${chapter.data.order} of ${totalParts}: ${title}`;
+const neighbours = findNeighbours(chapters, chapter.id);
+const previous = previousChapterLink(neighbours.previous, trip, tripPath);
+const next = nextChapterLink(neighbours.next, tripPath);
+
+const snapshot = getTripSnapshot(trip.id);
+const routes = getTripRoutes(trip.id);
+const ferries = getTripFerries(trip.id);
+const transitGaps = getTripTransitGaps(trip.id);
+const transitRoutes = getTripTransitRoutes(trip.id);
+let mapActivities: TripMapActivity[] = [];
+let highlightedRouteIds: string[] = [];
+
+if (snapshot !== undefined && routes !== undefined) {
+  mapActivities = buildTripMapActivities(snapshot, new Set(Object.keys(routes.routes)));
+  const chapterActivityIds = new Set(
+    filterByTripChapterDateRange(mapActivities, chapter.data).map(activity => activity.id),
+  );
+
+  highlightedRouteIds = [
+    ...mapActivities.filter(activity => chapterActivityIds.has(activity.id)).map(activity => String(activity.id)),
+    ...ferries
+      .filter(ferry => ferry.activityId !== undefined && chapterActivityIds.has(ferry.activityId))
+      .map(ferry => ferry.id),
+  ];
+}
+
+const {Content} = await render(chapter);
+
+interface ChapterLink {
+  href: string;
+  label: string;
+}
+
+type OptionalTripChapter = CollectionEntry<"tripChapters"> | undefined;
+type OptionalChapterLink = ChapterLink | undefined;
+
+function previousChapterLink(
+  previousChapter: OptionalTripChapter,
+  currentTrip: CollectionEntry<"trips">,
+  currentTripPath: string,
+): ChapterLink {
+  if (previousChapter === undefined) {
+    return {href: currentTripPath, label: currentTrip.data.firstPartTitle ?? currentTrip.data.title};
+  }
+
+  return {
+    href: `${currentTripPath}${parseTripChapterId(previousChapter.id).chapterSlug}/`,
+    label: previousChapter.data.title,
+  };
+}
+
+function nextChapterLink(nextChapter: OptionalTripChapter, currentTripPath: string): OptionalChapterLink {
+  if (nextChapter === undefined) {
+    return undefined;
+  }
+
+  return {href: `${currentTripPath}${parseTripChapterId(nextChapter.id).chapterSlug}/`, label: nextChapter.data.title};
+}
+---
+
+<CyclingTripLayout
+  title={`${heading} | ${trip.data.title}`}
+  description={seoDescription}
+  heading={heading}
+  backHref={tripPath}
+  backLabel={`← ${trip.data.title}`}
+  headingMaxWidthClass="max-w-[26ch]"
+  structuredData={[
+    buildBlogPostingNode({headline: heading, description: seoDescription, path, dateModified: undefined}),
+    buildBreadcrumbListNode([
+      {name: "Cycling", path: "/cycling/"},
+      {name: trip.data.title, path: tripPath},
+      {name: heading, path},
+    ]),
+  ]}
+>
+  <TripStats slot="meta" trip={trip} variant="masthead" />
+
+  <TripStats slot="meta" trip={trip} variant="masthead" partRange={chapter.data} />
+
+  <TripChapterLinks slot="meta" trip={trip} chapters={chapters} tripPath={tripPath} currentOrder={chapter.data.order} />
+
+  <RouteVisual
+    slot="route-visual"
+    activities={mapActivities}
+    ferries={ferries}
+    transitGaps={transitGaps}
+    transitRoutes={transitRoutes}
+    routesUrl={`${tripPath}routes.json`}
+    title={trip.data.title}
+    image={coverImage}
+    alt={coverAlt}
+    highlightedRouteIds={highlightedRouteIds}
+  />
+
+  <Content />
+
+  <nav
+    slot="after"
+    class="grid gap-4 border-t border-moss/60 pt-8 sm:grid-cols-2"
+    aria-label="Other parts of this trip"
+    data-trip-chapter-nav
+  >
+    <a class="border border-moss/60 p-5" href={previous.href}>
+      <span class="block font-mono text-xs tracking-[0.1em] text-petrol uppercase">← Previous</span>
+
+      <span class="mt-1 block">{previous.label}</span>
+    </a>
+
+    {next !== undefined && (
+      <a class="border border-moss/60 p-5 sm:text-right" href={next.href}>
+        <span class="block font-mono text-xs tracking-[0.1em] text-petrol uppercase">Next →</span>
+
+        <span class="mt-1 block">{next.label}</span>
+      </a>
+    )}
+  </nav>
+</CyclingTripLayout>
+
+<script>
+  import {initialiseRouteMaps} from "@src/pages/cycling/_components/route-maps/RouteMaps";
+
+  initialiseRouteMaps();
+</script>

@@ -1,0 +1,51 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import Section from "@src/components/layout/section/Section.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import {getPublishedTrips} from "@src/content/trip/GetPublishedTrips";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+import ArchiveMasthead from "./_components/archive-masthead/ArchiveMasthead.astro";
+import TripCard from "./_components/trip-card/TripCard.astro";
+import TripPlanningTeaser from "./_components/trip-planning-teaser/TripPlanningTeaser.astro";
+
+const trips = await getPublishedTrips();
+---
+
+<BaseLayout
+  title="Cycling | Neil Armstrong"
+  description="Neil Armstrong's cycling trip highlights: image-led stories and documented ride data from cycling journeys."
+>
+  <ArchiveMasthead />
+
+  <TripPlanningTeaser />
+
+  <Section aria-labelledby="trip-archive-heading">
+    <Container>
+      <header class="mb-10 max-w-copy">
+        <Eyebrow>On the road</Eyebrow>
+
+        <h2 id="trip-archive-heading" class="text-[clamp(2.5rem,2rem+2vw,4rem)]">
+          Trip stories
+        </h2>
+      </header>
+
+      {trips.length === 0 && <p>The first write-up is still on its way. Watch this space.</p>}
+
+      {trips.length > 0 && (
+        <ul class="grid list-none gap-8 p-0 md:grid-cols-2">
+          {trips.map((trip, index) => (
+            <li>
+              <TripCard trip={trip} prioritiseImage={index < 2} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </Container>
+  </Section>
+</BaseLayout>
+
+<script>
+  import {initialiseRouteMaps} from "./_components/route-maps/RouteMaps";
+
+  initialiseRouteMaps();
+</script>

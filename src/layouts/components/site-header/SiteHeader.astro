@@ -1,0 +1,21 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import SiteNavigation from "@src/layouts/components/site-header/components/site-navigation/SiteNavigation.astro";
+import {siteConfig} from "@src/site/SiteConfig";
+---
+
+<header class="relative z-20 border-b border-moss bg-paper/94 md:sticky md:top-0 md:backdrop-blur-md">
+  <Container class="flex min-h-20 items-center justify-between gap-4">
+    <a
+      class="grid leading-[1.15] text-ink no-underline hover:text-forest"
+      href="/"
+      aria-label={`${siteConfig.identity.name}, home`}
+    >
+      <span class="font-serif text-[1.35rem] font-[650]">{siteConfig.identity.name}</span>
+
+      <span class="mt-1 text-[0.68rem] font-[650] tracking-[0.07em] uppercase">{siteConfig.identity.publicTitle}</span>
+    </a>
+
+    <SiteNavigation />
+  </Container>
+</header>

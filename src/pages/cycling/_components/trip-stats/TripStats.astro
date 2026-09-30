@@ -1,0 +1,181 @@
+---
+import type {CollectionEntry} from "astro:content";
+
+import {getTripSnapshot} from "@src/content/trip/strava/snapshot/GetTripSnapshot.ts";
+import {summariseSnapshotDays} from "@src/content/trip/strava/snapshot/SummariseSnapshotDays";
+import {filterByTripChapterDateRange} from "@src/content/trip/trip-chapter/FilterByTripChapterDateRange";
+import {formatTripDistance} from "@src/pages/cycling/_components/measurements/TripDistance";
+import {formatTripElevation} from "@src/pages/cycling/_components/measurements/TripElevation";
+import {formatTripDateRange} from "./date-range/TripDateRange";
+import {formatTripDateSummary} from "./date-summary/TripDateSummary";
+
+type TripStatsVariant = "card" | "masthead";
+type OptionalNumber = number | undefined;
+type OptionalTripDistance = ReturnType<typeof formatTripDistance> | undefined;
+type OptionalTripElevation = ReturnType<typeof formatTripElevation> | undefined;
+
+interface RidingDaysTotals {
+  days: number;
+  transitionDays: number;
+  bonusRides: number;
+  distanceMetres: number;
+  elevationMetres: number;
+}
+
+interface TripPartDateRange {
+  startDate: Date;
+  endDate?: Date;
+}
+
+interface Props {
+  trip: CollectionEntry<"trips">;
+  variant?: TripStatsVariant;
+  partRange?: TripPartDateRange;
+}
+
+const {trip, variant = "card", partRange} = Astro.props;
+const {countries} = trip.data;
+const startDate = partRange?.startDate ?? trip.data.startDate;
+const endDate = partRange?.endDate ?? trip.data.endDate;
+const labelPrefix = partRange !== undefined ? "This part's " : "";
+const snapshot = getTripSnapshot(trip.id);
+let distanceKm: OptionalNumber = trip.data.distanceKm;
+let elevationMetres: OptionalNumber = trip.data.elevationMetres;
+let ridingDays: RidingDaysTotals | undefined;
+
+if (snapshot !== undefined) {
+  let totals: RidingDaysTotals = snapshot.totals;
+
+  if (partRange !== undefined) {
+    totals = summariseSnapshotDays(filterByTripChapterDateRange(snapshot.days, partRange));
+  }
+
+  distanceKm = totals.distanceMetres / 1000;
+  elevationMetres = totals.elevationMetres;
+  ridingDays = totals;
+}
+
+const distance = optionalTripDistance(distanceKm);
+const elevation = optionalTripElevation(elevationMetres);
+const dateRange = formatTripDateRange(startDate, endDate);
+const dateSummary = formatTripDateSummary(startDate, endDate);
+
+function optionalTripDistance(distanceKm: OptionalNumber): OptionalTripDistance {
+  if (distanceKm === undefined) {
+    return undefined;
+  }
+
+  return formatTripDistance(distanceKm);
+}
+
+function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripElevation {
+  if (elevationMetres === undefined) {
+    return undefined;
+  }
+
+  return formatTripElevation(elevationMetres);
+}
+---
+
+<dl
+  class:list={[
+    "grid gap-x-6 gap-y-4",
+    variant === "card" && "grid-cols-2 border-t border-moss/50 pt-4",
+    variant === "masthead" && "mt-10 border-t border-paper/25 pt-6 sm:grid-cols-2 lg:grid-cols-5",
+  ]}
+>
+  <div class:list={[variant === "card" && "col-span-2"]}>
+    <dt
+      class:list={[
+        "font-mono text-[0.7rem] font-bold tracking-[0.1em] uppercase",
+        variant === "card" && "text-petrol",
+        variant === "masthead" && "text-paper/70",
+      ]}
+    >
+      {variant === "card" && "Duration"}
+      {variant === "masthead" && `${labelPrefix}Dates`}
+    </dt>
+
+    <dd class="mt-1">
+      {variant === "card" && (
+        <>
+          {dateSummary.duration}
+          <span class="block text-sm text-ink/70">{dateSummary.months}</span>
+        </>
+      )}
+      {variant === "masthead" && dateRange}
+    </dd>
+  </div>
+
+  {distance !== undefined && (
+    <div>
+      <dt
+        class:list={[
+          "font-mono text-[0.7rem] font-bold tracking-[0.1em] uppercase",
+          variant === "card" && "text-petrol",
+          variant === "masthead" && "text-paper/70",
+        ]}
+      >
+        {labelPrefix}Distance
+      </dt>
+
+      <dd class="mt-1">
+        {distance.metric}
+        {variant === "card" && <span class="block text-sm text-ink/70">{distance.imperial}</span>}
+        {variant === "masthead" && <span class="block text-sm text-paper/75">{distance.imperial}</span>}
+      </dd>
+    </div>
+  )}
+
+  {variant === "masthead" && elevation !== undefined && (
+    <div>
+      <dt class="font-mono text-[0.7rem] font-bold tracking-[0.1em] text-paper/70 uppercase">{labelPrefix}Climbing</dt>
+
+      <dd class="mt-1">
+        {elevation.metric}
+        <span class="block text-sm text-paper/75">{elevation.imperial}</span>
+      </dd>
+    </div>
+  )}
+
+  {ridingDays !== undefined && (
+    <div>
+      <dt
+        class:list={[
+          "font-mono text-[0.7rem] font-bold tracking-[0.1em] uppercase",
+          variant === "card" && "text-petrol",
+          variant === "masthead" && "text-paper/70",
+        ]}
+      >
+        {labelPrefix}Riding days
+      </dt>
+
+      <dd class="mt-1">
+        {ridingDays.days}
+        {variant === "masthead" && ridingDays.transitionDays > 0 && (
+          <span class="block text-sm text-paper/75">
+            {ridingDays.transitionDays} short transition {ridingDays.transitionDays === 1 && "day"}
+            {ridingDays.transitionDays !== 1 && "days"}
+            {" excluded"}
+          </span>
+        )}
+
+        {variant === "masthead" && ridingDays.bonusRides > 0 && (
+          <span class="block text-sm text-paper/75">
+            {ridingDays.bonusRides} bonus {ridingDays.bonusRides === 1 && "ride"}
+            {ridingDays.bonusRides !== 1 && "rides"}
+            {" included"}
+          </span>
+        )}
+      </dd>
+    </div>
+  )}
+
+  {variant === "masthead" && partRange === undefined && (
+    <div>
+      <dt class="font-mono text-[0.7rem] font-bold tracking-[0.1em] text-paper/70 uppercase">Countries</dt>
+
+      <dd class="mt-1">{countries.join(", ")}</dd>
+    </div>
+  )}
+</dl>

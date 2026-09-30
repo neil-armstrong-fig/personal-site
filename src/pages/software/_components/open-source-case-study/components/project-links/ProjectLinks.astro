@@ -1,0 +1,34 @@
+---
+import Button from "@src/components/actions/button/Button.astro";
+import {newTabNotice} from "@src/components/actions/external-link/NewTabNotice";
+import GitHubMark from "./components/github-mark/GitHubMark.astro";
+
+interface Props {
+  title: string;
+  repositoryUrl: URL;
+  liveUrl?: URL;
+  liveLabel?: string;
+}
+
+const {title, repositoryUrl, liveUrl, liveLabel = "Visit live site"} = Astro.props;
+---
+
+<div class="flex flex-wrap items-center gap-3">
+  {liveUrl !== undefined && (
+    <Button variant="primary" href={liveUrl.href}>
+      {liveLabel}
+      <span class="ml-2" aria-hidden="true">
+        ↗
+      </span>
+    </Button>
+  )}
+
+  <Button
+    variant="secondary"
+    shape="icon"
+    href={repositoryUrl.href}
+    aria-label={`${title} repository on GitHub ${newTabNotice}`}
+  >
+    <GitHubMark class="size-6" />
+  </Button>
+</div>

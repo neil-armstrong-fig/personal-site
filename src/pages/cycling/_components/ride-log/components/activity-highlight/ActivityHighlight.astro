@@ -1,0 +1,20 @@
+---
+import {Image} from "astro:assets";
+
+import type {RideMedia} from "@src/content/trip/strava/ride-media/types/RideMedia";
+
+interface Props {
+  media: RideMedia;
+}
+
+const {media} = Astro.props;
+---
+
+<Image
+  class="h-60 w-full border border-moss/50 object-cover"
+  src={media.image}
+  alt={media.alt}
+  widths={[360, 720]}
+  sizes="(min-width: 64rem) 18rem, (min-width: 40rem) 42vw, 90vw"
+  loading="lazy"
+/>

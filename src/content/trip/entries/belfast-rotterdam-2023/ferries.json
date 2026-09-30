@@ -1,0 +1,59 @@
+{
+  "ferries": [
+    {
+      "id": "belfast-rotterdam-2023-belfast-liverpool",
+      "name": "Belfast to Liverpool (Birkenhead)",
+      "sourceUrl": "https://www.stenaline.co.uk/routes/liverpool-belfast",
+      "points": [
+        [54.62988, -5.90092],
+        [54.69, -5.72],
+        [54.66, -5.3],
+        [54.25, -4.65],
+        [53.75, -4.0],
+        [53.45, -3.2],
+        [53.40369, -3.01697]
+      ]
+    },
+    {
+      "id": "belfast-rotterdam-2023-dover-dunkirk",
+      "name": "Dover to Dunkirk",
+      "sourceUrl": "https://www.dfds.com/en-gb/passenger-ferries/ferry-crossings/ferries-to-france/dover-dunkirk",
+      "activityId": 9718918804,
+      "points": [
+        [51.12862, 1.33359],
+        [51.11, 1.56],
+        [51.075, 1.82],
+        [51.035, 2.06],
+        [51.01427, 2.19675]
+      ]
+    },
+    {
+      "id": "belfast-rotterdam-2023-rotterdam-hull",
+      "name": "Rotterdam to Hull",
+      "sourceUrl": "https://www.poferries.com/en/routes/hull-to-rotterdam/timetables",
+      "points": [
+        [51.94129, 4.12939],
+        [51.96, 3.95],
+        [52.2, 3.15],
+        [52.75, 1.8],
+        [53.35, 0.45],
+        [53.62, -0.05],
+        [53.74164, -0.27852]
+      ]
+    },
+    {
+      "id": "belfast-rotterdam-2023-liverpool-belfast",
+      "name": "Liverpool (Birkenhead) to Belfast",
+      "sourceUrl": "https://www.stenaline.co.uk/routes/liverpool-belfast",
+      "points": [
+        [53.39521, -3.00983],
+        [53.45, -3.2],
+        [53.75, -4.0],
+        [54.25, -4.65],
+        [54.66, -5.3],
+        [54.69, -5.72],
+        [54.62972, -5.90089]
+      ]
+    }
+  ]
+}

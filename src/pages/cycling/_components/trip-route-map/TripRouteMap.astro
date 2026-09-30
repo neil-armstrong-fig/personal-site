@@ -1,0 +1,228 @@
+---
+import {Image} from "astro:assets";
+import type {ImageMetadata} from "astro";
+
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import type {TripFerryRoute} from "@src/content/trip/ferries/types/TripFerryRoute";
+import type {TripTransitGap} from "@src/content/trip/transit-gaps/types/TripTransitGap";
+import type {TripTransitRoute} from "@src/content/trip/transit-routes/types/TripTransitRoute";
+import RouteKey from "./components/route-key/RouteKey.astro";
+import RoutePicker from "./components/route-picker/RoutePicker.astro";
+import {defaultRouteSelectionLabel} from "./labels/DefaultRouteSelectionLabel";
+import {tripMapSelectionLabel} from "./labels/TripMapSelectionLabel";
+import type {TripMapActivity} from "./types/TripMapActivity";
+
+type TripMapVariant = "archive" | "detail";
+
+interface Props {
+  activities: readonly TripMapActivity[];
+  ferries: readonly TripFerryRoute[];
+  transitGaps: readonly TripTransitGap[];
+  transitRoutes: readonly TripTransitRoute[];
+  routesUrl: string;
+  title: string;
+  variant: TripMapVariant;
+  fallbackImage?: ImageMetadata;
+  fallbackAlt?: string;
+  highlightedRouteIds?: readonly string[];
+}
+
+const {
+  activities,
+  ferries,
+  transitGaps,
+  transitRoutes,
+  routesUrl,
+  title,
+  variant,
+  fallbackImage,
+  fallbackAlt = "",
+  highlightedRouteIds,
+} = Astro.props;
+const cyclingCount = activities.filter(activity => activity.kind !== "walk" && activity.kind !== "hike").length;
+const outingCount = activities.length - cyclingCount;
+const hasBonus = activities.some(activity => activity.kind === "bonus");
+const mappedRouteCount = activities.length + ferries.length;
+const hasRoutes = mappedRouteCount > 0;
+const mapLabel = buildMapLabel();
+const defaultSelectionLabel = defaultRouteSelectionLabel({
+  mappedRouteCount,
+  highlightedCount: highlightedRouteIds?.length ?? 0,
+});
+let mapState = "unavailable";
+let status = "Route map unavailable.";
+
+if (hasRoutes) {
+  mapState = "loading";
+  status = "Loading privacy-trimmed route…";
+}
+
+function pluralise(count: number, singular: string, plural: string): string {
+  if (count === 1) {
+    return singular;
+  }
+
+  return plural;
+}
+
+function buildMapLabel(): string {
+  let label = `Privacy-trimmed overview map of ${title}: ${cyclingCount} ${pluralise(cyclingCount, "cycling route", "cycling routes")} and ${outingCount} ${pluralise(outingCount, "outing", "outings")}`;
+
+  if (ferries.length > 0) {
+    label += `, plus ${ferries.length} ${pluralise(ferries.length, "ferry route", "ferry routes")}`;
+  }
+
+  if (transitRoutes.length > 0) {
+    label += `, plus ${transitRoutes.length} ${pluralise(transitRoutes.length, "transit route", "transit routes")}`;
+  }
+
+  return `${label}.`;
+}
+---
+
+<div
+  class:list={[
+    "group/map relative isolate overflow-hidden bg-paper-muted",
+    variant === "archive" && "h-full min-h-0",
+    variant === "detail" &&
+      "h-[clamp(22rem,56vw,44rem)] border border-moss/50 fullscreen:h-screen fullscreen:w-screen fullscreen:border-0 fullscreen:bg-paper",
+  ]}
+  data-route-map-shell
+  data-trip-route-map-shell
+  data-map-variant={variant}
+  data-routes-url={routesUrl}
+  data-map-state={mapState}
+  data-highlighted-route-ids={highlightedRouteIds !== undefined ? highlightedRouteIds.join(",") : undefined}
+>
+  {variant === "detail" && fallbackImage !== undefined && (
+    <Image
+      class="absolute inset-0 h-full w-full object-cover"
+      src={fallbackImage}
+      alt={fallbackAlt}
+      widths={[640, 960, 1280, 1600]}
+      sizes="(min-width: 76rem) 76rem, 100vw"
+      loading="eager"
+      fetchpriority="high"
+      data-trip-route-map-fallback
+    />
+  )}
+
+  {hasRoutes && (
+    <div
+      class:list={["invisible absolute inset-0 h-full w-full", variant === "archive" && "pointer-events-none"]}
+      data-trip-route-map
+      role="region"
+      aria-label={mapLabel}
+    ></div>
+  )}
+
+  <p
+    class:list={[
+      "absolute inset-x-4 bottom-4 z-10 mb-0 max-w-[18rem] text-sm",
+      variant === "archive" && "text-paper",
+      variant === "detail" && "rounded-sm bg-paper/95 p-3 text-ink shadow-sm",
+    ]}
+    data-trip-route-map-status
+  >
+    {status}
+  </p>
+
+  {hasRoutes && variant === "detail" && (
+    <div class="absolute inset-x-3 top-3 z-[1000] flex items-start gap-2" data-trip-route-map-controls hidden>
+      <div class="min-w-0 flex-1 rounded-sm border border-ink/30 bg-paper/95 p-2 text-ink shadow-sm">
+        <RoutePicker
+          activities={activities}
+          ferries={ferries}
+          mappedRouteCount={mappedRouteCount}
+          highlightedRouteIds={highlightedRouteIds}
+        />
+
+        <p class="sr-only" data-trip-route-selection aria-live="polite">
+          {defaultSelectionLabel} shown.
+        </p>
+
+        <div class="mt-2">
+          <RouteKey
+            hasBonus={hasBonus}
+            hasFerries={ferries.length > 0}
+            hasOutings={outingCount > 0}
+            hasTransit={transitGaps.length > 0 || transitRoutes.length > 0}
+          />
+        </div>
+      </div>
+
+      <button
+        class="flex size-11 shrink-0 items-center justify-center rounded-sm border-2 border-ink bg-paper text-sm font-semibold text-ink shadow-sm hover:bg-paper-muted sm:w-auto sm:px-3 sm:py-2"
+        type="button"
+        data-map-fullscreen-button
+        aria-pressed="false"
+        aria-label="Enter full screen"
+        hidden
+      >
+        <svg
+          class="size-5 sm:hidden"
+          viewBox="0 0 20 20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.75"
+          stroke-linecap="round"
+          aria-hidden="true"
+        >
+          <path d="M7 3H3v4M13 3h4v4M17 13v4h-4M7 17H3v-4"></path>
+        </svg>
+
+        <span class="hidden sm:inline" data-fullscreen-label>
+          Full screen
+        </span>
+      </button>
+    </div>
+  )}
+
+  {hasRoutes && (
+    <p
+      class="pointer-events-auto absolute right-1 bottom-1 z-[1001] mb-0 bg-paper/90 px-1.5 py-0.5 text-[0.6rem] leading-tight text-ink"
+      data-trip-route-attribution
+      hidden
+    >
+      ©{" "}
+      <ExternalLink class="text-ink" href="https://www.openstreetmap.org/copyright">
+        OpenStreetMap
+      </ExternalLink>
+    </p>
+  )}
+
+  {hasRoutes && ferries.length > 0 && variant === "archive" && (
+    <p
+      class="absolute top-1 left-1 z-[1001] mb-0 bg-paper/90 px-1.5 py-0.5 text-[0.58rem] leading-tight text-ink"
+      data-trip-ferry-note
+    >
+      Ferries
+    </p>
+  )}
+
+  <div hidden data-trip-route-activities>
+    {activities.map(activity => (
+      <span
+        data-trip-route-activity
+        data-activity-id={activity.id}
+        data-activity-kind={activity.kind}
+        data-colour-index={activity.colourIndex}
+        data-route-start={String(activity.start)}
+        data-route-finish={String(activity.finish)}
+        data-selection-label={tripMapSelectionLabel(activity)}
+      ></span>
+    ))}
+  </div>
+
+  <div hidden data-trip-ferry-routes>
+    {ferries.map(ferry => (
+      <span data-trip-ferry-route data-ferry-id={ferry.id} data-selection-label={`Ferry · ${ferry.name}`}></span>
+    ))}
+  </div>
+
+  <noscript>
+    <p class="absolute inset-x-4 bottom-4 z-20 mb-0 rounded-sm bg-paper/95 p-3 text-sm text-ink">
+      Enable JavaScript to view the route map.
+    </p>
+  </noscript>
+</div>

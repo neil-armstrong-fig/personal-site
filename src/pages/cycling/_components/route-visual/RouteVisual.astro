@@ -1,0 +1,50 @@
+---
+import type {ImageMetadata} from "astro";
+
+import Container from "@src/components/layout/container/Container.astro";
+import type {TripFerryRoute} from "@src/content/trip/ferries/types/TripFerryRoute";
+import type {TripTransitGap} from "@src/content/trip/transit-gaps/types/TripTransitGap";
+import type {TripTransitRoute} from "@src/content/trip/transit-routes/types/TripTransitRoute";
+import TripRouteMap from "@src/pages/cycling/_components/trip-route-map/TripRouteMap.astro";
+import type {TripMapActivity} from "@src/pages/cycling/_components/trip-route-map/types/TripMapActivity";
+
+interface Props {
+  activities: readonly TripMapActivity[];
+  ferries: readonly TripFerryRoute[];
+  transitGaps: readonly TripTransitGap[];
+  transitRoutes: readonly TripTransitRoute[];
+  routesUrl: string;
+  title: string;
+  image: ImageMetadata;
+  alt: string;
+  highlightedRouteIds?: readonly string[];
+}
+
+const {activities, ferries, transitGaps, transitRoutes, routesUrl, title, image, alt, highlightedRouteIds} =
+  Astro.props;
+---
+
+<section class="bg-forest py-[clamp(2rem,5vw,4rem)]" aria-labelledby="route-visual-heading" data-route-visual>
+  <Container>
+    <div class="mb-3 flex items-center justify-between gap-4 text-paper">
+      <h2 id="route-visual-heading" class="mb-0 font-mono text-xs font-bold tracking-[0.12em] uppercase">
+        Full route
+      </h2>
+
+      <p class="mb-0 text-xs text-paper/70">Privacy-trimmed; some starts and finishes are shortened.</p>
+    </div>
+
+    <TripRouteMap
+      activities={activities}
+      ferries={ferries}
+      transitGaps={transitGaps}
+      transitRoutes={transitRoutes}
+      routesUrl={routesUrl}
+      title={title}
+      variant="detail"
+      fallbackImage={image}
+      fallbackAlt={alt}
+      highlightedRouteIds={highlightedRouteIds}
+    />
+  </Container>
+</section>

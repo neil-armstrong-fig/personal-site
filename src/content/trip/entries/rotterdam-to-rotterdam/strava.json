@@ -1,0 +1,41 @@
+{
+  "days": [
+    {
+      "id": 14963143932,
+      "date": "2025-06-30",
+      "name": "RTR-1: Back to the best cycling infrastructure in the world!",
+      "distanceMetres": 108526,
+      "elevationMetres": 201,
+      "movingTimeSeconds": 13443,
+      "public": true
+    },
+    {
+      "id": 14972511495,
+      "date": "2025-07-01",
+      "name": "RTR-2: Heat not fit for human consumption",
+      "distanceMetres": 126975,
+      "elevationMetres": 193,
+      "movingTimeSeconds": 16810,
+      "public": true
+    },
+    {
+      "id": 14983706751,
+      "date": "2025-07-02",
+      "name": "RTR-3: Rotterdam to Rotterdam complete!",
+      "distanceMetres": 188168,
+      "elevationMetres": 203,
+      "movingTimeSeconds": 25017,
+      "public": true
+    }
+  ],
+  "legs": [],
+  "outings": [],
+  "totals": {
+    "days": 3,
+    "transitionDays": 0,
+    "bonusRides": 0,
+    "distanceMetres": 423669,
+    "elevationMetres": 597,
+    "movingTimeSeconds": 55270
+  }
+}

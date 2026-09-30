@@ -1,0 +1,98 @@
+---
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import type {RideMedia} from "@src/content/trip/strava/ride-media/types/RideMedia";
+import type {TripSnapshotDay} from "@src/content/trip/strava/snapshot/types/TripSnapshotDay";
+import {formatTripDistance} from "@src/pages/cycling/_components/measurements/TripDistance";
+import {formatTripElevation} from "@src/pages/cycling/_components/measurements/TripElevation";
+import {formatActivityDate} from "@src/pages/cycling/_components/ride-log/components/activity-date/ActivityDate";
+import {stravaActivityUrl} from "@src/pages/cycling/_components/ride-log/components/activity-url/StravaActivityUrl";
+import ActivityHighlight from "@src/pages/cycling/_components/ride-log/components/activity-highlight/ActivityHighlight.astro";
+import ActivityRouteMap from "@src/pages/cycling/_components/ride-log/components/activity-route-map/ActivityRouteMap.astro";
+import {formatMovingTime} from "./moving-time/MovingTime";
+
+interface Props {
+  day: TripSnapshotDay;
+  hasFerries: boolean;
+  hasRoute: boolean;
+  hasTransit: boolean;
+  media?: RideMedia;
+}
+
+const {day, hasFerries, hasRoute, hasTransit, media} = Astro.props;
+const distance = formatTripDistance(day.distanceMetres / 1000);
+const climbing = formatTripElevation(day.elevationMetres);
+const url = stravaActivityUrl(day);
+---
+
+<article class="h-full border border-moss/50 bg-paper p-5 marker:text-copper">
+  <header class="mb-5">
+    <time class="font-mono text-xs font-bold tracking-[0.08em] text-petrol uppercase" datetime={day.date}>
+      {formatActivityDate(day.date)}
+    </time>
+
+    <p class="mt-2 mb-3 font-serif text-xl font-[550] leading-tight">
+      {url === undefined && day.name}
+      {url !== undefined && <ExternalLink href={url}>{day.name}</ExternalLink>}
+    </p>
+
+    {(day.bonus === true || day.transition === true) && (
+      <p class="mb-0 flex flex-wrap gap-2">
+        {day.bonus === true && (
+          <span class="rounded-sm border border-moss px-2 py-0.5 text-xs font-semibold">Bonus ride</span>
+        )}
+        {day.transition === true && (
+          <span class="rounded-sm border border-moss px-2 py-0.5 text-xs font-semibold">Transition day</span>
+        )}
+      </p>
+    )}
+  </header>
+
+  <dl class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+    <div>
+      <dt class="font-semibold">Distance</dt>
+
+      <dd>
+        {distance.metric} · {distance.imperial}
+      </dd>
+    </div>
+
+    <div>
+      <dt class="font-semibold">Climbing</dt>
+
+      <dd>
+        {climbing.metric} · {climbing.imperial}
+      </dd>
+    </div>
+
+    <div>
+      <dt class="font-semibold">Moving</dt>
+
+      <dd>{formatMovingTime(day.movingTimeSeconds)}</dd>
+    </div>
+
+    {url !== undefined && (
+      <div>
+        <dt class="sr-only">Activity source</dt>
+
+        <dd>
+          <ExternalLink href={url}>View on Strava</ExternalLink>
+        </dd>
+      </div>
+    )}
+  </dl>
+
+  {(hasRoute || media !== undefined) && (
+    <div class:list={["mt-5 grid gap-4", hasRoute && media !== undefined && "sm:grid-cols-2"]}>
+      {media !== undefined && <ActivityHighlight media={media} />}
+      {hasRoute && (
+        <ActivityRouteMap
+          activityId={day.id}
+          activityKind="ride"
+          activityName={day.name}
+          hasFerries={hasFerries}
+          hasTransit={hasTransit}
+        />
+      )}
+    </div>
+  )}
+</article>

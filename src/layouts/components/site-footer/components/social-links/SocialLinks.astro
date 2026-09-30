@@ -1,0 +1,18 @@
+---
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import {siteConfig} from "@src/site/SiteConfig";
+
+const socialLinks = Object.values(siteConfig.socialLinks);
+---
+
+<nav aria-label="Social links">
+  <ul class="flex list-none flex-wrap gap-x-6 gap-y-3">
+    {socialLinks.map(link => (
+      <li>
+        <ExternalLink class="text-paper hover:text-paper hover:decoration-[0.16em]" href={link.href} rel="me">
+          {link.label}
+        </ExternalLink>
+      </li>
+    ))}
+  </ul>
+</nav>

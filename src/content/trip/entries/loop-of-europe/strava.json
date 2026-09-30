@@ -1,0 +1,586 @@
+{
+  "days": [
+    {
+      "id": 19089588351,
+      "date": "2026-06-27",
+      "name": "FT-RTR-1: Hairdryer in effect",
+      "distanceMetres": 213233,
+      "elevationMetres": 1055,
+      "movingTimeSeconds": 42221,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19100348776,
+      "date": "2026-06-28",
+      "name": "FT-RTR-2: Less heat, but still oppressive",
+      "distanceMetres": 162595,
+      "elevationMetres": 1220,
+      "movingTimeSeconds": 23939,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19110985767,
+      "date": "2026-06-29",
+      "name": "FT-RTR-3: Rhine doesn't disappoint",
+      "distanceMetres": 140028,
+      "elevationMetres": 678,
+      "movingTimeSeconds": 18523,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19124574619,
+      "date": "2026-06-30",
+      "name": "FT-RTR-4: Keeping it country, in before the hail",
+      "distanceMetres": 127454,
+      "elevationMetres": 975,
+      "movingTimeSeconds": 18199,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19138360699,
+      "date": "2026-07-01",
+      "name": "FT-RTR-5: First stretch done!",
+      "distanceMetres": 123863,
+      "elevationMetres": 751,
+      "movingTimeSeconds": 16940,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19163882538,
+      "date": "2026-07-03",
+      "name": "FT-RTR-6: Perfect weather and roads",
+      "distanceMetres": 156931,
+      "elevationMetres": 1346,
+      "movingTimeSeconds": 21388,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19177087475,
+      "date": "2026-07-04",
+      "name": "FT-RTR-7: Austria!",
+      "distanceMetres": 202367,
+      "elevationMetres": 1218,
+      "movingTimeSeconds": 27084,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19191793021,
+      "date": "2026-07-05",
+      "name": "FT-RTR-8: Vienna!",
+      "distanceMetres": 191611,
+      "elevationMetres": 757,
+      "movingTimeSeconds": 24555,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19213941166,
+      "date": "2026-07-07",
+      "name": "FT-RTR-9: Slovakia!",
+      "distanceMetres": 73103,
+      "elevationMetres": 414,
+      "movingTimeSeconds": 9901,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19231064232,
+      "date": "2026-07-08",
+      "name": "FT-RTR-10: Hungary for Budapest!",
+      "distanceMetres": 193938,
+      "elevationMetres": 735,
+      "movingTimeSeconds": 23785,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19256687529,
+      "date": "2026-07-10",
+      "name": "FT-RTR-11: The Great Hungarian Plains",
+      "distanceMetres": 162558,
+      "elevationMetres": 843,
+      "movingTimeSeconds": 21279,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19269679763,
+      "date": "2026-07-11",
+      "name": "FT-RTR-12: Romania!",
+      "distanceMetres": 115600,
+      "elevationMetres": 547,
+      "movingTimeSeconds": 14333,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19282782127,
+      "date": "2026-07-12",
+      "name": "FT-RTR-13: No vampires yet!",
+      "distanceMetres": 163881,
+      "elevationMetres": 602,
+      "movingTimeSeconds": 21285,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19292192550,
+      "date": "2026-07-13",
+      "name": "FT-RTR-14: Alba Iulia! Rotterdam to Romania complete!",
+      "distanceMetres": 63738,
+      "elevationMetres": 393,
+      "movingTimeSeconds": 8199,
+      "public": true,
+      "leg": 1
+    },
+    {
+      "id": 19311085231,
+      "date": "2026-07-14",
+      "name": "FT-RTR: Communication breakdown",
+      "distanceMetres": 2064,
+      "elevationMetres": 2,
+      "movingTimeSeconds": 457,
+      "public": true,
+      "leg": 1,
+      "bonus": true
+    },
+    {
+      "id": 19413795707,
+      "date": "2026-07-22",
+      "name": "FT-ATB: Getting fresh rubber",
+      "distanceMetres": 6800,
+      "elevationMetres": 46,
+      "movingTimeSeconds": 1144,
+      "public": true,
+      "leg": 2,
+      "bonus": true
+    },
+    {
+      "id": 19417869893,
+      "date": "2026-07-22",
+      "name": "FT-ATB-1: Baby hill before the big hill",
+      "distanceMetres": 94621,
+      "elevationMetres": 948,
+      "movingTimeSeconds": 14709,
+      "public": true,
+      "leg": 2
+    },
+    {
+      "id": 19431026732,
+      "date": "2026-07-23",
+      "name": "FT-ATB-2: Big hill",
+      "distanceMetres": 94308,
+      "elevationMetres": 2316,
+      "movingTimeSeconds": 18339,
+      "public": true,
+      "leg": 2
+    },
+    {
+      "id": 19446405009,
+      "date": "2026-07-24",
+      "name": "FT-ATB-3: Every hill has a downside",
+      "distanceMetres": 135160,
+      "elevationMetres": 1002,
+      "movingTimeSeconds": 17408,
+      "public": true,
+      "leg": 2
+    },
+    {
+      "id": 19459889358,
+      "date": "2026-07-25",
+      "name": "FT-ATB-4: Alba Iulia to Bucharest complete!",
+      "distanceMetres": 144310,
+      "elevationMetres": 892,
+      "movingTimeSeconds": 18978,
+      "public": true,
+      "leg": 2
+    },
+    {
+      "id": 19514741212,
+      "date": "2026-07-29",
+      "name": "FT-BTV-1: I'm on the night tray-a-ain🎵",
+      "distanceMetres": 2086,
+      "elevationMetres": 5,
+      "movingTimeSeconds": 654,
+      "public": true,
+      "leg": 3,
+      "transition": true
+    },
+    {
+      "id": 19528247218,
+      "date": "2026-07-30",
+      "name": "FT-BTV-2: Chill train, oven city",
+      "distanceMetres": 14980,
+      "elevationMetres": 64,
+      "movingTimeSeconds": 3319,
+      "public": true,
+      "leg": 3,
+      "transition": true
+    },
+    {
+      "id": 19533228715,
+      "date": "2026-07-30",
+      "name": "FT-BTV: Wee city bike",
+      "distanceMetres": 10543,
+      "elevationMetres": 56,
+      "movingTimeSeconds": 3119,
+      "public": true,
+      "leg": 3,
+      "bonus": true
+    },
+    {
+      "id": 19543246364,
+      "date": "2026-07-31",
+      "name": "FT-BTV: Too warm",
+      "distanceMetres": 12675,
+      "elevationMetres": 55,
+      "movingTimeSeconds": 2916,
+      "public": true,
+      "leg": 3,
+      "bonus": true
+    },
+    {
+      "id": 19558134754,
+      "date": "2026-08-01",
+      "name": "FT-VTG-1: Up! Up! Up!",
+      "distanceMetres": 134329,
+      "elevationMetres": 2219,
+      "movingTimeSeconds": 23411,
+      "public": true,
+      "leg": 4
+    },
+    {
+      "id": 19572628958,
+      "date": "2026-08-02",
+      "name": "FT-VTG-2: Ain't no Mournes, but it'll do~",
+      "distanceMetres": 171938,
+      "elevationMetres": 1735,
+      "movingTimeSeconds": 24593,
+      "public": true,
+      "leg": 4
+    },
+    {
+      "id": 19599816582,
+      "date": "2026-08-04",
+      "name": "FT-VTG-3: Austria, where mountains have mountains ontop",
+      "distanceMetres": 164832,
+      "elevationMetres": 2658,
+      "movingTimeSeconds": 27111,
+      "public": true,
+      "leg": 4
+    },
+    {
+      "id": 19614916805,
+      "date": "2026-08-05",
+      "name": "FT-VTG-4: Innsbruck? No, ins broke!",
+      "distanceMetres": 151356,
+      "elevationMetres": 1840,
+      "movingTimeSeconds": 23461,
+      "public": true,
+      "leg": 4
+    },
+    {
+      "id": 19629909816,
+      "date": "2026-08-06",
+      "name": "FT-VTG-5: Switzerland, with a side order of Liechtenstein!",
+      "distanceMetres": 148910,
+      "elevationMetres": 1646,
+      "movingTimeSeconds": 24003,
+      "public": true,
+      "leg": 4
+    },
+    {
+      "id": 19657636075,
+      "date": "2026-08-08",
+      "name": "FT-VTG-6: The Queen Stage",
+      "distanceMetres": 171343,
+      "elevationMetres": 3522,
+      "movingTimeSeconds": 29457,
+      "public": true,
+      "leg": 4
+    },
+    {
+      "id": 19671275699,
+      "date": "2026-08-09",
+      "name": "FT-VTG-7: France!",
+      "distanceMetres": 135404,
+      "elevationMetres": 2539,
+      "movingTimeSeconds": 24803,
+      "public": true,
+      "leg": 4
+    },
+    {
+      "id": 19680836263,
+      "date": "2026-08-10",
+      "name": "FT-VTG-8: Vienna to Geneva complete!",
+      "distanceMetres": 95078,
+      "elevationMetres": 798,
+      "movingTimeSeconds": 13456,
+      "public": true,
+      "leg": 4
+    },
+    {
+      "id": 19711213370,
+      "date": "2026-08-12",
+      "name": "FT-VTG: Long live the Donkey",
+      "distanceMetres": 932,
+      "elevationMetres": 10,
+      "movingTimeSeconds": 273,
+      "public": true,
+      "leg": 4,
+      "bonus": true
+    },
+    {
+      "id": 19721337823,
+      "date": "2026-08-13",
+      "name": "FT-VTG: To CERN",
+      "distanceMetres": 7053,
+      "elevationMetres": 85,
+      "movingTimeSeconds": 1460,
+      "public": true,
+      "leg": 4,
+      "bonus": true
+    },
+    {
+      "id": 19723824356,
+      "date": "2026-08-13",
+      "name": "FT-VTG: From CERN",
+      "distanceMetres": 7760,
+      "elevationMetres": 52,
+      "movingTimeSeconds": 1422,
+      "public": true,
+      "leg": 4,
+      "bonus": true
+    },
+    {
+      "id": 19742126972,
+      "date": "2026-08-14",
+      "name": "FT-GTC-1: La jambe française",
+      "distanceMetres": 169069,
+      "elevationMetres": 2027,
+      "movingTimeSeconds": 26055,
+      "public": true,
+      "leg": 5
+    },
+    {
+      "id": 19756695623,
+      "date": "2026-08-15",
+      "name": "FT-GTC-2: Nevers again",
+      "distanceMetres": 187394,
+      "elevationMetres": 1270,
+      "movingTimeSeconds": 27950,
+      "public": true,
+      "leg": 5
+    },
+    {
+      "id": 19768756454,
+      "date": "2026-08-16",
+      "name": "FT-GTC-3: Sky pillows",
+      "distanceMetres": 155484,
+      "elevationMetres": 1289,
+      "movingTimeSeconds": 21684,
+      "public": true,
+      "leg": 5
+    },
+    {
+      "id": 19796941801,
+      "date": "2026-08-18",
+      "name": "FT-GTC-4: Actually ☝️🤓, it's Le Men",
+      "distanceMetres": 153776,
+      "elevationMetres": 1206,
+      "movingTimeSeconds": 24123,
+      "public": true,
+      "leg": 5
+    },
+    {
+      "id": 19824456492,
+      "date": "2026-08-20",
+      "name": "FT-GTC-5: Rolling French hills",
+      "distanceMetres": 131617,
+      "elevationMetres": 1410,
+      "movingTimeSeconds": 20717,
+      "public": true,
+      "leg": 5
+    },
+    {
+      "id": 19840550352,
+      "date": "2026-08-21",
+      "name": "FT-GTC-6: Geneva to Cherbourg complete!",
+      "distanceMetres": 202635,
+      "elevationMetres": 1529,
+      "movingTimeSeconds": 31447,
+      "public": true,
+      "leg": 5
+    },
+    {
+      "id": 19841115780,
+      "date": "2026-08-21",
+      "name": "FT-GTC: Attempt to find somewhere to wash the bike",
+      "distanceMetres": 5622,
+      "elevationMetres": 23,
+      "movingTimeSeconds": 1202,
+      "public": true,
+      "leg": 5,
+      "bonus": true
+    },
+    {
+      "id": 19850800034,
+      "date": "2026-08-22",
+      "name": "FT-CTD-1: On a boat mofo",
+      "distanceMetres": 4614,
+      "elevationMetres": 39,
+      "movingTimeSeconds": 990,
+      "public": true,
+      "leg": 6,
+      "transition": true
+    },
+    {
+      "id": 19862721680,
+      "date": "2026-08-23",
+      "name": "FT-CTD-2: I'm off a boat mofo",
+      "distanceMetres": 399,
+      "elevationMetres": 2,
+      "movingTimeSeconds": 104,
+      "public": true,
+      "leg": 6,
+      "transition": true
+    },
+    {
+      "id": 19870418159,
+      "date": "2026-08-23",
+      "name": "FT-DTB-1: Dublin to Belfast to complete, and \"FT\" complete too!",
+      "distanceMetres": 189174,
+      "elevationMetres": 1235,
+      "movingTimeSeconds": 26528,
+      "public": true,
+      "leg": 7
+    }
+  ],
+  "legs": [
+    {
+      "number": 1,
+      "name": "Rotterdam to Romania"
+    },
+    {
+      "number": 2,
+      "name": "Alba Iulia to Bucharest"
+    },
+    {
+      "number": 3,
+      "name": "Bucharest to Vienna"
+    },
+    {
+      "number": 4,
+      "name": "Vienna to Geneva"
+    },
+    {
+      "number": 5,
+      "name": "Geneva to Cherbourg"
+    },
+    {
+      "number": 6,
+      "name": "Cherbourg to Dublin"
+    },
+    {
+      "number": 7,
+      "name": "Dublin to Belfast"
+    }
+  ],
+  "outings": [
+    {
+      "id": 19201896042,
+      "date": "2026-07-06",
+      "name": "FT-RTR: Coffee doesn't disappoint",
+      "distanceMetres": 15923,
+      "elevationMetres": 138,
+      "movingTimeSeconds": 14349,
+      "public": true,
+      "kind": "walk"
+    },
+    {
+      "id": 19243256783,
+      "date": "2026-07-09",
+      "name": "FT-RTR: Castle district",
+      "distanceMetres": 15460,
+      "elevationMetres": 175,
+      "movingTimeSeconds": 14228,
+      "public": true,
+      "kind": "walk"
+    },
+    {
+      "id": 19337637217,
+      "date": "2026-07-16",
+      "name": "FT-RTR: Solo stomp, with some swans",
+      "distanceMetres": 14420,
+      "elevationMetres": 102,
+      "movingTimeSeconds": 13271,
+      "public": true,
+      "kind": "walk"
+    },
+    {
+      "id": 19477253073,
+      "date": "2026-07-26",
+      "name": "FT-ATB: Low energy dander",
+      "distanceMetres": 15625,
+      "elevationMetres": 62,
+      "movingTimeSeconds": 15343,
+      "public": true,
+      "kind": "walk"
+    },
+    {
+      "id": 19501023465,
+      "date": "2026-07-28",
+      "name": "FT-ATB: Bug city",
+      "distanceMetres": 11972,
+      "elevationMetres": 42,
+      "movingTimeSeconds": 10434,
+      "public": true,
+      "kind": "walk"
+    },
+    {
+      "id": 19581708660,
+      "date": "2026-08-03",
+      "name": "FT-VTG: Take a hike!",
+      "distanceMetres": 15870,
+      "elevationMetres": 473,
+      "movingTimeSeconds": 13109,
+      "public": true,
+      "kind": "hike"
+    },
+    {
+      "id": 19695914987,
+      "date": "2026-08-11",
+      "name": "FT-VTG: Interesting river",
+      "distanceMetres": 10568,
+      "elevationMetres": 99,
+      "movingTimeSeconds": 9622,
+      "public": true,
+      "kind": "walk"
+    },
+    {
+      "id": 19810014720,
+      "date": "2026-08-19",
+      "name": "FT-GTC: Circuit lost",
+      "distanceMetres": 11911,
+      "elevationMetres": 214,
+      "movingTimeSeconds": 10440,
+      "public": true,
+      "kind": "walk"
+    }
+  ],
+  "totals": {
+    "days": 33,
+    "transitionDays": 4,
+    "bonusRides": 8,
+    "distanceMetres": 4997166,
+    "elevationMetres": 44054,
+    "movingTimeSeconds": 746924
+  }
+}

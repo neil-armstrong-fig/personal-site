@@ -1,0 +1,146 @@
+---
+import type {TripFerryRoute} from "@src/content/trip/ferries/types/TripFerryRoute";
+import {defaultRouteSelectionLabel} from "@src/pages/cycling/_components/trip-route-map/labels/DefaultRouteSelectionLabel";
+import {tripMapSelectionLabel} from "@src/pages/cycling/_components/trip-route-map/labels/TripMapSelectionLabel";
+import type {TripMapActivity} from "@src/pages/cycling/_components/trip-route-map/types/TripMapActivity";
+
+interface Props {
+  activities: readonly TripMapActivity[];
+  ferries: readonly TripFerryRoute[];
+  mappedRouteCount: number;
+  highlightedRouteIds?: readonly string[];
+}
+
+const {activities, ferries, mappedRouteCount, highlightedRouteIds} = Astro.props;
+const highlightedSet = new Set(highlightedRouteIds ?? []);
+const hasHighlight = highlightedSet.size > 0;
+const highlightedActivities = activities.filter(activity => highlightedSet.has(String(activity.id)));
+const otherActivities = activities.filter(activity => !highlightedSet.has(String(activity.id)));
+const highlightedFerries = ferries.filter(ferry => highlightedSet.has(ferry.id));
+const otherFerries = ferries.filter(ferry => !highlightedSet.has(ferry.id));
+const defaultLabel = defaultRouteSelectionLabel({mappedRouteCount, highlightedCount: highlightedSet.size});
+const clearLabel = hasHighlight
+  ? "Clear selected route and show this part again"
+  : "Clear selected route and show all routes";
+const clearTitle = hasHighlight ? "Show this part again" : "Show all routes";
+---
+
+<div class="flex min-w-0 items-start gap-1.5">
+  <details class="group relative min-w-0 flex-1" data-trip-route-picker>
+    <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-sm border border-ink bg-paper px-3 py-2 text-sm font-semibold hover:bg-paper-muted [&::-webkit-details-marker]:hidden">
+      <span class="truncate" data-trip-route-picker-label>
+        {defaultLabel}
+      </span>
+
+      <svg
+        class="size-4 shrink-0 transition-transform group-open:rotate-180 motion-reduce:transition-none"
+        viewBox="0 0 16 16"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="m3 6 5 5 5-5"></path>
+      </svg>
+    </summary>
+
+    <div
+      class="absolute inset-x-0 top-[calc(100%+0.35rem)] z-10 max-h-[min(22rem,55vh)] overflow-y-auto overscroll-contain rounded-sm border border-ink bg-paper p-1 shadow-[0.35rem_0.35rem_0_var(--color-moss)]"
+      data-trip-route-options
+    >
+      <button
+        class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm font-semibold hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+        type="button"
+        data-trip-route-option
+        data-route-id=""
+        aria-pressed="true"
+      >
+        {defaultLabel}
+      </button>
+
+      {hasHighlight && (
+        <>
+          <p class="mt-2 mb-1 px-3 font-mono text-[0.65rem] font-bold tracking-[0.1em] text-ink/65 uppercase">
+            This part
+          </p>
+
+          {highlightedActivities.map(activity => (
+            <button
+              class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+              type="button"
+              data-trip-route-option
+              data-route-id={activity.id}
+              aria-pressed="false"
+            >
+              {tripMapSelectionLabel(activity)}
+            </button>
+          ))}
+
+          {highlightedFerries.map(ferry => (
+            <button
+              class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+              type="button"
+              data-trip-route-option
+              data-route-id={ferry.id}
+              aria-pressed="false"
+            >
+              Ferry · {ferry.name}
+            </button>
+          ))}
+        </>
+      )}
+
+      {hasHighlight && otherActivities.length > 0 && (
+        <p class="mt-2 mb-1 px-3 font-mono text-[0.65rem] font-bold tracking-[0.1em] text-ink/65 uppercase">
+          Rest of the trip
+        </p>
+      )}
+
+      {!hasHighlight && (
+        <p class="mt-2 mb-1 px-3 font-mono text-[0.65rem] font-bold tracking-[0.1em] text-ink/65 uppercase">
+          Rides and outings
+        </p>
+      )}
+
+      {otherActivities.map(activity => (
+        <button
+          class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+          type="button"
+          data-trip-route-option
+          data-route-id={activity.id}
+          aria-pressed="false"
+        >
+          {tripMapSelectionLabel(activity)}
+        </button>
+      ))}
+
+      {otherFerries.length > 0 && (
+        <p class="mt-2 mb-1 px-3 font-mono text-[0.65rem] font-bold tracking-[0.1em] text-ink/65 uppercase">Ferries</p>
+      )}
+
+      {otherFerries.map(ferry => (
+        <button
+          class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+          type="button"
+          data-trip-route-option
+          data-route-id={ferry.id}
+          aria-pressed="false"
+        >
+          Ferry · {ferry.name}
+        </button>
+      ))}
+    </div>
+  </details>
+
+  <button
+    class="flex size-11 shrink-0 items-center justify-center rounded-sm border border-ink bg-paper text-xl leading-none font-semibold hover:bg-paper-muted"
+    type="button"
+    aria-label={clearLabel}
+    title={clearTitle}
+    data-trip-route-clear
+    hidden
+  >
+    <span aria-hidden="true">×</span>
+  </button>
+</div>

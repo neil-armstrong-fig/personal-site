@@ -1,0 +1,16 @@
+# Private source material must never be committed or deployed.
+/private-source/
+*:Zone.Identifier
+
+# Local and generated project files.
+/node_modules/
+/dist/
+/.astro/
+/.lighthouseci/
+/.env
+/.env.*
+!.env.example
+*.log
+.DS_Store
+# Stray Windows-style directories created by Chrome under WSL.
+/C:*

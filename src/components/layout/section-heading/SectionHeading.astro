@@ -1,0 +1,26 @@
+---
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+
+type HeadingLevel = 1 | 2;
+
+interface Props {
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  level?: HeadingLevel;
+  compact?: boolean;
+}
+
+const {eyebrow, heading, intro, level = 1, compact = false} = Astro.props;
+const Heading = `h${level}` as const;
+---
+
+<header class="mb-12 max-w-copy">
+  <Eyebrow>{eyebrow}</Eyebrow>
+
+  <Heading class:list={[compact && "max-w-none text-[clamp(2.5rem,2rem+2.5vw,4rem)]"]}>{heading}</Heading>
+
+  <p class="max-w-[38rem] text-[1.2rem]">{intro}</p>
+
+  <slot />
+</header>

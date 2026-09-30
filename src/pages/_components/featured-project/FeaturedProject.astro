@@ -1,0 +1,56 @@
+---
+import type {CollectionEntry} from "astro:content";
+
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  featured?: boolean;
+}
+
+const {project, featured = false} = Astro.props;
+const {title, summary, liveUrl, repositoryUrl} = project.data;
+const externalLinks = [
+  liveUrl && {href: liveUrl.href, label: `Visit ${title}`},
+  {href: repositoryUrl.href, label: "View repository"},
+].filter(link => link !== undefined);
+---
+
+<article
+  class:list={[
+    "flex min-h-84 flex-col border border-ink p-[clamp(1.5rem,4vw,3rem)]",
+    featured && "bg-petrol text-paper",
+    !featured && "bg-paper",
+  ]}
+>
+  {featured && <Eyebrow tone="paper">Software</Eyebrow>}
+
+  {!featured && <Eyebrow tone="copper">Software</Eyebrow>}
+
+  <h3>
+    <a class:list={[featured && "text-paper hover:text-paper"]} href={`/software/${project.id}/`}>
+      {title}
+    </a>
+  </h3>
+
+  <p class="max-w-[34rem]">{summary}</p>
+
+  <div class="mt-auto flex flex-wrap gap-x-6 gap-y-3">
+    <a class:list={[featured && "text-paper hover:text-paper"]} href={`/software/${project.id}/`}>
+      Read the case study
+      <span class="ml-2 inline-block" aria-hidden="true">
+        →
+      </span>
+    </a>
+
+    {externalLinks.map(link => (
+      <ExternalLink class:list={[featured && "text-paper hover:text-paper"]} href={link.href}>
+        {link.label}
+        <span class="ml-2 inline-block" aria-hidden="true">
+          ↗
+        </span>
+      </ExternalLink>
+    ))}
+  </div>
+</article>

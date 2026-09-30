@@ -1,0 +1,89 @@
+---
+interface Props {
+  hasFerries: boolean;
+  hasOutings: boolean;
+  hasTransit: boolean;
+}
+
+const {hasFerries, hasOutings, hasTransit} = Astro.props;
+---
+
+{hasOutings && (
+  <button
+    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-ink/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
+    type="button"
+    aria-label="Hide walks and hikes"
+    aria-pressed="true"
+    data-route-key-kind="outing"
+    data-route-visibility-toggle="outings"
+  >
+    <svg class="h-2 w-6" viewBox="0 0 24 8" aria-hidden="true">
+      <path
+        class="stroke-ink/70"
+        d="M1 4h22"
+        fill="none"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-dasharray="6 5"
+      ></path>
+    </svg>
+    Walk/hike
+    <span class="font-normal" data-route-visibility-state>
+      On
+    </span>
+  </button>
+)}
+
+{hasTransit && (
+  <button
+    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-ink/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
+    type="button"
+    aria-label="Hide transit"
+    aria-pressed="true"
+    data-route-key-kind="transit"
+    data-route-visibility-toggle="transit"
+  >
+    <svg class="h-2 w-6" viewBox="0 0 24 8" aria-hidden="true">
+      <path
+        class="stroke-petrol"
+        d="M1 4h22"
+        fill="none"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-dasharray="2 6"
+      ></path>
+    </svg>
+    Transit
+    <span class="font-normal" data-route-visibility-state>
+      On
+    </span>
+  </button>
+)}
+
+{hasFerries && (
+  <button
+    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-ink/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
+    type="button"
+    aria-label="Hide ferries"
+    aria-pressed="true"
+    data-route-key-kind="ferry"
+    data-route-visibility-toggle="ferries"
+  >
+    <svg class="h-2 w-6" viewBox="0 0 24 8" aria-hidden="true">
+      <path
+        class="stroke-petrol"
+        d="M2 4h20"
+        fill="none"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-dasharray="2 6"
+      ></path>
+      <circle class="fill-petrol" cx="2" cy="4" r="2"></circle>
+      <circle class="fill-petrol" cx="22" cy="4" r="2"></circle>
+    </svg>
+    Ferry
+    <span class="font-normal" data-route-visibility-state>
+      On
+    </span>
+  </button>
+)}

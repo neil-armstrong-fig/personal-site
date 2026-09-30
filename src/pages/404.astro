@@ -1,0 +1,33 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import Section from "@src/components/layout/section/Section.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import Prose from "@src/components/typography/prose/Prose.astro";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page not found | Neil Armstrong"
+  description="The page you were looking for could not be found."
+  noindex
+>
+  <Section>
+    <Container>
+      <Prose>
+        <Eyebrow>404</Eyebrow>
+
+        <h1>That page has wandered off route.</h1>
+
+        <p>The address may be mistyped, or the page may have moved. Try one of the main sections instead.</p>
+
+        <p class="flex flex-wrap gap-x-6 gap-y-3">
+          <a href="/">Return home</a>
+
+          <a href="/software/">Software</a>
+
+          <a href="/cycling/">Cycling</a>
+        </p>
+      </Prose>
+    </Container>
+  </Section>
+</BaseLayout>

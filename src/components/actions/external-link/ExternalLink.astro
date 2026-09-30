@@ -1,0 +1,25 @@
+---
+import type {HTMLAttributes} from "astro/types";
+
+import {externalLinkRel} from "./ExternalLinkRel";
+import {newTabNotice} from "./NewTabNotice";
+
+type OptionalLabel = string | undefined;
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+}
+
+const {rel, "aria-label": ariaLabel, ...attributes} = Astro.props;
+let accessibleLabel: OptionalLabel;
+
+if (ariaLabel !== undefined) {
+  accessibleLabel = `${ariaLabel} ${newTabNotice}`;
+}
+---
+
+<a {...attributes} target="_blank" rel={externalLinkRel(rel)} aria-label={accessibleLabel}>
+  <slot />
+
+  {ariaLabel === undefined && <span class="sr-only">{newTabNotice}</span>}
+</a>

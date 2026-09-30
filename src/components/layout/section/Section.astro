@@ -1,0 +1,11 @@
+---
+import type {HTMLAttributes} from "astro/types";
+
+type Props = HTMLAttributes<"section">;
+
+const {class: className, ...attributes} = Astro.props;
+---
+
+<section class:list={["relative py-[clamp(4rem,9vw,8rem)]", className]} {...attributes}>
+  <slot />
+</section>

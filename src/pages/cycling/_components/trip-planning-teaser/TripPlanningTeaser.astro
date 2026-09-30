@@ -1,0 +1,45 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+
+interface Guide {
+  title: string;
+  description: string;
+}
+
+const guides: readonly Guide[] = [
+  {
+    title: "How I plan a cycling trip",
+    description:
+      "The whole route before I leave: every hotel, every day’s distance, and the rest days, so that when I arrive all I need to do is cycle.",
+  },
+  {
+    title: "What I bring",
+    description: "What goes in the bags for a multi-week trip, and why.",
+  },
+  {
+    title: "The daily bikepacking routine",
+    description: "The morning before the first pedal stroke, and everything that happens after I arrive at the hotel.",
+  },
+];
+---
+
+<section class="border-b border-moss bg-paper-muted py-8" aria-labelledby="trip-guides-heading">
+  <Container>
+    <Eyebrow>Coming soon</Eyebrow>
+
+    <h2 id="trip-guides-heading" class="sr-only">
+      Guides to how I travel
+    </h2>
+
+    <ul class="grid list-none gap-4 md:grid-cols-3">
+      {guides.map(guide => (
+        <li class="border-2 border-dashed border-copper p-5">
+          <h3 class="mb-2 text-[1.35rem]">{guide.title}</h3>
+
+          <p class="mb-0">{guide.description}</p>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</section>

@@ -1,0 +1,135 @@
+{
+  "days": [
+    {
+      "id": 9668040826,
+      "date": "2023-08-17",
+      "name": "BTR-1",
+      "distanceMetres": 7949,
+      "elevationMetres": 18,
+      "movingTimeSeconds": 1301,
+      "public": true,
+      "transition": true
+    },
+    {
+      "id": 9672656699,
+      "date": "2023-08-18",
+      "name": "BTR-2",
+      "distanceMetres": 120510,
+      "elevationMetres": 917,
+      "movingTimeSeconds": 16810,
+      "public": true
+    },
+    {
+      "id": 9678728476,
+      "date": "2023-08-19",
+      "name": "BTR-3",
+      "distanceMetres": 103726,
+      "elevationMetres": 984,
+      "movingTimeSeconds": 15268,
+      "public": true
+    },
+    {
+      "id": 9685573378,
+      "date": "2023-08-20",
+      "name": "BTR-4",
+      "distanceMetres": 103517,
+      "elevationMetres": 873,
+      "movingTimeSeconds": 15106,
+      "public": true
+    },
+    {
+      "id": 9691762606,
+      "date": "2023-08-21",
+      "name": "BTR-5",
+      "distanceMetres": 84171,
+      "elevationMetres": 354,
+      "movingTimeSeconds": 16166,
+      "public": true
+    },
+    {
+      "id": 9712025790,
+      "date": "2023-08-24",
+      "name": "BTR-6",
+      "distanceMetres": 117654,
+      "elevationMetres": 967,
+      "movingTimeSeconds": 17971,
+      "public": true
+    },
+    {
+      "id": 9718918804,
+      "date": "2023-08-25",
+      "name": "BTR-7",
+      "distanceMetres": 122549,
+      "elevationMetres": 636,
+      "movingTimeSeconds": 16159,
+      "public": true
+    },
+    {
+      "id": 9736819196,
+      "date": "2023-08-28",
+      "name": "BTR-8",
+      "distanceMetres": 147211,
+      "elevationMetres": 277,
+      "movingTimeSeconds": 18768,
+      "public": true
+    },
+    {
+      "id": 9756461976,
+      "date": "2023-08-31",
+      "name": "Would be a shame naught to",
+      "distanceMetres": 161827,
+      "elevationMetres": 233,
+      "movingTimeSeconds": 20424,
+      "public": true,
+      "bonus": true
+    },
+    {
+      "id": 9803086090,
+      "date": "2023-09-07",
+      "name": "RTB-1",
+      "distanceMetres": 31662,
+      "elevationMetres": 57,
+      "movingTimeSeconds": 3952,
+      "public": true,
+      "transition": true
+    },
+    {
+      "id": 9809239116,
+      "date": "2023-09-08",
+      "name": "RTB-2",
+      "distanceMetres": 169346,
+      "elevationMetres": 1230,
+      "movingTimeSeconds": 24842,
+      "public": true
+    },
+    {
+      "id": 9823488330,
+      "date": "2023-09-10",
+      "name": "RTB-3",
+      "distanceMetres": 92284,
+      "elevationMetres": 534,
+      "movingTimeSeconds": 11710,
+      "public": true
+    },
+    {
+      "id": 9825938194,
+      "date": "2023-09-11",
+      "name": "RTB-4",
+      "distanceMetres": 7637,
+      "elevationMetres": 21,
+      "movingTimeSeconds": 1002,
+      "public": true,
+      "transition": true
+    }
+  ],
+  "legs": [],
+  "outings": [],
+  "totals": {
+    "days": 9,
+    "transitionDays": 3,
+    "bonusRides": 1,
+    "distanceMetres": 1270043,
+    "elevationMetres": 7101,
+    "movingTimeSeconds": 179479
+  }
+}

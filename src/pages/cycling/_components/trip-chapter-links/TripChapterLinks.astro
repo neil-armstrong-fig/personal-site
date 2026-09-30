@@ -1,0 +1,51 @@
+---
+import type {CollectionEntry} from "astro:content";
+
+import {parseTripChapterId} from "@src/content/trip/trip-chapter/ParseTripChapterId";
+
+interface Props {
+  trip: CollectionEntry<"trips">;
+  chapters: CollectionEntry<"tripChapters">[];
+  tripPath: string;
+  currentOrder: number;
+}
+
+interface ChapterLinkEntry {
+  order: number;
+  title: string;
+  href: string;
+}
+
+const {trip, chapters, tripPath, currentOrder} = Astro.props;
+const entries: ChapterLinkEntry[] = [
+  {order: 1, title: trip.data.firstPartTitle ?? trip.data.title, href: tripPath},
+  ...chapters.map((chapter): ChapterLinkEntry => ({
+    order: chapter.data.order,
+    title: chapter.data.title,
+    href: `${tripPath}${parseTripChapterId(chapter.id).chapterSlug}/`,
+  })),
+];
+---
+
+{chapters.length > 0 && (
+  <nav class="mt-6 flex flex-wrap gap-x-5 gap-y-2 text-sm" aria-label="Contents" data-trip-chapter-links>
+    {entries.map(entry => (
+      <Fragment>
+        {entry.order === currentOrder && (
+          <span class="text-paper" aria-current="page">
+            Part {entry.order}: {entry.title}
+          </span>
+        )}
+
+        {entry.order !== currentOrder && (
+          <a
+            class="text-paper underline decoration-paper/40 underline-offset-4 hover:text-paper hover:decoration-paper"
+            href={entry.href}
+          >
+            Part {entry.order}: {entry.title}
+          </a>
+        )}
+      </Fragment>
+    ))}
+  </nav>
+)}

@@ -1,0 +1,99 @@
+{
+  "days": [
+    {
+      "id": 12291523039,
+      "date": "2024-08-31",
+      "name": "BTR2-1: A ton on day 1, just for fun",
+      "distanceMetres": 161759,
+      "elevationMetres": 1349,
+      "movingTimeSeconds": 22996,
+      "public": true
+    },
+    {
+      "id": 12300378124,
+      "date": "2024-09-01",
+      "name": "BTR2-2: Tower, walls, and lots of wind and rain",
+      "distanceMetres": 136684,
+      "elevationMetres": 1831,
+      "movingTimeSeconds": 21327,
+      "public": true
+    },
+    {
+      "id": 12314436990,
+      "date": "2024-09-03",
+      "name": "BTR2: Very relaxed ride to the ferry",
+      "distanceMetres": 14104,
+      "elevationMetres": 96,
+      "movingTimeSeconds": 2889,
+      "public": true,
+      "bonus": true
+    },
+    {
+      "id": 12323436099,
+      "date": "2024-09-04",
+      "name": "BTR2-3: In NL, sheep are more of a hazard than cars 😄",
+      "distanceMetres": 85350,
+      "elevationMetres": 162,
+      "movingTimeSeconds": 11238,
+      "public": true
+    },
+    {
+      "id": 12358292078,
+      "date": "2024-09-08",
+      "name": "BTR2: Headwinds again? Doesn't ruin the sunshine 😄",
+      "distanceMetres": 127004,
+      "elevationMetres": 320,
+      "movingTimeSeconds": 16374,
+      "public": true,
+      "bonus": true
+    },
+    {
+      "id": 12389494531,
+      "date": "2024-09-11",
+      "name": "RTB2-1: Thunder storms a no go",
+      "distanceMetres": 35968,
+      "elevationMetres": 130,
+      "movingTimeSeconds": 5915,
+      "public": true,
+      "transition": true
+    },
+    {
+      "id": 12392776690,
+      "date": "2024-09-12",
+      "name": "RTB2-2: Much better route than last year, even if it did rain!",
+      "distanceMetres": 168908,
+      "elevationMetres": 1562,
+      "movingTimeSeconds": 24340,
+      "public": true
+    },
+    {
+      "id": 12410205017,
+      "date": "2024-09-14",
+      "name": "RTB2-3: Lots of gravel, wrong bike again!",
+      "distanceMetres": 67139,
+      "elevationMetres": 198,
+      "movingTimeSeconds": 10561,
+      "public": true
+    },
+    {
+      "id": 12412924913,
+      "date": "2024-09-15",
+      "name": "RTB2-4: Rotterdam to Belfast (two) complete!",
+      "distanceMetres": 8256,
+      "elevationMetres": 25,
+      "movingTimeSeconds": 1079,
+      "public": true,
+      "transition": true
+    }
+  ],
+  "legs": [],
+  "outings": [],
+  "totals": {
+    "days": 5,
+    "transitionDays": 2,
+    "bonusRides": 2,
+    "distanceMetres": 805172,
+    "elevationMetres": 5673,
+    "movingTimeSeconds": 116719
+  }
+}

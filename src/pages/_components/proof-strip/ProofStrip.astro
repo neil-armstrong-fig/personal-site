@@ -1,0 +1,43 @@
+---
+interface Proof {
+  figure: string;
+  detail: string;
+  href: string;
+}
+
+// Each claim is taken from the linked case study, which holds the evidence and says what it measures.
+const proofs: readonly Proof[] = [
+  {
+    figure: "Front end",
+    detail:
+      "React and TypeScript, including a rewrite of an application used every day by more than 200 loan officers.",
+    href: "/software/build-it-again-better/",
+  },
+  {
+    figure: "Back end and cloud",
+    detail: "Java services, then AWS serverless: a full insurance sign-up journey in twelve months.",
+    href: "/software/serverless-insurance/",
+  },
+  {
+    figure: "Mobile and desktop",
+    detail: "A native Android point-of-sale app in Kotlin, and Electron desktop tools with 3D rendering.",
+    href: "/software/point-of-sale-android-rewrite/",
+  },
+];
+---
+
+<dl class="grid gap-6 border-t border-ink pt-6 md:grid-cols-3 md:gap-8">
+  {proofs.map(proof => (
+    <div class="relative">
+      <dt class="font-serif text-[clamp(2rem,1.6rem+1.6vw,3rem)] leading-none tracking-[-0.03em] text-forest">
+        {proof.figure}
+      </dt>
+
+      <dd class="mt-2 mb-0 max-w-[24rem]">
+        <a class="after:absolute after:inset-0" href={proof.href}>
+          {proof.detail}
+        </a>
+      </dd>
+    </div>
+  ))}
+</dl>

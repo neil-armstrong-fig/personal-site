@@ -1,0 +1,69 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import Section from "@src/components/layout/section/Section.astro";
+import SectionHeading from "@src/components/layout/section-heading/SectionHeading.astro";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+import {getPublishedProfessionalCaseStudies} from "@src/content/professional-case-study/GetPublishedProfessionalCaseStudies";
+import {getPublishedProjects} from "@src/content/project/GetPublishedProjects";
+import HowIWork from "./_components/how-i-work/HowIWork.astro";
+import ProfessionalCaseStudyCard from "./_components/professional-case-study-card/ProfessionalCaseStudyCard.astro";
+import ProjectCard from "./_components/project-card/ProjectCard.astro";
+
+const projects = await getPublishedProjects();
+const professionalCaseStudies = await getPublishedProfessionalCaseStudies();
+---
+
+<BaseLayout
+  title="Software | Neil Armstrong"
+  description="Software architecture and engineering work by Neil Armstrong: product-minded delivery, acceptance-tested rewrites, event-driven AWS systems, and open-source case studies."
+>
+  <Section>
+    <Container>
+      <SectionHeading
+        compact
+        eyebrow="Software"
+        heading="Engineering with tests at the centre"
+        intro="I’m an architect who cares who the product is for. I take ownership of complex systems, and I prove they work with tests written in the language of the product."
+      />
+    </Container>
+  </Section>
+
+  <HowIWork />
+
+  <Section id="professional-work">
+    <Container>
+      <SectionHeading
+        level={2}
+        eyebrow="Professional work"
+        heading="What I have delivered"
+        intro="These case studies are anonymised, but the systems, decisions, and outcomes are real."
+      />
+
+      <div class="grid gap-4 md:grid-cols-2">
+        {professionalCaseStudies.map(caseStudy => (
+          <ProfessionalCaseStudyCard caseStudy={caseStudy} />
+        ))}
+      </div>
+    </Container>
+  </Section>
+  <Section class="border-t border-moss bg-paper-muted" id="open-source">
+    <Container>
+      <SectionHeading
+        level={2}
+        eyebrow="Open source"
+        heading="Projects built in the open"
+        intro="Useful software you can use today, and a closer look at the architecture, testing, and delivery decisions behind it."
+      />
+
+      {projects.length === 0 && <p>Open-source case studies are in preparation.</p>}
+
+      {projects.length > 0 && (
+        <div class="grid gap-4 md:grid-cols-2">
+          {projects.map(project => (
+            <ProjectCard project={project} />
+          ))}
+        </div>
+      )}
+    </Container>
+  </Section>
+</BaseLayout>

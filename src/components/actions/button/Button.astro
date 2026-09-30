@@ -1,0 +1,44 @@
+---
+import type {HTMLAttributes} from "astro/types";
+
+import {externalLinkRel} from "@src/components/actions/external-link/ExternalLinkRel";
+import {isExternalHref} from "@src/components/actions/button/external-href/IsExternalHref";
+import {newTabNotice} from "@src/components/actions/external-link/NewTabNotice";
+
+type ButtonVariant = "primary" | "secondary" | "light";
+type ButtonShape = "text" | "icon";
+
+interface Props extends HTMLAttributes<"a"> {
+  variant: ButtonVariant;
+  shape?: ButtonShape;
+}
+
+const {variant, shape = "text", class: className, rel, ...attributes} = Astro.props;
+const external = isExternalHref(attributes.href);
+let target = attributes.target;
+let linkRel = rel;
+
+if (external) {
+  target = "_blank";
+  linkRel = externalLinkRel(rel);
+}
+---
+
+<a
+  class:list={[
+    "inline-flex min-h-13 items-center justify-center rounded-sm border-2 border-forest py-3 text-center text-[0.92rem] leading-[1.2] font-[750] no-underline transition duration-160 hover:-translate-y-[0.14rem] motion-reduce:transition-none motion-reduce:hover:transform-none",
+    shape === "text" && "px-6",
+    shape === "icon" && "w-13",
+    variant === "primary" && "bg-forest text-paper hover:border-ink hover:bg-ink hover:text-paper",
+    variant === "secondary" && "bg-paper text-forest hover:border-petrol hover:text-petrol",
+    variant === "light" && "bg-ink text-paper hover:border-forest hover:bg-forest hover:text-paper",
+    className,
+  ]}
+  {...attributes}
+  target={target}
+  rel={linkRel}
+>
+  <slot />
+
+  {external && <span class="sr-only">{newTabNotice}</span>}
+</a>

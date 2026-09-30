@@ -1,0 +1,39 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import Section from "@src/components/layout/section/Section.astro";
+import SectionHeading from "@src/components/layout/section-heading/SectionHeading.astro";
+import Prose from "@src/components/typography/prose/Prose.astro";
+import type {JsonLdNode} from "@src/site/structured-data/types/JsonLdNode";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  eyebrow: string;
+  heading: string;
+  intro: string;
+  structuredData: readonly JsonLdNode[];
+}
+
+const {title, description, eyebrow, heading, intro, structuredData} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} openGraphType="article" structuredData={structuredData}>
+  <Section>
+    <Container>
+      <article>
+        <SectionHeading compact eyebrow={eyebrow} heading={heading} intro={intro}>
+          <slot name="meta" />
+        </SectionHeading>
+
+        <slot name="figure" />
+
+        <Prose variant="article">
+          <slot />
+        </Prose>
+
+        <slot name="after" />
+      </article>
+    </Container>
+  </Section>
+</BaseLayout>

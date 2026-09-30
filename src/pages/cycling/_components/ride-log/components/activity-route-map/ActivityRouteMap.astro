@@ -1,0 +1,58 @@
+---
+import RouteVisibilityControls from "@src/pages/cycling/_components/route-visibility-controls/RouteVisibilityControls.astro";
+
+type ActivityKind = "ride" | "walk" | "hike";
+
+interface Props {
+  activityId: number;
+  activityKind: ActivityKind;
+  activityName: string;
+  hasFerries: boolean;
+  hasTransit: boolean;
+}
+
+const {activityId, activityKind, activityName, hasFerries, hasTransit} = Astro.props;
+const hasOutings = activityKind === "walk" || activityKind === "hike";
+const hasVisibilityControls = hasFerries || hasOutings || hasTransit;
+---
+
+<div
+  class="relative isolate h-60 overflow-hidden border border-moss/50 bg-paper-muted fullscreen:h-screen fullscreen:w-screen fullscreen:border-0 fullscreen:bg-paper"
+  data-route-map-shell
+  data-activity-route-map-shell
+>
+  <div
+    class="h-full w-full"
+    data-activity-route-map
+    data-activity-id={activityId}
+    data-activity-kind={activityKind}
+    role="region"
+    aria-label={`Map of ${activityName}`}
+  >
+    <noscript>
+      <p class="p-4 text-sm">Enable JavaScript to view this activity’s route map.</p>
+    </noscript>
+  </div>
+
+  {hasVisibilityControls && (
+    <div
+      class="absolute top-16 left-2 z-[1000] flex max-w-[calc(100%-1rem)] flex-wrap gap-1 rounded-sm border border-ink/30 bg-paper/95 p-2 text-[0.66rem] leading-none text-ink shadow-sm"
+      role="group"
+      aria-label="Activity map layer controls"
+      data-activity-route-controls
+      hidden
+    >
+      <RouteVisibilityControls hasFerries={hasFerries} hasOutings={hasOutings} hasTransit={hasTransit} />
+    </div>
+  )}
+
+  <button
+    class="absolute top-2 right-2 z-[1000] min-h-11 rounded-sm border-2 border-ink bg-paper px-3 py-2 text-sm font-semibold text-ink shadow-sm hover:bg-paper-muted"
+    type="button"
+    data-map-fullscreen-button
+    aria-pressed="false"
+    hidden
+  >
+    <span data-fullscreen-label>Full screen</span>
+  </button>
+</div>

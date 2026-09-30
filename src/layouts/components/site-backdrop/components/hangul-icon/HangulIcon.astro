@@ -1,0 +1,21 @@
+---
+import type {HTMLAttributes} from "astro/types";
+
+type Props = HTMLAttributes<"svg">;
+
+const {class: className, ...attributes} = Astro.props;
+---
+
+<svg
+  class:list={["absolute fill-none stroke-current", className]}
+  viewBox="0 0 24 24"
+  stroke-width="1"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  {...attributes}
+>
+  <path d="M7 3h4M5 6h8M17 2v11M17 7.5h3M6 16.5v4.5h12"></path>
+
+  <circle cx="9" cy="10" r="2.5"></circle>
+</svg>

@@ -1,0 +1,53 @@
+{
+  "name": "personal-website",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.3.4",
+  "engines": {
+    "node": ">=24.21.0 <25"
+  },
+  "scripts": {
+    "dev": "astro dev --force",
+    "checks": "pnpm lint && pnpm format:check && pnpm type-check && pnpm test",
+    "lint": "eslint --max-warnings=0 .",
+    "lint:fix": "node src/scripts/run-scoped-command/RunScopedCommand.ts eslint --max-warnings=0 --fix --",
+    "format": "node src/scripts/run-scoped-command/RunScopedCommand.ts prettier --write --",
+    "format:check": "prettier --check .",
+    "type-check": "astro check",
+    "test": "vitest run --passWithNoTests",
+    "build": "pnpm checks && astro build && pnpm validate:build",
+    "validate:build": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts src/scripts/validate-build/ValidateBuild.ts",
+    "lighthouse": "lhci autorun",
+    "strava:sync": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts --env-file=.env src/scripts/sync-strava/SyncStrava.ts",
+    "strava:sync-media": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts --env-file=.env src/scripts/sync-strava-media/SyncStravaMedia.ts",
+    "trip:photos": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts src/scripts/process-trip-photos/ProcessTripPhotos.ts",
+    "trip:videos": "node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts src/scripts/process-trip-videos/ProcessTripVideos.ts",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "catalog:",
+    "@tailwindcss/vite": "catalog:",
+    "astro": "catalog:",
+    "leaflet": "catalog:",
+    "sharp": "catalog:",
+    "tailwindcss": "catalog:"
+  },
+  "devDependencies": {
+    "@astrojs/check": "catalog:",
+    "@eslint/js": "catalog:",
+    "@ffmpeg-installer/ffmpeg": "catalog:",
+    "@lhci/cli": "catalog:",
+    "@types/leaflet": "catalog:",
+    "@types/node": "catalog:",
+    "eslint": "catalog:",
+    "eslint-config-prettier": "catalog:",
+    "eslint-plugin-astro": "catalog:",
+    "globals": "catalog:",
+    "prettier": "catalog:",
+    "prettier-plugin-astro": "catalog:",
+    "typescript": "catalog:",
+    "typescript-eslint": "catalog:",
+    "vitest": "catalog:"
+  }
+}

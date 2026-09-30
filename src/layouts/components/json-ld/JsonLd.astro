@@ -1,0 +1,13 @@
+---
+import type {JsonLdNode} from "@src/site/structured-data/types/JsonLdNode";
+
+interface Props {
+  nodes: readonly JsonLdNode[];
+}
+
+const {nodes} = Astro.props;
+// Escape "<" so page-supplied text can never close the script element.
+const json = JSON.stringify({"@context": "https://schema.org", "@graph": nodes}).replaceAll("<", "\\u003c");
+---
+
+<script type="application/ld+json" set:html={json}></script>

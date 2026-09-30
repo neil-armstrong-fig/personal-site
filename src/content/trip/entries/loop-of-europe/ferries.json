@@ -1,0 +1,21 @@
+{
+  "ferries": [
+    {
+      "id": "loop-of-europe-cherbourg-dublin",
+      "name": "Cherbourg to Dublin",
+      "sourceUrl": "https://www.irishferries.com/uk-en/routes-and-times/dublin-cherbourg",
+      "points": [
+        [49.64937, -1.61308],
+        [49.62, -2.2],
+        [49.58, -3.2],
+        [49.68, -4.4],
+        [49.85, -5.65],
+        [50.35, -6.35],
+        [51.2, -6.55],
+        [52.2, -6.45],
+        [53.0, -6.3],
+        [53.34505, -6.19579]
+      ]
+    }
+  ]
+}

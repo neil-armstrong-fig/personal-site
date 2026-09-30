@@ -1,0 +1,61 @@
+---
+import type {CollectionEntry} from "astro:content";
+import type {GetStaticPaths} from "astro";
+
+import {getPublishedProfessionalCaseStudies} from "@src/content/professional-case-study/GetPublishedProfessionalCaseStudies";
+import {getPublishedProjects} from "@src/content/project/GetPublishedProjects";
+import {assertUniqueSoftwareCaseStudyIds} from "@src/pages/software/_components/case-study-ids/SoftwareCaseStudyIds";
+import OpenSourceCaseStudy from "./_components/open-source-case-study/OpenSourceCaseStudy.astro";
+import ProfessionalCaseStudy from "./_components/professional-case-study/ProfessionalCaseStudy.astro";
+
+interface OpenSourcePageProps {
+  kind: "open-source";
+  project: CollectionEntry<"projects">;
+  related: CollectionEntry<"projects">[];
+}
+
+interface ProfessionalPageProps {
+  kind: "professional";
+  caseStudy: CollectionEntry<"professionalCaseStudies">;
+  related: CollectionEntry<"professionalCaseStudies">[];
+}
+
+type PageProps = OpenSourcePageProps | ProfessionalPageProps;
+
+export const getStaticPaths = (async () => {
+  const [projects, professionalCaseStudies] = await Promise.all([
+    getPublishedProjects(),
+    getPublishedProfessionalCaseStudies(),
+  ]);
+
+  assertUniqueSoftwareCaseStudyIds(
+    projects.map(project => project.id),
+    professionalCaseStudies.map(caseStudy => caseStudy.id),
+  );
+
+  return [
+    ...projects.map(project => ({
+      params: {slug: project.id},
+      props: {
+        kind: "open-source" as const,
+        project,
+        related: projects.filter(other => other.id !== project.id),
+      },
+    })),
+    ...professionalCaseStudies.map(caseStudy => ({
+      params: {slug: caseStudy.id},
+      props: {
+        kind: "professional" as const,
+        caseStudy,
+        related: professionalCaseStudies.filter(other => other.id !== caseStudy.id),
+      },
+    })),
+  ];
+}) satisfies GetStaticPaths;
+
+const props: PageProps = Astro.props;
+---
+
+{props.kind === "open-source" && <OpenSourceCaseStudy project={props.project} related={props.related} />}
+
+{props.kind === "professional" && <ProfessionalCaseStudy caseStudy={props.caseStudy} related={props.related} />}

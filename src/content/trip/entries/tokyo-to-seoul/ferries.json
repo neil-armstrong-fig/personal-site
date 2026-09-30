@@ -1,0 +1,41 @@
+{
+  "ferries": [
+    {
+      "id": "tokyo-to-seoul-himeji-fukuda",
+      "name": "Himeji to Fukuda",
+      "sourceUrl": "https://www.shikokuferry.com/",
+      "activityId": 14134285654,
+      "points": [
+        [34.78401, 134.66282],
+        [34.71, 134.56],
+        [34.62, 134.43],
+        [34.54281, 134.3439]
+      ]
+    },
+    {
+      "id": "tokyo-to-seoul-tonosho-takamatsu",
+      "name": "Tonosho to Takamatsu",
+      "sourceUrl": "https://www.shikokuferry.com/",
+      "activityId": 14134285654,
+      "points": [
+        [34.4797, 134.22574],
+        [34.43, 134.17],
+        [34.39, 134.105],
+        [34.35386, 134.04879]
+      ]
+    },
+    {
+      "id": "tokyo-to-seoul-shimonoseki-busan",
+      "name": "Shimonoseki to Busan",
+      "sourceUrl": "https://www.kampuferry.co.jp/yoyaku/en/",
+      "points": [
+        [33.95107, 130.92434],
+        [34.08, 130.65],
+        [34.35, 130.15],
+        [34.65, 129.7],
+        [34.92, 129.32],
+        [35.11413, 129.03993]
+      ]
+    }
+  ]
+}

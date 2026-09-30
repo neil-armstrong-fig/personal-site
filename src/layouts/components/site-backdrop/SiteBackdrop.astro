@@ -1,0 +1,61 @@
+---
+import BicycleIcon from "./components/bicycle-icon/BicycleIcon.astro";
+import ComputerIcon from "./components/computer-icon/ComputerIcon.astro";
+import ControllerIcon from "./components/controller-icon/ControllerIcon.astro";
+import HangulIcon from "./components/hangul-icon/HangulIcon.astro";
+
+const icons = [BicycleIcon, HangulIcon, ComputerIcon, ControllerIcon] as const;
+
+// Full class names, so Tailwind can see them. These deliberately ignore prefers-reduced-motion (Neil's call): they are
+// faint, decorative and off to the side of the content.
+const paths = ["animate-roam-a", "animate-roam-b", "animate-roam-c", "animate-roam-d"] as const;
+
+const iconCount = 24;
+const phoneIconCount = 12;
+
+interface Placement {
+  Icon: (typeof icons)[number];
+  path: (typeof paths)[number];
+  style: string;
+  phone: boolean;
+  small: boolean;
+  reverse: boolean;
+}
+
+// Low-discrepancy (R2) sequence: evenly scattered without clumps, and identical on every build.
+const placements: Placement[] = Array.from({length: iconCount}, (_, index): Placement => {
+  const left = ((0.5 + index * 0.7548776662) % 1) * 92;
+  const top = ((0.5 + index * 0.569840291) % 1) * 88;
+  const delay = (index * 7) % 30;
+  return {
+    Icon: icons[index % icons.length] as (typeof icons)[number],
+    path: paths[(index + Math.floor(index / 4)) % paths.length] as (typeof paths)[number],
+    style: `left:${left.toFixed(1)}%;top:${top.toFixed(1)}%;animation-delay:-${delay}s`,
+    phone: index < phoneIconCount,
+    small: index % 3 === 0,
+    reverse: index % 3 === 1,
+  };
+});
+---
+
+<div
+  aria-hidden="true"
+  class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-svh overflow-hidden text-petrol/10 forced-colors:hidden"
+>
+  <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)] bg-[linear-gradient(rgb(31_89_96/7%)_1px,transparent_1px),linear-gradient(90deg,rgb(31_89_96/7%)_1px,transparent_1px)] bg-[length:3rem_3rem]"></div>
+
+  <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]">
+    {placements.map(({Icon, path, style, phone, small, reverse}) => (
+      <Icon
+        class:list={[
+          path,
+          !small && "size-9 md:size-12",
+          small && "size-7 md:size-9",
+          reverse && "[animation-direction:reverse]",
+          !phone && "hidden md:block",
+        ]}
+        style={style}
+      />
+    ))}
+  </div>
+</div>

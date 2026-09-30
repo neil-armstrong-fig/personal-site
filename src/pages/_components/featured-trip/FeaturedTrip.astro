@@ -1,0 +1,60 @@
+---
+import {Image} from "astro:assets";
+import type {CollectionEntry} from "astro:content";
+
+import Button from "@src/components/actions/button/Button.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import {getPublishedTripChapters} from "@src/content/trip/trip-chapter/GetPublishedTripChapters";
+import {getTripSnapshot} from "@src/content/trip/strava/snapshot/GetTripSnapshot";
+import {formatTripDistance} from "@src/pages/cycling/_components/measurements/TripDistance";
+
+interface Props {
+  trip: CollectionEntry<"trips">;
+}
+
+const {trip} = Astro.props;
+const {title, coverImage, coverAlt} = trip.data;
+const snapshot = getTripSnapshot(trip.id);
+const parts = (await getPublishedTripChapters(trip.id)).length + 1;
+const days = snapshot?.totals.days;
+const distance = snapshot && formatTripDistance(snapshot.totals.distanceMetres / 1000);
+---
+
+<div class="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
+  <div>
+    <Eyebrow tone="paper">Away from the desk</Eyebrow>
+
+    <h2>Pedals instead of pull requests</h2>
+
+    <p class="max-w-copy text-[1.2rem]">
+      When I’m not at a keyboard, I’m usually on a bike. My favourite trip so far took me from Tokyo to Seoul: across
+      Japan, a ferry to Korea, and on to the capital, with the photos, the numbers, and everything that went wrong.
+    </p>
+
+    {distance && days && (
+      <p class="mb-8 font-serif text-[1.6rem] leading-tight">
+        {distance.metric} · {days} riding days · {parts} chapters
+      </p>
+    )}
+
+    <div class="flex flex-wrap gap-3">
+      <Button variant="secondary" href={`/cycling/${trip.id}/`}>
+        Read {title}
+      </Button>
+
+      <Button variant="light" href="/cycling/">
+        All trips
+      </Button>
+    </div>
+  </div>
+
+  <a href={`/cycling/${trip.id}/`} class="block border-2 border-paper/60" tabindex="-1">
+    <Image
+      class="aspect-[4/3] w-full object-cover"
+      src={coverImage}
+      alt={coverAlt}
+      widths={[480, 800]}
+      sizes="(min-width: 48rem) 40rem, 100vw"
+    />
+  </a>
+</div>

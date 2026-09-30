@@ -1,0 +1,130 @@
+---
+import Button from "@src/components/actions/button/Button.astro";
+import Portrait from "@src/pages/_components/portrait/Portrait.astro";
+import Container from "@src/components/layout/container/Container.astro";
+import Section from "@src/components/layout/section/Section.astro";
+import SectionHeading from "@src/components/layout/section-heading/SectionHeading.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import portraitImage from "@src/assets/portrait/neil-armstrong.jpg";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+import {getPublishedProfessionalCaseStudies} from "@src/content/professional-case-study/GetPublishedProfessionalCaseStudies";
+import {getPublishedProjects} from "@src/content/project/GetPublishedProjects";
+import {getPublishedTrips} from "@src/content/trip/GetPublishedTrips";
+import {siteConfig} from "@src/site/SiteConfig";
+import FeaturedCaseStudies from "./_components/featured-case-studies/FeaturedCaseStudies.astro";
+import FeaturedProject from "./_components/featured-project/FeaturedProject.astro";
+import FeaturedTrip from "./_components/featured-trip/FeaturedTrip.astro";
+import ProofStrip from "./_components/proof-strip/ProofStrip.astro";
+import RouteLine from "./_components/route-line/RouteLine.astro";
+
+const featuredProjects = (await getPublishedProjects()).filter(project => project.data.featured);
+const caseStudies = await getPublishedProfessionalCaseStudies();
+const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured);
+---
+
+<BaseLayout title={siteConfig.title} description={siteConfig.description}>
+  <Section class="min-h-[calc(100svh-5rem)] overflow-hidden pt-[clamp(3rem,7vw,6rem)]">
+    <Container class="relative z-1 grid items-center gap-12 md:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)]">
+      <div>
+        <Eyebrow>Belfast · Northern Ireland</Eyebrow>
+
+        <h1 class="mb-6 max-w-[38rem] text-[clamp(1.6rem,1.3rem+1.3vw,2.3rem)] leading-[1.2] tracking-[-0.025em]">
+          I’m Neil Armstrong, a software architect in Belfast. I build and rebuild critical systems without breaking
+          them, and I prove it with tests anyone can read.
+        </h1>
+
+        <p class="mb-8 max-w-[36rem] text-[1.1rem]">
+          I’m a genuinely full stack developer. For more than a decade I’ve led teams across React front ends, AWS
+          serverless, Java/Kotlin back ends, native Android, and 3D in the browser. I care as much about what people
+          need from the software as how it’s built, and I use AI tools with a person accountable for every result.
+        </p>
+
+        <div class="flex flex-wrap gap-3">
+          <Button variant="primary" href="/software/">
+            Explore my software work
+          </Button>
+
+          <Button variant="secondary" href={siteConfig.socialLinks.linkedIn.href}>
+            Start a conversation
+          </Button>
+        </div>
+      </div>
+
+      <div>
+        <Portrait image={portraitImage} alt="Neil Armstrong, a software architect and developer in Belfast" />
+      </div>
+    </Container>
+
+    <RouteLine />
+  </Section>
+
+  <Section class="border-y border-moss" id="proof">
+    <Container>
+      <ProofStrip />
+    </Container>
+  </Section>
+
+  <Section id="professional-work">
+    <Container>
+      <SectionHeading
+        level={2}
+        eyebrow="Professional work"
+        heading="Systems I’ve delivered"
+        intro="Anonymised case studies from client work, each with what I did and how I knew it worked."
+      />
+
+      <FeaturedCaseStudies caseStudies={caseStudies} />
+
+      <p class="mt-8 mb-0">
+        <a class="font-bold" href="/software/#professional-work">
+          See all software work →
+        </a>
+      </p>
+    </Container>
+  </Section>
+
+  <Section class="overflow-hidden border-y border-moss bg-paper-muted" id="open-source">
+    <Container class="relative">
+      <SectionHeading
+        level={2}
+        eyebrow="Open source"
+        heading="Projects built in the open"
+        intro="Useful software in its own right, and a practical view of how I approach architecture and AI-native delivery."
+      />
+
+      <div class="grid gap-4 md:grid-cols-2">
+        {featuredProjects.map((project, index) => (
+          <FeaturedProject project={project} featured={index === 0} />
+        ))}
+      </div>
+    </Container>
+  </Section>
+
+  <Section
+    class="grid min-h-152 items-center bg-forest bg-[linear-gradient(90deg,var(--color-ink)_0_0.35rem,transparent_0.35rem)] text-paper"
+    id="cycling"
+  >
+    <Container>{featuredTrip && <FeaturedTrip trip={featuredTrip} />}</Container>
+  </Section>
+
+  <Section class="bg-paper-muted" id="about">
+    <Container class="grid items-end gap-8 py-6 md:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
+      <div>
+        <Eyebrow>Open to conversations</Eyebrow>
+
+        <h2 class="mb-0 max-w-[16ch]">Got a system nobody dares touch?</h2>
+      </div>
+
+      <div class="grid justify-items-start gap-6">
+        <p class="mb-0 max-w-[34rem]">
+          I’m open to conversations about modernising legacy systems, leading delivery teams, and building test-driven
+          architecture.
+        </p>
+
+        <Button variant="light" href={siteConfig.socialLinks.linkedIn.href}>
+          Message me on LinkedIn
+        </Button>
+      </div>
+    </Container>
+  </Section>
+</BaseLayout>

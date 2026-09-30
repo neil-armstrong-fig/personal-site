@@ -1,0 +1,19 @@
+---
+type EyebrowTone = "copper" | "paper";
+
+interface Props {
+  tone?: EyebrowTone;
+}
+
+const {tone = "copper"} = Astro.props;
+---
+
+<p
+  class:list={[
+    "mb-4 font-mono text-[0.76rem] leading-[1.4] font-bold tracking-[0.12em] uppercase",
+    tone === "copper" && "text-copper",
+    tone === "paper" && "text-paper",
+  ]}
+>
+  <slot />
+</p>

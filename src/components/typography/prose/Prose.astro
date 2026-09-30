@@ -1,0 +1,22 @@
+---
+type ProseVariant = "page" | "article" | "cycling";
+
+interface Props {
+  variant?: ProseVariant;
+}
+
+const {variant = "page"} = Astro.props;
+---
+
+<div
+  class:list={[
+    "[&_ol]:list-decimal [&_ol]:pl-10 [&_ul]:list-disc [&_ul]:pl-10",
+    variant === "page" && "[&>*]:max-w-copy",
+    variant === "article" &&
+      "mx-auto max-w-copy [&_h2]:mt-12 [&_h2]:text-[clamp(1.75rem,1.4rem+1.2vw,2.4rem)] [&_h2]:tracking-[-0.03em] [&_h3]:text-[clamp(1.4rem,1.2rem+0.8vw,1.75rem)]",
+    variant === "cycling" &&
+      "mx-auto max-w-copy [&_h2]:mt-14 [&_h2]:text-[clamp(1.9rem,1.5rem+1.3vw,2.65rem)] [&_h2]:tracking-[-0.03em] [&_h3]:mt-10 [&_h3]:text-[clamp(1.45rem,1.25rem+0.8vw,1.9rem)] [&>figure]:relative [&>figure]:left-1/2 [&>figure]:my-12 [&>figure]:w-[min(60rem,calc(100vw-3rem))] [&>figure]:-translate-x-1/2 [&>figure_img]:w-full [&>figure_video]:aspect-video [&>figure_video]:w-full [&>figure_video]:bg-ink [&>figure_figcaption]:mt-3 [&>figure_figcaption]:border-l-2 [&>figure_figcaption]:border-copper [&>figure_figcaption]:pl-4 [&>figure_figcaption]:text-sm [&>figure_figcaption]:text-ink/75",
+  ]}
+>
+  <slot />
+</div>

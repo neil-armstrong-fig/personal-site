@@ -1,0 +1,44 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+
+interface Principle {
+  title: string;
+  description: string;
+}
+
+const principles: readonly Principle[] = [
+  {
+    title: "Product first",
+    description: "I start from what users need, then work back to the architecture.",
+  },
+  {
+    title: "Tests are the specification",
+    description: "Acceptance tests in the language of the product make big rewrites safe.",
+  },
+  {
+    title: "Quality that is enforced",
+    description: "Boundaries, linting, and pipelines checked by tooling, not good intentions.",
+  },
+  {
+    title: "Ownership of the messy parts",
+    description: "I take on untested, half-finished systems and turn them into a plan.",
+  },
+];
+---
+
+<section class="border-y border-moss bg-paper-muted py-8">
+  <Container>
+    <Eyebrow>What sets me apart</Eyebrow>
+
+    <ul class="grid list-none gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {principles.map(principle => (
+        <li>
+          <h2 class="mb-2 text-[1.35rem]">{principle.title}</h2>
+
+          <p class="mb-0 max-w-copy">{principle.description}</p>
+        </li>
+      ))}
+    </ul>
+  </Container>
+</section>

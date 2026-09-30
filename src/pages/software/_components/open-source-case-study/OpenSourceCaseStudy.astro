@@ -1,0 +1,107 @@
+---
+import {Image} from "astro:assets";
+import {render} from "astro:content";
+import type {CollectionEntry} from "astro:content";
+
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import ArticleLayout from "@src/pages/software/_components/article-layout/ArticleLayout.astro";
+import ProjectCard from "@src/pages/software/_components/project-card/ProjectCard.astro";
+import ProjectLinks from "@src/pages/software/_components/open-source-case-study/components/project-links/ProjectLinks.astro";
+import {buildBreadcrumbListNode} from "@src/pages/_components/breadcrumb-list-node/BreadcrumbListNode";
+import {buildSoftwareSourceCodeNode} from "@src/pages/software/_components/open-source-case-study/software-source-code-node/SoftwareSourceCodeNode";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+  related: CollectionEntry<"projects">[];
+}
+
+const {project, related} = Astro.props;
+const {
+  title,
+  summary,
+  technologies,
+  repositoryUrl,
+  liveUrl,
+  liveLabel,
+  heroImage,
+  heroAlt,
+  datePublished,
+  dateModified,
+  seoTitle,
+  seoDescription,
+} = project.data;
+const path = `/software/${project.id}/`;
+const {Content} = await render(project);
+---
+
+<ArticleLayout
+  title={seoTitle ?? `${title} | Neil Armstrong`}
+  description={seoDescription}
+  eyebrow="Open-source case study"
+  heading={title}
+  intro={summary}
+  structuredData={[
+    buildSoftwareSourceCodeNode({
+      name: title,
+      description: seoDescription,
+      path,
+      repositoryUrl,
+      technologies,
+      datePublished,
+      dateModified,
+    }),
+    buildBreadcrumbListNode([
+      {name: "Software", path: "/software/"},
+      {name: title, path},
+    ]),
+  ]}
+>
+  <Fragment slot="meta">
+    <Eyebrow>{technologies.join(" · ")}</Eyebrow>
+
+    <ProjectLinks title={title} repositoryUrl={repositoryUrl} liveUrl={liveUrl} liveLabel={liveLabel} />
+  </Fragment>
+
+  <Fragment slot="figure">
+    {liveUrl === undefined && (
+      <Image
+        class="mb-12 w-full"
+        src={heroImage}
+        alt={heroAlt}
+        widths={[640, 1280]}
+        sizes="(min-width: 60rem) 60rem, 100vw"
+        loading="eager"
+        fetchpriority="high"
+      />
+    )}
+
+    {liveUrl !== undefined && (
+      <ExternalLink class="mb-12 block" href={liveUrl.href} aria-label={`Visit the live ${title} site`}>
+        <Image
+          class="w-full"
+          src={heroImage}
+          alt={heroAlt}
+          widths={[640, 1280]}
+          sizes="(min-width: 60rem) 60rem, 100vw"
+          loading="eager"
+          fetchpriority="high"
+        />
+      </ExternalLink>
+    )}
+  </Fragment>
+
+  <Content />
+
+  <section slot="after" class="mt-16" aria-labelledby="related-projects" hidden={related.length === 0}>
+    <h2 id="related-projects" class="text-[clamp(1.75rem,1.4rem+1.2vw,2.4rem)] tracking-[-0.03em]">
+      More open-source case studies
+    </h2>
+
+    <div class="grid gap-4 md:grid-cols-2">
+      {related.map(other => (
+        <ProjectCard project={other} level={3} />
+      ))}
+    </div>
+  </section>
+</ArticleLayout>

@@ -1,0 +1,75 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import Section from "@src/components/layout/section/Section.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import Prose from "@src/components/typography/prose/Prose.astro";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+import type {JsonLdNode} from "@src/site/structured-data/types/JsonLdNode";
+
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  intro?: string;
+  structuredData: readonly JsonLdNode[];
+  backHref?: string;
+  backLabel?: string;
+  eyebrow?: string;
+  headingMaxWidthClass?: string;
+}
+
+const {
+  title,
+  description,
+  heading,
+  intro,
+  structuredData,
+  backHref = "/cycling/",
+  backLabel = "← All cycling trips",
+  eyebrow = "Cycling story",
+  headingMaxWidthClass = "max-w-[13ch]",
+} = Astro.props;
+---
+
+<BaseLayout title={title} description={description} openGraphType="article" structuredData={structuredData}>
+  <article>
+    <header class="bg-ink py-[clamp(3.5rem,8vw,7rem)] text-paper" data-trip-masthead>
+      <Container>
+        <a
+          class="mb-10 inline-flex text-sm text-paper decoration-paper/50 hover:text-paper active:text-paper"
+          href={backHref}
+        >
+          {backLabel}
+        </a>
+
+        <div class="max-w-[62rem]">
+          <Eyebrow tone="paper">{eyebrow}</Eyebrow>
+
+          <h1 class:list={[headingMaxWidthClass, "text-[clamp(3rem,2.2rem+4vw,6.5rem)]"]}>{heading}</h1>
+
+          {intro !== undefined && (
+            <p class="max-w-[45rem] text-[clamp(1.15rem,1rem+0.5vw,1.4rem)] text-paper/85">{intro}</p>
+          )}
+
+          <slot name="meta" />
+        </div>
+      </Container>
+    </header>
+
+    <slot name="route-visual" />
+
+    <Section data-trip-highlights>
+      <Container>
+        <Prose variant="cycling">
+          <slot />
+        </Prose>
+      </Container>
+    </Section>
+
+    <div class="pb-[clamp(4rem,9vw,8rem)]">
+      <Container>
+        <slot name="after" />
+      </Container>
+    </div>
+  </article>
+</BaseLayout>

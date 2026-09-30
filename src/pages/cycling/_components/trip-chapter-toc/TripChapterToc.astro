@@ -1,0 +1,62 @@
+---
+import {Image} from "astro:assets";
+import type {CollectionEntry} from "astro:content";
+
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import {parseTripChapterId} from "@src/content/trip/trip-chapter/ParseTripChapterId";
+import {formatTripDateRange} from "@src/pages/cycling/_components/trip-stats/date-range/TripDateRange";
+
+interface Props {
+  chapters: CollectionEntry<"tripChapters">[];
+  tripPath: string;
+  totalParts: number;
+}
+
+const {chapters, tripPath, totalParts} = Astro.props;
+---
+
+{chapters.length > 0 && (
+  <nav class="mx-auto mt-16 mb-6 max-w-copy" aria-labelledby="trip-chapter-toc-heading" data-trip-chapter-toc>
+    <Eyebrow>Continue the story</Eyebrow>
+
+    <h2 id="trip-chapter-toc-heading" class="mb-6 text-[clamp(1.75rem,1.4rem+1.2vw,2.4rem)]">
+      The rest of the trip
+    </h2>
+
+    <ol class="grid gap-6 sm:grid-cols-2">
+      {chapters.map(chapter => (
+        <li>
+          <article class="group relative grid h-full grid-rows-[auto_1fr] overflow-hidden border border-moss/50 bg-paper">
+            <div class="aspect-[16/10] overflow-hidden bg-paper-muted">
+              <Image
+                class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02] motion-reduce:transition-none"
+                src={chapter.data.coverImage}
+                alt={chapter.data.coverAlt}
+                widths={[320, 480, 640]}
+                sizes="(min-width: 40rem) 20rem, 90vw"
+                loading="lazy"
+              />
+            </div>
+
+            <div class="flex flex-col gap-1 p-6">
+              <span class="font-mono text-xs tracking-[0.1em] text-petrol uppercase">
+                Part {chapter.data.order} of {totalParts}
+              </span>
+
+              <h3 class="text-lg">
+                <a
+                  class="after:absolute after:inset-0"
+                  href={`${tripPath}${parseTripChapterId(chapter.id).chapterSlug}/`}
+                >
+                  {chapter.data.title}
+                </a>
+              </h3>
+
+              <p class="text-sm text-ink/70">{formatTripDateRange(chapter.data.startDate, chapter.data.endDate)}</p>
+            </div>
+          </article>
+        </li>
+      ))}
+    </ol>
+  </nav>
+)}

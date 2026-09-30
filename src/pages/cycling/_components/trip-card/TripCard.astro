@@ -1,0 +1,57 @@
+---
+import type {CollectionEntry} from "astro:content";
+
+import {getPublishedTripChapters} from "@src/content/trip/trip-chapter/GetPublishedTripChapters";
+import TripStats from "@src/pages/cycling/_components/trip-stats/TripStats.astro";
+import TripCardVisual from "./components/trip-card-visual/TripCardVisual.astro";
+import {describeTripScale} from "./trip-scale/TripScale";
+
+interface Props {
+  trip: CollectionEntry<"trips">;
+  prioritiseImage?: boolean;
+}
+
+const {trip, prioritiseImage = false} = Astro.props;
+const {title, summary} = trip.data;
+const cardSummary = summary.replace(/ by bike(?: and ferry)?/gi, "");
+const parts = (await getPublishedTripChapters(trip.id)).length + 1;
+const scale = describeTripScale({
+  startDate: trip.data.startDate,
+  endDate: trip.data.endDate ?? trip.data.startDate,
+  parts,
+});
+const inProgress = trip.data.comingSoon;
+---
+
+<article
+  class:list={[
+    "group relative grid h-full grid-rows-[auto_1fr] overflow-hidden",
+    scale.major && "bg-paper-muted",
+    !scale.major && "bg-paper",
+    inProgress && "border-2 border-copper",
+    !inProgress && "border border-moss/50",
+  ]}
+  data-trip-card
+>
+  <TripCardVisual trip={trip} prioritiseImages={prioritiseImage} />
+
+  <div class="flex flex-col p-6 md:p-8">
+    {(scale.major || inProgress) && (
+      <p class="mb-3 flex flex-wrap gap-2 font-mono text-[0.72rem] font-bold tracking-[0.12em] uppercase">
+        {scale.major && <span class="bg-ink px-2 py-1 text-paper">{scale.label}</span>}
+
+        {inProgress && <span class="border-2 border-copper px-2 py-1 text-copper">In progress</span>}
+      </p>
+    )}
+
+    <h2 class="mb-3 text-[clamp(1.8rem,1.5rem+1vw,2.5rem)] tracking-[-0.03em]">
+      <a class="after:absolute after:inset-0" href={`/cycling/${trip.id}/`}>
+        {title}
+      </a>
+    </h2>
+
+    <p class="mb-6 flex-1">{cardSummary}</p>
+
+    <TripStats trip={trip} />
+  </div>
+</article>

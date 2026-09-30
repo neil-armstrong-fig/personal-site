@@ -1,0 +1,63 @@
+# Refuse pnpm add commands that would bypass an existing catalog version.
+catalogMode: strict
+
+# Refuse all direct and transitive releases less than 24 hours old.
+minimumReleaseAge: 1440
+minimumReleaseAgeStrict: true
+minimumReleaseAgeIgnoreMissingTime: false
+
+# Reject exotic transitive sources and revalidate registry metadata behind the lockfile.
+blockExoticSubdeps: true
+trustLockfile: false
+
+# esbuild's check-only postinstall is unnecessary because its optional platform package supplies the binary.
+# sharp's install check is unnecessary because its optional platform packages supply the image binaries.
+# ffmpeg's platform package only runs chmod on a binary that ships executable, so its postinstall is denied.
+allowBuilds:
+  "@ffmpeg-installer/linux-x64": false
+  esbuild: false
+  sharp: false
+
+catalog:
+  # Astro's static type and content checker; current stable release at bootstrap.
+  "@astrojs/check": 0.9.10
+  # Astro's canonical sitemap integration; current stable release at bootstrap.
+  "@astrojs/sitemap": 3.7.4
+  # ESLint's recommended JavaScript rules; current stable release at bootstrap.
+  "@eslint/js": 10.0.1
+  # Lighthouse CI runner for the performance, accessibility, SEO, and best-practice budgets; current stable release at bootstrap.
+  "@lhci/cli": 0.15.1
+  # Type declarations for the pinned Leaflet browser map library.
+  "@types/leaflet": 1.9.22
+  # Tailwind CSS's first-party Vite integration; current stable release at bootstrap.
+  "@tailwindcss/vite": 4.3.3
+  # Node.js declarations; pinned to the supported Node 24 runtime rather than the latest major.
+  "@types/node": 24.13.6
+  # Static site framework; 7.3.5 was less than 24 hours old at bootstrap.
+  astro: 7.3.4
+  # JavaScript, TypeScript, and Astro linter; current stable release at bootstrap.
+  eslint: 10.11.0
+  # Disables formatting rules that conflict with Prettier; current stable release at bootstrap.
+  eslint-config-prettier: 10.1.8
+  # Parses and lints Astro component files; current stable release at bootstrap.
+  eslint-plugin-astro: 3.2.1
+  # Browser and Node global definitions for ESLint; current stable release at bootstrap.
+  globals: 17.12.0
+  # Browser map rendering for lazy, read-only cycling route previews; pinned to the stable 1.x release.
+  leaflet: 1.9.4
+  # Repository formatter; current stable release older than the 24-hour safety window.
+  prettier: 3.9.9
+  # Formats Astro files; 1.1.0 was less than 24 hours old at bootstrap.
+  prettier-plugin-astro: 1.0.1
+  # Astro image optimisation; a direct dependency because Astro only lists it as optional, so strict pnpm hides it.
+  sharp: 0.35.4
+  # Tailwind CSS engine; current stable release at bootstrap.
+  tailwindcss: 4.3.3
+  # Compiler; pinned to 6.x because Astro Check and typescript-eslint do not yet support TypeScript 7.
+  typescript: 6.0.3
+  # TypeScript-aware ESLint parser and rules; current stable release at bootstrap.
+  typescript-eslint: 8.70.1
+  # Node-environment unit test runner; current stable release at bootstrap.
+  vitest: 5.0.1
+  # Bundled ffmpeg binaries (platform packages) for the local trip-video script; 1.1.0 is the latest release, unmaintained since 2022 but LGPL and adequate for H.264/AAC encoding.
+  "@ffmpeg-installer/ffmpeg": 1.1.0

@@ -1,0 +1,70 @@
+---
+import {externalLinkRel} from "@src/components/actions/external-link/ExternalLinkRel";
+import {newTabNotice} from "@src/components/actions/external-link/NewTabNotice";
+import {siteConfig} from "@src/site/SiteConfig";
+
+const currentPath = Astro.url.pathname;
+
+function isCurrent(href: string, pathname: string): boolean {
+  if (href === "/") {
+    return pathname === "/";
+  }
+
+  return pathname.startsWith(href);
+}
+---
+
+<details class="group relative md:[&::details-content]:[content-visibility:visible]">
+  <summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-sm border border-ink px-3 py-2 text-[0.8rem] font-bold tracking-[0.06em] text-ink uppercase group-open:bg-ink group-open:text-paper md:hidden [&::-webkit-details-marker]:hidden">
+    <span>Menu</span>
+
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      width="24"
+      height="24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.75"
+      stroke-linecap="round"
+    >
+      <path d="M4 7h16M4 12h16M4 17h16"></path>
+    </svg>
+  </summary>
+
+  <nav
+    class="absolute top-[calc(100%+0.75rem)] right-0 min-w-[min(18rem,calc(100vw-3rem))] border border-ink bg-paper p-3 shadow-[0.5rem_0.5rem_0_var(--color-moss)] md:static md:block md:min-w-0 md:border-0 md:bg-transparent md:p-0 md:shadow-none"
+    aria-label="Primary navigation"
+  >
+    <ul class="flex list-none flex-col md:flex-row md:gap-2">
+      {siteConfig.navigation.map(item => (
+        <li>
+          {!item.external && (
+            <a
+              class="block p-3 text-ink no-underline hover:bg-forest hover:text-paper aria-[current=page]:shadow-[inset_0_-0.2rem_var(--color-copper)]"
+              href={item.href}
+              aria-current={isCurrent(item.href, currentPath) && "page"}
+            >
+              {item.label}
+            </a>
+          )}
+
+          {item.external && (
+            <a
+              class="mt-2 flex items-center gap-2 rounded-sm border-2 border-copper bg-paper px-3 py-2 font-bold text-copper no-underline hover:bg-copper hover:text-paper md:mt-0 md:ml-2"
+              href={item.href}
+              target="_blank"
+              rel={externalLinkRel()}
+            >
+              {item.label}
+
+              <span aria-hidden="true">↗</span>
+
+              <span class="sr-only">{newTabNotice}</span>
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  </nav>
+</details>
