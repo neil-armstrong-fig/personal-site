@@ -74,7 +74,8 @@ index, or create commits unless the developer explicitly asks.
 - `pnpm trip:photos <trip-slug>` — turn the originals listed in `private-source/trips/<slug>/photos.json` into
   metadata-free 1,600 px JPEGs in the trip's `_assets/`, failing on any remaining EXIF/XMP/IPTC/ICC or a source
   under 1,200 px
-- `pnpm trip:videos <trip-slug>` — the same for `videos.json`: metadata-free MP4s and posters in `public/trips/<slug>/`
+- `pnpm trip:videos <trip-slug>` — the same for `videos.json`: metadata-free MP4s in `private-source/trips/<slug>/published-videos/` (uploaded to the media bucket, served from
+  `https://media.neilarmstrong.dev/trips/<slug>/`, never committed) and posters in `public/trips/<slug>/`
   (uses the bundled `@ffmpeg-installer/ffmpeg`)
 - `pnpm lighthouse` — Lighthouse CI against `dist/` (run `pnpm build` first): SEO/accessibility/best practices ≥95,
   performance ≥90, LCP ≤2.5 s (≤3 s for the heavy `tokyo-to-seoul` trip pages, set per URL in `assertMatrix`), CLS ≤0.1 on the mobile preset. It runs in its own workflow

@@ -1,5 +1,7 @@
 # Private source material must never be committed or deployed.
 /private-source/
+# Trip clips are served from the media origin (see AGENTS.md), never from the repository.
+/public/trips/**/*.mp4
 *:Zone.Identifier
 
 # Local and generated project files.

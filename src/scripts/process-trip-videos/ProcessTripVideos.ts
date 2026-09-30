@@ -25,13 +25,15 @@ async function processTripVideos(tripSlug: string | undefined): Promise<void> {
 
   const privateDirectory = `${ROOT}/private-source/trips/${tripSlug}`;
   const publicDirectory = `${ROOT}/public/trips/${tripSlug}`;
+  const uploadDirectory = `${privateDirectory}/published-videos`;
   const videos = parseTripVideos(JSON.parse(await readFile(`${privateDirectory}/videos.json`, "utf8")));
 
   await mkdir(publicDirectory, {recursive: true});
+  await mkdir(uploadDirectory, {recursive: true});
 
   for (const video of videos) {
     const source = `${privateDirectory}/${video.source}`;
-    const destination = `${publicDirectory}/${video.name}.mp4`;
+    const destination = `${uploadDirectory}/${video.name}.mp4`;
     const poster = `${publicDirectory}/${video.name}.jpg`;
 
     runFfmpeg(buildTripVideoArguments({source, destination, muteAudio: video.muteAudio}));
@@ -61,6 +63,8 @@ async function processTripVideos(tripSlug: string | undefined): Promise<void> {
     const {size} = await stat(destination);
     process.stdout.write(`${video.source} -> ${video.name}.mp4 (${(size / 1024 / 1024).toFixed(1)} MB) + poster\n`);
   }
+
+  process.stdout.write(`Upload ${uploadDirectory}/*.mp4 to the media bucket under trips/${tripSlug}/.\n`);
 }
 
 function runFfmpeg(args: readonly string[], {allowFailure = false}: FfmpegOptions = {}): string {

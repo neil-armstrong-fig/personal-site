@@ -1,3 +1,5 @@
+import {tripVideoOrigin} from "./TripVideoOrigin";
+
 interface TripVideoSource {
   path: string;
   alt: string;
@@ -29,7 +31,7 @@ export function tripVideoNode({path, alt}: TripVideoSource): TripVideoNode {
     data: {
       hName: "video",
       hProperties: {
-        src: path,
+        src: `${tripVideoOrigin}${path}`,
         dataPoster: path.replace(/\.mp4$/i, ".jpg"),
         controls: true,
         preload: "none",
