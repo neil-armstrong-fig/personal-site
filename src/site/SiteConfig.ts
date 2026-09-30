@@ -42,7 +42,7 @@ const navigation: readonly NavigationItem[] = [
 
 export const siteConfig = {
   description:
-    "Neil Armstrong is a software architect in Belfast who rebuilds critical systems without regressions, using acceptance-test-driven delivery, AWS serverless, and TypeScript. He also cycles long trips.",
+    "Neil Armstrong is a Belfast software architect who rebuilds critical systems with acceptance tests, AWS serverless, and TypeScript. He also cycles long trips.",
   identity: {
     location: "Belfast, Northern Ireland",
     name: "Neil Armstrong",
