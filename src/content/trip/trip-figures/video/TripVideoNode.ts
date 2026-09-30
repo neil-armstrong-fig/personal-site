@@ -31,7 +31,7 @@ export function tripVideoNode({path, alt}: TripVideoSource): TripVideoNode {
     data: {
       hName: "video",
       hProperties: {
-        src: `${tripVideoOrigin}${path}`,
+        src: `${clipOrigin()}${path}`,
         dataPoster: path.replace(/\.mp4$/i, ".jpg"),
         controls: true,
         preload: "none",
@@ -41,4 +41,14 @@ export function tripVideoNode({path, alt}: TripVideoSource): TripVideoNode {
     },
     children: [{type: "text", value: alt}],
   };
+}
+
+// `pnpm dev` sets TRIP_VIDEOS_LOCAL so a draft's clips play from the gitignored `public/trips/` before they are
+// uploaded; builds never set it, and `validate-build` checks every published clip exists on the media origin.
+function clipOrigin(): string {
+  if (process.env["TRIP_VIDEOS_LOCAL"] === "1") {
+    return "";
+  }
+
+  return tripVideoOrigin;
 }

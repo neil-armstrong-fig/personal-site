@@ -9,6 +9,7 @@ import {routeForHtmlPath} from "@src/scripts/validate-build/html-files/RouteForH
 import {assertUniquePageProperties} from "@src/scripts/validate-build/page-summary/AssertUniquePageProperties";
 import type {PageSummary} from "@src/scripts/validate-build/page-summary/types/PageSummary";
 import {assertRouteData} from "@src/scripts/validate-build/route-data/AssertRouteData";
+import {assertMediaUploaded} from "@src/scripts/validate-build/media/AssertMediaUploaded";
 import {assertSitemaps} from "@src/scripts/validate-build/sitemaps/AssertSitemaps";
 
 // Checks only what the compiler cannot: properties across pages and the built files themselves. Tags that
@@ -41,6 +42,7 @@ async function validateBuild(): Promise<void> {
     await assertRouteData(html, route);
     assertRequestedCopy(html, route);
     assertCyclingOutput(html, route);
+    await assertMediaUploaded(html, route);
   }
 
   assertUniquePageProperties(pages);

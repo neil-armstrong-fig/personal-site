@@ -74,8 +74,8 @@ index, or create commits unless the developer explicitly asks.
 - `pnpm trip:photos <trip-slug>` — turn the originals listed in `private-source/trips/<slug>/photos.json` into
   metadata-free 1,600 px JPEGs in the trip's `_assets/`, failing on any remaining EXIF/XMP/IPTC/ICC or a source
   under 1,200 px
-- `pnpm trip:videos <trip-slug>` — the same for `videos.json`: metadata-free MP4s in `private-source/trips/<slug>/published-videos/` (uploaded to the media bucket, served from
-  `https://media.neilarmstrong.dev/trips/<slug>/`, never committed) and posters in `public/trips/<slug>/`
+- `pnpm trip:videos <trip-slug>` — the same for `videos.json`: metadata-free MP4s and posters in `public/trips/<slug>/`; the MP4s are gitignored, played locally by `pnpm dev`
+  (`TRIP_VIDEOS_LOCAL=1`) and served in production from `https://media.neilarmstrong.dev/trips/<slug>/` once uploaded
   (uses the bundled `@ffmpeg-installer/ffmpeg`)
 - `pnpm lighthouse` — Lighthouse CI against `dist/` (run `pnpm build` first): SEO/accessibility/best practices ≥95,
   performance ≥90, LCP ≤2.5 s (≤3 s for the heavy `tokyo-to-seoul` trip pages, set per URL in `assertMatrix`), CLS ≤0.1 on the mobile preset. It runs in its own workflow
@@ -317,7 +317,7 @@ Do not publish current or former employer names or client names in the professio
   Markdown and an `_assets/` subfolder for the images only it uses, referenced relatively
   (`./_assets/hero.png`). Only shared images belong in `src/assets/`.
 - Display trip distance and elevation in both metric and imperial units, computed at build time.
-- Videos are limited to short self-hosted trip clips (below); no social or third-party embeds, no other videos, generic blog, résumé download, CMS, or contact form in v1. Build-time Strava API
+- Videos are limited to short trip clips (below), hosted on the Cloudflare R2 media origin `https://media.neilarmstrong.dev` and never committed; no social or third-party embeds, no other videos, generic blog, résumé download, CMS, or contact form in v1. Build-time Strava API
   (`activity:read` only), GPX tooling and read-only Leaflet/OpenStreetMap ride maps are in scope from 2026-09-25;
   keep credentials in the ignored `.env`, never print them, trim 5 km from the first trip start and final trip
   finish, and keep the coordinate-free snapshot separate from the route manifest.
@@ -448,17 +448,26 @@ folder is the worked example.
    1,200 px, so ask for a full-resolution original instead of using a thumbnail. Check every output for private
    addresses, number plates, bystanders and mirror reflections.
 5. **Videos.** Describe each clip in `videos.json` and run `pnpm trip:videos <slug>`: it writes an H.264/AAC MP4 (long
-   edge 1,280 px, 30 fps, audio kept by default) and a poster to `public/trips/<slug>/`. Set `muteAudio: true` on an
+   edge 1,280 px, 30 fps, audio kept by default) and a poster to `public/trips/<slug>/` (posters are small and stay in git; MP4s never do: `.gitignore` excludes them).
+   `pnpm dev` plays the local clips, so do not upload while drafts are in review. Set `muteAudio: true` on an
    individual manifest entry when its published clip must have no audio. Phone footage carries GPS `location` tags;
-   the script strips them and fails if any remain. Extract frames and look at them before writing alt text.
+   the script strips them and fails if any remain. Extract frames and look at them before writing alt text. Once the developer approves the
+   draft, upload the clips to R2, which is outward-facing, so run the dry run first and get his go-ahead for the real copy:
+   `rclone copy public/trips/<slug> cloudflare-personal-site-videos:personal-site-videos/trips/<slug> --include "*.mp4" --dry-run`,
+   then the same without `--dry-run`, then `rclone check` on the same pair and a `curl -sI` of one clip on the media origin
+   (200, `video/mp4`, `accept-ranges: bytes`). Keep the remote's `endpoint` at `https://<account-id>.r2.cloudflarestorage.com`
+   with no bucket path, never print `rclone config show` secrets, and never commit or echo the credentials in
+   `~/.config/rclone/rclone.conf`. Do not upload or delete anything else in the bucket.
+   `pnpm build` HEAD-checks every clip URL on the media origin (`validate-build/media/`), so a forgotten upload fails
+   the build and the deploy instead of shipping a broken video.
 6. **Publish.** Copy the chosen article under the frontmatter of `src/content/trip/entries/<slug>/index.md`, keeping
    the cover and its `coverAlt`. One figure per line, with non-blank alt text and a caption: images as
    `![alt](./_assets/x.jpg "Caption")`, clips as `![alt](/trips/<slug>/x.mp4 "Caption")` (root-absolute; a relative
-   `.mp4` is not processed). Videos use `preload="none"` and never autoplay; the `.jpg` poster is emitted as `data-poster` and
+   `.mp4` is not processed; the build prefixes the media origin, see `TripVideoOrigin.ts`). Videos use `preload="none"` and never autoplay; the `.jpg` poster is emitted as `data-poster` and
    applied by script near the viewport, because browsers fetch `poster` eagerly and a clip-heavy chapter then fails LCP. Every photo or video the developer
    selected — each `photos.json`/`videos.json` entry, and everything he tagged `@filename` in the draft — must end
    up in the published article; never process one into `_assets/`/`public/trips/<slug>/` and then quietly leave it
-   out. If a selected photo or video is later cut, remove its manifest entry and delete the stale derivative in the
+   out. If a selected photo or video is later cut, remove its manifest entry and delete the stale derivative (and its R2 object, with the developer's approval) in the
    same pass rather than leaving an orphaned file, and never cut or delete one the developer selected without asking him
    first.
 7. **Split into chapters once it's long.** Split whenever the stretch between two rest/transition days would
