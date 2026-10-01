@@ -1,0 +1,12 @@
+{
+  "extends": ["astro/tsconfigs/strict", "../shared/config/tsconfig.base.json"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
+  },
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "eslint.config.js", "prettier.config.js"]
+}

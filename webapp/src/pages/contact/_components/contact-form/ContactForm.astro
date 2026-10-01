@@ -1,0 +1,147 @@
+---
+import {contactLimits} from "@personal-site/shared/contact/ContactLimits";
+import {contactTransportFields} from "@personal-site/shared/contact/ContactTransportFields";
+
+import {siteConfig} from "@src/site/SiteConfig";
+
+import FormField from "./components/form-field/FormField.astro";
+---
+
+<form class="grid max-w-copy gap-6" method="post" action={siteConfig.contactForm.endpoint} data-contact-form novalidate>
+  <FormField label="Your name" name="name" maxlength={contactLimits.nameMaxLength} autocomplete="name" />
+
+  <FormField
+    label="Your email address"
+    name="email"
+    type="email"
+    maxlength={contactLimits.emailMaxLength}
+    autocomplete="email"
+  />
+
+  <FormField label="Message" name="message" maxlength={contactLimits.messageMaxLength} multiline />
+
+  <!-- Honeypot: invisible to people and assistive technology, tempting to bots. -->
+  <div class="sr-only" aria-hidden="true">
+    <label for="contact-website">Leave this field empty</label>
+
+    <input id="contact-website" name={contactTransportFields.honeypot} type="text" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="cf-turnstile" data-sitekey={siteConfig.contactForm.turnstileSiteKey}></div>
+
+  <div class="flex flex-wrap items-center gap-4">
+    <button
+      class="inline-flex min-h-13 items-center justify-center rounded-sm border-2 border-forest bg-forest px-6 py-3 text-center text-[0.92rem] leading-[1.2] font-[750] text-paper transition duration-160 hover:-translate-y-[0.14rem] hover:border-ink hover:bg-ink disabled:opacity-60 motion-reduce:transition-none motion-reduce:hover:transform-none"
+      type="submit"
+    >
+      Send message
+    </button>
+
+    <p class="m-0 text-sm text-ink/75">I only use your details to reply to you.</p>
+  </div>
+
+  <p class="m-0 font-[750]" role="status" aria-live="polite" data-form-status></p>
+</form>
+
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<noscript>
+  <p>The form needs JavaScript to check you’re human. Please message me on LinkedIn instead.</p>
+</noscript>
+
+<script>
+  import type {ContactResponse} from "@personal-site/shared/contact/types/ContactResponse";
+
+  interface TurnstileGlobal {
+    reset: () => void;
+  }
+
+  interface WindowWithTurnstile extends Window {
+    turnstile?: TurnstileGlobal;
+  }
+
+  const form = document.querySelector<HTMLFormElement>("[data-contact-form]");
+  const status = document.querySelector<HTMLElement>("[data-form-status]");
+  const submitButton = form?.querySelector<HTMLButtonElement>("button[type=submit]");
+
+  form?.addEventListener("submit", event => {
+    event.preventDefault();
+    void send(form);
+  });
+
+  async function send(contactForm: HTMLFormElement): Promise<void> {
+    setStatus("Sending…");
+    clearFieldErrors(contactForm);
+
+    if (submitButton) {
+      submitButton.disabled = true;
+    }
+
+    try {
+      const response = await fetch(contactForm.action, {
+        method: "POST",
+        body: new FormData(contactForm),
+        headers: {Accept: "application/json"},
+      });
+      const result = (await response.json()) as ContactResponse;
+
+      if (result.ok) {
+        contactForm.reset();
+        setStatus("Thanks, your message is on its way. I’ll reply by email.");
+      } else {
+        showFailure(contactForm, result);
+      }
+    } catch {
+      setStatus("Sorry, that didn’t send. Please try again, or message me on LinkedIn.");
+    }
+
+    resetTurnstile();
+
+    if (submitButton) {
+      submitButton.disabled = false;
+    }
+  }
+
+  function showFailure(contactForm: HTMLFormElement, result: ContactResponse): void {
+    const invalidFields = result.invalidFields ?? [];
+
+    for (const fieldName of invalidFields) {
+      const control = contactForm.elements.namedItem(fieldName);
+      const error = contactForm.querySelector<HTMLElement>(`[data-error-for="${fieldName}"]`);
+
+      if (control instanceof HTMLElement && error) {
+        control.setAttribute("aria-invalid", "true");
+        control.setAttribute("aria-describedby", `error-${fieldName}`);
+        error.id = `error-${fieldName}`;
+        error.textContent = `Please check your ${fieldName}.`;
+        error.classList.remove("hidden");
+      }
+    }
+
+    setStatus("That didn’t send. Please check the highlighted fields and the human check, then try again.");
+  }
+
+  function clearFieldErrors(contactForm: HTMLFormElement): void {
+    for (const control of contactForm.querySelectorAll("[aria-invalid]")) {
+      control.removeAttribute("aria-invalid");
+      control.removeAttribute("aria-describedby");
+    }
+
+    for (const error of contactForm.querySelectorAll<HTMLElement>("[data-error-for]")) {
+      error.textContent = "";
+      error.classList.add("hidden");
+    }
+  }
+
+  function setStatus(text: string): void {
+    if (status) {
+      status.textContent = text;
+    }
+  }
+
+  function resetTurnstile(): void {
+    const turnstileWindow: WindowWithTurnstile = window;
+
+    turnstileWindow.turnstile?.reset();
+  }
+</script>

@@ -1,0 +1,44 @@
+---
+type FormFieldType = "text" | "email";
+
+interface Props {
+  label: string;
+  name: string;
+  maxlength: number;
+  type?: FormFieldType;
+  multiline?: boolean;
+  autocomplete?: string;
+}
+
+const {label, name, maxlength, type = "text", multiline = false, autocomplete} = Astro.props;
+const controlClasses =
+  "block w-full rounded-sm border-2 border-ink/40 bg-paper px-4 py-3 text-base text-ink aria-[invalid=true]:border-copper";
+---
+
+<div class="grid gap-2">
+  <label class="text-[0.92rem] font-[750]" for={`contact-${name}`}>
+    {label}
+  </label>
+
+  {!multiline && (
+    <input
+      class={controlClasses}
+      id={`contact-${name}`}
+      name={name}
+      type={type}
+      maxlength={maxlength}
+      autocomplete={autocomplete}
+      required
+    />
+  )}
+
+  {multiline && <textarea
+    class:list={[controlClasses, "min-h-44"]}
+    id={`contact-${name}`}
+    name={name}
+    maxlength={maxlength}
+    required
+  ></textarea>}
+
+  <p class="m-0 hidden text-sm text-copper" data-error-for={name}></p>
+</div>

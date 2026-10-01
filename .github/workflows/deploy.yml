@@ -34,7 +34,7 @@ jobs:
 
       - uses: actions/upload-pages-artifact@v4
         with:
-          path: dist/
+          path: webapp/dist/
 
   deploy:
     name: Deploy
@@ -59,3 +59,4 @@ jobs:
           node-version-file: .nvmrc
 
       - run: node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts src/scripts/submit-index-now/SubmitIndexNow.ts
+        working-directory: webapp

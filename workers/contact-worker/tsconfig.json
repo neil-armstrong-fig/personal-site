@@ -1,0 +1,10 @@
+{
+  "extends": "@personal-site/shared/config/tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["@cloudflare/workers-types", "node"],
+    "paths": {
+      "@src/*": ["./src/*"]
+    }
+  },
+  "include": ["src", "*.ts", "*.js"]
+}

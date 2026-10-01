@@ -19,12 +19,13 @@ This is the Astro/TypeScript personal website for the site owner (“the develop
 - Tailwind CSS 4.3.3
 - Leaflet 1.9.4 with `@types/leaflet` 1.9.22 for lazy, read-only cycling maps
 - Node.js 24.21.0
-- pnpm 12.3.4, a root-only `pnpm-workspace.yaml`, a default dependency catalog, and a committed
-  `pnpm-lock.yaml`
+- pnpm 12.3.4, a `pnpm-workspace.yaml` listing `webapp`, `workers/*` and `shared`, a default dependency catalog,
+  and a committed `pnpm-lock.yaml`
+- A Cloudflare Worker (`workers/contact-worker/`, Wrangler 4.144.0) behind the contact form; the only server-side code
 - Astro content collections for open-source projects, anonymised professional case studies and cycling trips
 - Static GitHub Pages output
 
-Prefer static Astro components and build-time work. Do not add React, Vue, a CMS, a server runtime, a database, or client-side state unless a concrete requirement justifies it and the developer approves the scope change.
+Prefer static Astro components and build-time work. Do not add React, Vue, a CMS, a further server runtime, a database, or client-side state unless a concrete requirement justifies it and the developer approves the scope change. The contact Worker is the approved exception; see "Workspace packages".
 
 ## Before changing code
 
@@ -54,6 +55,9 @@ index, or create commits unless the developer explicitly asks.
 
 ## Commands
 
+Run every command from the repository root; the root package forwards each one to `webapp/` (or, for `checks`, to all
+three packages).
+
 - `pnpm dev` — start local development, clearing the content cache first so content and schema changes
   are never stale
 - `pnpm checks` — lint, format check, type/content check, and unit tests; the main quality gate
@@ -64,9 +68,9 @@ index, or create commits unless the developer explicitly asks.
 - `pnpm type-check` — Astro and TypeScript validation
 - `pnpm test` — automated tests
 - `pnpm build` — quality gate, production build, and built-output validation
-- `pnpm validate:build` — validate built links and essential SEO invariants in `dist/`
+- `pnpm validate:build` — validate built links and essential SEO invariants in `webapp/dist/`
 - `pnpm indexnow:submit` — read the deployed canonical sitemap and notify IndexNow after a successful production
-  deployment; the public validation key is `public/indexnow-key.txt`
+  deployment; the public validation key is `webapp/public/indexnow-key.txt`
 - `pnpm strava:sync` — pull activities with the credentials in `.env`, keep raw responses in `private-source/`,
   and write a coordinate-free `strava.json` snapshot plus privacy-trimmed `routes.json` into each trip folder
 - `pnpm strava:sync-media` — rate-limit and cache Strava activity photo lists and originals under
@@ -74,30 +78,68 @@ index, or create commits unless the developer explicitly asks.
 - `pnpm trip:photos <trip-slug>` — turn the originals listed in `private-source/trips/<slug>/photos.json` into
   metadata-free 1,600 px JPEGs in the trip's `_assets/`, failing on any remaining EXIF/XMP/IPTC/ICC or a source
   under 1,200 px
-- `pnpm trip:videos <trip-slug>` — the same for `videos.json`: metadata-free MP4s and posters in `public/trips/<slug>/`; the MP4s are gitignored, played locally by `pnpm dev`
+- `pnpm trip:videos <trip-slug>` — the same for `videos.json`: metadata-free MP4s and posters in `webapp/public/trips/<slug>/`; the MP4s are gitignored, played locally by `pnpm dev`
   (`TRIP_VIDEOS_LOCAL=1`) and served in production from `https://media.neilarmstrong.dev/trips/<slug>/` once uploaded
   (uses the bundled `@ffmpeg-installer/ffmpeg`)
-- `pnpm lighthouse` — Lighthouse CI against `dist/` (run `pnpm build` first): SEO/accessibility/best practices ≥95,
+- `pnpm lighthouse` — Lighthouse CI against `webapp/dist/` (run `pnpm build` first): SEO/accessibility/best practices ≥95,
   performance ≥90, LCP ≤2.5 s (≤3 s for the heavy `tokyo-to-seoul` trip pages, set per URL in `assertMatrix`), CLS ≤0.1 on the mobile preset. It runs in its own workflow
   (`.github/workflows/lighthouse.yml`); run it locally for changes that could affect performance, not after every edit.
   Under WSL it picks up the Windows Chrome and cannot connect: set `CHROME_PATH` to Playwright's Linux Chromium
-  (`~/.cache/ms-playwright/chromium-*/chrome-linux64/chrome`) and run `pnpm exec lhci autorun` with
+  (`~/.cache/ms-playwright/chromium-*/chrome-linux64/chrome`) and run `pnpm --filter @personal-site/webapp exec lhci autorun` with
   `--collect.settings.chromeFlags="--no-sandbox --headless=new --disable-gpu --disable-dev-shm-usage"`.
   LCP is simulated on slow 4G, so it counts every request started before the observed paint, including lazy images
   near the viewport and ~131 KB of fonts: a page's budget is the `/about/` baseline (~1.8 s) plus its early bytes.
-- `pnpm build` keeps Astro's content cache, so a change to a remark/rehype plugin needs `pnpm exec astro build --force`
+- `pnpm build` keeps Astro's content cache, so a change to a remark/rehype plugin needs `pnpm --filter @personal-site/webapp exec astro build --force`
   before the built HTML reflects it.
 - `pnpm preview` — preview the production build
+- `pnpm checks` and `pnpm build` cover all three packages; run one package with
+  `pnpm --filter @personal-site/contact-worker run checks`
+- `pnpm --filter @personal-site/contact-worker run dev` — run the Worker locally with `wrangler dev` (secrets in the
+  ignored `workers/contact-worker/.dev.vars`); `pnpm run deploy` publishes it by hand and is outward-facing, so ask first (CI normally does it)
 
 Do not run formatters in write mode without checking the worktree and the task scope.
+
+## Workspace packages
+
+Modelled on the Janggi repository (`shared/AGENTS.md`, `shared/config/`). The root package only delegates to the others
+(`pnpm checks`, `pnpm build` and the rest forward to them); the three packages are:
+
+| Package     | Contains                                                  | May import                                                           |
+| ----------- | --------------------------------------------------------- | -------------------------------------------------------------------- |
+| `webapp/`   | The Astro site: `src/`, `public/`, build config           | itself and `@personal-site/shared`, never a Worker                   |
+| `workers/*` | One Cloudflare Worker per folder; today `contact-worker/` | itself and `@personal-site/shared`, never the site or another Worker |
+| `shared/`   | Base tool config, and what more than one package needs    | itself only: the bottom of the graph                                 |
+
+- **Run from the root.** `pnpm dev`, `pnpm build`, `pnpm checks` and the script commands below work from the repository
+  root and forward to the right package. A script runs with its package as the working directory, so `private-source/`
+  and `.env` (which stay at the repository root) are reached through `repositoryRoot`
+  (`webapp/src/scripts/shared/repository/RepositoryRoot.ts`). `pnpm format -- <paths>` and `pnpm lint:fix -- <paths>`
+  take repository-root-relative paths (`webapp/src/pages/...`, `AGENTS.md`), because Prettier and ESLint find each file's
+  own package config.
+- **`shared/`** holds the base tool config (`shared/config/`: tsconfig, ESLint, Prettier, Vitest) and what more than one
+  package needs, as raw TypeScript imported as `@personal-site/shared/<path>`. Change a rule there, not in a package.
+  Today the code is `shared/src/contact/`, the contact form's wire contract: field names and limits,
+  `validateContactMessage`, and the `ContactResponse` JSON. Pure functions and plain types only. Never write
+  `"no-restricted-imports"` directly in an override; call `restrictedImports(...)` from `shared/config/eslint.base.js`.
+  Within `shared`, reach another folder by the package name; `../` is refused everywhere.
+- **`workers/contact-worker/`** (`src/ContactWorker.ts`) receives the form POST at `https://contact.neilarmstrong.dev/` (a Workers
+  custom domain, because the apex is DNS-only on GitHub Pages), checks the origin, the honeypot and the field limits,
+  verifies the Turnstile token, and sends the message through Email Routing's `send_email` binding with the visitor as
+  `Reply-To`. The recipient and the Turnstile secret are Worker secrets (`CONTACT_TO_ADDRESS`, `TURNSTILE_SECRET`), never
+  in git, the page or `wrangler.jsonc`. The bindings and secrets come from the shared `workerEnvironment` (`src/env/WorkerEnvironment.ts`, the runtime's global
+  `env`), not threaded through `fetch`. It, `ContactWorker.ts` and `DeliverContactMessage.ts` import `cloudflare:*`
+  modules and so are untested; keep them to wiring. Tested files that read `workerEnvironment` mock it with
+  `vi.mock("@src/env/WorkerEnvironment", ...)`; pure helpers (`corsHeaders`, `buildRawEmail`) take their values as arguments. The Worker stores nothing: do not log message contents or addresses.
+- `workerd`'s install script is denied like `esbuild`'s: the platform package supplies the binary.
 
 ## Code style and tooling
 
 Adopt the useful code-quality standards from the [Janggi repository](https://github.com/neil-armstrong-fig/janggi) and dependency-management standards from the
 [Event-Driven Ledger repository](https://github.com/neil-armstrong-fig/event-driven-ledger-example) without copying their acceptance-test systems or package graphs.
-This project is a root-only pnpm workspace with one deployable package.
+This project is a pnpm workspace of `webapp/` (the Astro site), `workers/` (one package per Worker) and `shared/`, with a delegating root
+package. See "Workspace packages".
 
-- `pnpm-workspace.yaml` omits `packages`, so only the root package is included.
+- `pnpm-workspace.yaml` lists `webapp`, `workers/*` and `shared`; the root package only delegates.
 - Every direct dependency lives in the default catalog at an exact version; `package.json` uses
   `catalog:` references.
 - Every catalog entry has a one-line comment stating its role and the reason for a non-latest pin.
@@ -144,28 +186,28 @@ adapted to Astro. Locality over layers: a file's depth tells you its blast radiu
 
 ### Roots
 
-- Conventional Astro roots are `src/assets`, `src/components`, `src/content`, `src/layouts`, `src/pages`,
-  `src/scripts`, `src/site`, and `src/styles`.
-- `src/components` holds only pure, generic components shared across the site, such as `Button`, `Container`,
+- Conventional Astro roots are `webapp/src/assets`, `webapp/src/components`, `webapp/src/content`, `webapp/src/layouts`, `webapp/src/pages`,
+  `webapp/src/scripts`, `webapp/src/site`, and `webapp/src/styles`.
+- `webapp/src/components` holds only pure, generic components shared across the site, such as `Button`, `Container`,
   `Section` and `Prose`. Anything used by a single page lives in a `_components/` folder beside that page.
-  Something shared by several pages rises to their nearest common parent folder (`src/pages/software/_components/`
-  for two software routes); it reaches `src/components` only when it is generic enough to belong to no page at
-  all. Being site-wide in spirit (a header, a portrait, a route flourish) is not enough. `src/layouts` holds layouts shared by several routes.
+  Something shared by several pages rises to their nearest common parent folder (`webapp/src/pages/software/_components/`
+  for two software routes); it reaches `webapp/src/components` only when it is generic enough to belong to no page at
+  all. Being site-wide in spirit (a header, a portrait, a route flourish) is not enough. `webapp/src/layouts` holds layouts shared by several routes.
 - A single-caller component still lives beside its caller, however site-wide it looks: the header, footer and
-  skip link sit under `src/layouts/components/` because only `BaseLayout` renders them, and the home-only
-  `Portrait`, `GridBackdrop` and `RouteLine` sit in `src/pages/_components/`. Shared code rises only when a
+  skip link sit under `webapp/src/layouts/components/` because only `BaseLayout` renders them, and the home-only
+  `Portrait`, `GridBackdrop` and `RouteLine` sit in `webapp/src/pages/_components/`. Shared code rises only when a
   second caller appears.
 - Helpers follow the same rule: a builder called by one route sits beside that route, one shared by several
-  routes sits in their common parent's `_components/`, and `src/site` keeps only what layouts, pages and
+  routes sits in their common parent's `_components/`, and `webapp/src/site` keeps only what layouts, pages and
   content all genuinely share (`SiteConfig`, identifiers, URL builders).
-- Command-line scripts are TypeScript under `src/scripts/<script-name>/`, one folder per script (`sync-strava/`,
+- Command-line scripts are TypeScript under `webapp/src/scripts/<script-name>/`, one folder per script (`sync-strava/`,
   `process-trip-photos/`), each with its `<ScriptName>.ts` entry point and the helpers and tests only it uses in
-  subject folders beneath it. Code two scripts share lives in `src/scripts/shared/<subject>/`; code that pages also
-  read stays in `src/content/`. Node 24 strips the types itself, so there is no ts-node or tsx: run a script with
+  subject folders beneath it. Code two scripts share lives in `webapp/src/scripts/shared/<subject>/`; code that pages also
+  read stays in `webapp/src/content/`. Node 24 strips the types itself, so there is no ts-node or tsx: run a script with
   `node --import ./src/scripts/register-src-alias/RegisterSrcAlias.ts <script>.ts`, which resolves `@src/*` and
   extensionless imports, and give any new script the same flag. Scripts import source with `@src/*`, never `../`.
-  Scripts run from the repository root (every entry point is a `pnpm` script), so build paths from
-  `process.cwd()`, never a file-relative `new URL("../", ...)`: a moved file does not rewrite it. Type stripping cannot compile enums, namespaces or
+  Scripts run with `webapp/` as the working directory (every entry point is a `pnpm` script), so build paths from
+  `process.cwd()`, and reach `private-source/` and `.env` at the repository root through `repositoryRoot`, never a file-relative `new URL("../", ...)`: a moved file does not rewrite it. Type stripping cannot compile enums, namespaces or
   parameter properties, so do not use them.
 - Moving a file rewrites its imports but not path strings. `import.meta.glob` patterns and the keys used to
   look results up must be root-absolute (`/src/content/trip/entries/*/strava.json`), never relative, so a move cannot
@@ -178,7 +220,7 @@ adapted to Astro. Locality over layers: a file's depth tells you its blast radiu
   in a folder beneath it, never beside it.
 - Something shared by two siblings rises to their nearest common ancestor and no further.
 - A component used by one route lives in a `_components/` folder beside that route. Astro turns every
-  file under `src/pages` into a route unless the path starts with an underscore, so this is the
+  file under `webapp/src/pages` into a route unless the path starts with an underscore, so this is the
   `components/` folder of Janggi's layout. Routes here are files, so `_components/` sits at the level of
   the route file or folder that uses it; when several routes share a component, it rises to the nearest
   common folder.
@@ -190,7 +232,7 @@ adapted to Astro. Locality over layers: a file's depth tells you its blast radiu
 The same set of folders recurses at every level, and a folder appears only once something needs it:
 
 ```
-src/pages/cycling/
+webapp/src/pages/cycling/
   index.astro, [slug].astro        the routes
   _components/
     trip-card/TripCard.astro       one folder per component, named for its subject in kebab-case
@@ -210,7 +252,7 @@ src/pages/cycling/
 - **`types/`** holds exported named types that other files reuse, one type per file, named for it. A type
   that is not exported stays in the file that uses it and needs no `types/` folder; create the folder
   only when a type is exported and reused. `types/` sits beside the highest caller that shares the type
-  (`src/pages/cycling/_components/neighbours/types/Neighbours.ts`).
+  (`webapp/src/pages/cycling/_components/neighbours/types/Neighbours.ts`).
 - **`utils/`** holds plain functions, with their tests, that only the enclosing component or module calls.
   It is the last resort: if the functions share a subject, prefer a subject-named folder
   (`measurements/`, `neighbours/`) beside the caller. Anything shared rises out of `utils/` to the
@@ -219,11 +261,11 @@ src/pages/cycling/
   not its shape: `neighbours/` and `measurements/` say what is inside; `helpers/`, `common/`, `misc/` and
   `styles/` describe form and leave a reader no wiser. Never create top-level `utils/`, `helpers/`,
   `common/` or `misc/` folders.
-- **Content and loaders** stay together under `src/content/`, one folder per content type: `trip/`, `project/`
+- **Content and loaders** stay together under `webapp/src/content/`, one folder per content type: `trip/`, `project/`
   and `professional-case-study/`. Each holds its schema factory, published-content getter, tests and helpers,
   with the Markdown in an `entries/<slug>/` subfolder. Trip-only code that pages or the build read (`strava/`
   snapshots, routes and ride media, `trip-figures/`) lives inside `trip/`; code only a script runs lives under
-  `src/scripts/`. Anything all three types use, such as `IsPublished` and `SortNewestFirst`, lives in `src/content/shared/`.
+  `webapp/src/scripts/`. Anything all three types use, such as `IsPublished` and `SortNewestFirst`, lives in `webapp/src/content/shared/`.
 - Split or rename a section on one side only if you do the same for anything that mirrors it.
 
 ### Files
@@ -280,7 +322,7 @@ src/pages/cycling/
 `private-source/` is the developer's local, git-ignored working material (CV, original photographs, drafts,
 Strava caches). It is not part of the public repository: never commit, publish, move or delete it. Scripts read from it.
 
-The CV is private reference material only. Never publish, copy into `public/`, or commit it. Do not expose its phone number or personal email address.
+The CV is private reference material only. Never publish, copy into `webapp/public/`, or commit it. Do not expose its phone number or personal email address.
 
 The original portrait contains EXIF metadata including GPS data. Never commit or deploy the original.
 The current public portrait derivative was made by removing all JPEG application and comment segments;
@@ -305,19 +347,19 @@ Do not publish current or former employer names or client names in the professio
 - Initial software case studies are Janggi and TQCC.
 - Do not copy README files wholesale; rewrite them for a personal case-study audience.
 - Store project and trip prose in Markdown content collections.
-- Define collection schemas through `src/content.config.ts`; keep the project and trip schema factories
-  beside their focused unit tests in each type's folder under `src/content/`.
+- Define collection schemas through `webapp/src/content.config.ts`; keep the project and trip schema factories
+  beside their focused unit tests in each type's folder under `webapp/src/content/`.
 - Collection text and alt text must be non-blank. Projects require at least one technology; trips require
   at least one location and country, positive optional duration/distance/elevation values, and an end date
   on or after the start date.
 - Parse content dates to `Date` and HTTP(S) links to `URL` at the schema boundary. Local content images
   must use Astro's `image()` schema helper.
 - Draft content must not generate public routes or appear in lists or sitemaps.
-- Each project or trip is a folder named for its slug (`src/content/project/entries/janggi/index.md`) holding its
+- Each project or trip is a folder named for its slug (`webapp/src/content/project/entries/janggi/index.md`) holding its
   Markdown and an `_assets/` subfolder for the images only it uses, referenced relatively
-  (`./_assets/hero.png`). Only shared images belong in `src/assets/`.
+  (`./_assets/hero.png`). Only shared images belong in `webapp/src/assets/`.
 - Display trip distance and elevation in both metric and imperial units, computed at build time.
-- Videos are limited to short trip clips (below), hosted on the Cloudflare R2 media origin `https://media.neilarmstrong.dev` and never committed; no social or third-party embeds, no other videos, generic blog, résumé download, CMS, or contact form in v1. Build-time Strava API
+- Videos are limited to short trip clips (below), hosted on the Cloudflare R2 media origin `https://media.neilarmstrong.dev` and never committed; no social or third-party embeds, no other videos, generic blog, résumé download, or CMS in v1. The contact form (below) is the one form. Build-time Strava API
   (`activity:read` only), GPX tooling and read-only Leaflet/OpenStreetMap ride maps are in scope from 2026-09-25;
   keep credentials in the ignored `.env`, never print them, trim 5 km from the first trip start and final trip
   finish, and keep the coordinate-free snapshot separate from the route manifest.
@@ -354,13 +396,13 @@ One workflow for trips, open-source projects and professional case studies. The 
    transforms apply. Copy the real entry's frontmatter, set `draft: true`, and put each article beneath it. Drafts never
    generate public routes, list cards or related links, because the getters filter with `isPublished`.
    The review route is temporary and is not kept in the tree, so rebuild it from this recipe:
-   - `src/pages/<section>/<slug>/review/[variant].astro` with `getStaticPaths` returning `a` and `b`. It reads both
+   - `webapp/src/pages/<section>/<slug>/review/[variant].astro` with `getStaticPaths` returning `a` and `b`. It reads both
      draft entries with `getCollection` (which includes drafts), throws if either is missing, and renders one with
      `render(entry)` inside the section's real layout (case studies: `ArticleLayout`, passing `noindex`). A `meta`
      slot holds the current version and a link to the other; never render both together.
    - Add an optional `noindex?: boolean` prop to `BaseLayout` (emit `<meta name="robots" content="noindex, nofollow" />`
      after the canonical link) and pass it through `ArticleLayout`.
-   - Change `sitemap()` in `astro.config.ts` to `sitemap({filter: page => !page.includes("/review/")})`.
+   - Change `sitemap()` in `webapp/astro.config.ts` to `sitemap({filter: page => !page.includes("/review/")})`.
    - Give each version its own `<title>`, eyebrow and description: `validate:build` rejects duplicates, and this
      failed the first time. Put a comment at the top of the route naming everything to delete afterwards.
      Tell the developer the URLs (`pnpm dev`, then `/<section>/<slug>/review/a/` and `/b/`), and that the real page is unchanged.
@@ -373,10 +415,10 @@ One workflow for trips, open-source projects and professional case studies. The 
    - save the final text as `private-source/<type>/<slug>/article-final.md`;
    - delete the review route folder, both draft entries, the `noindex` props (restore `BaseLayout` and
      `ArticleLayout` exactly, checking `git diff` against the index shows nothing) and the sitemap filter;
-   - `grep -rn "/review/" src astro.config.ts` must find nothing, and `noindex` must remain only on the 404 page.
+   - `grep -rn "/review/" webapp/src webapp/astro.config.ts` must find nothing, and `noindex` must remain only on the 404 page.
 6. **Verify and track.** Run `pnpm format:check` (use `pnpm format -- AGENTS.md` for a scoped fix), `pnpm checks` and
-   `pnpm build`. Then check `dist/`: the page has every heading, no review route or `noindex` exists, the sitemap has no
-   review entry, and `grep -rli` for the anonymised names finds nothing in `src` and `dist`. Preview the final page at
+   `pnpm build`. Then check `webapp/dist/`: the page has every heading, no review route or `noindex` exists, the sitemap has no
+   review entry, and `grep -rli` for the anonymised names finds nothing in `webapp/src` and `webapp/dist`. Preview the final page at
    390 px and 1440 px for overflow, and report every gate result in the handoff. Approvals and open questions
    go to the developer there too.
 
@@ -401,7 +443,7 @@ the disagreement instead of picking one, and drop any claim that appears only in
 ## Adding or replacing a project screenshot
 
 Use this workflow for a software case study whose image is a capture of a real website. The TQCC rides-page cover
-(`src/content/project/entries/tqcc/_assets/tqcc-ride-schedule-page.png`) is the worked example.
+(`webapp/src/content/project/entries/tqcc/_assets/tqcc-ride-schedule-page.png`) is the worked example.
 
 1. **Capture the real page.** Use the current public page, or a reviewed local build when the public page is not
    the intended version. Do not recreate it with image generation and do not upscale the old screenshot. Confirm
@@ -441,32 +483,32 @@ folder is the worked example.
    and `article-narrative.md` (same facts, restructured around a thread of lessons or themes). Say plainly which
    lines are yours; the developer chooses, and he can keep or drop individual additions. A pun that started as a typo stays,
    in quotes. Then publish both for review as in "Editorial review of long-form copy" (trip variants sit in
-   `src/content/trip/entries/<slug>/` as `draft: true` siblings).
+   `webapp/src/content/trip/entries/<slug>/` as `draft: true` siblings).
 4. **Photos.** Look at every image (a small preview is enough) before writing its alt text; never guess from the
    filename. Describe each in `private-source/trips/<slug>/photos.json` (`source`, kebab-case `name`, `alt`) and run
    `pnpm trip:photos <slug>`. It outputs metadata-free 1,600 px JPEGs into `_assets/` and rejects a source under
    1,200 px, so ask for a full-resolution original instead of using a thumbnail. Check every output for private
    addresses, number plates, bystanders and mirror reflections.
 5. **Videos.** Describe each clip in `videos.json` and run `pnpm trip:videos <slug>`: it writes an H.264/AAC MP4 (long
-   edge 1,280 px, 30 fps, audio kept by default) and a poster to `public/trips/<slug>/` (posters are small and stay in git; MP4s never do: `.gitignore` excludes them).
+   edge 1,280 px, 30 fps, audio kept by default) and a poster to `webapp/public/trips/<slug>/` (posters are small and stay in git; MP4s never do: `.gitignore` excludes them).
    `pnpm dev` plays the local clips, so do not upload while drafts are in review. Set `muteAudio: true` on an
    individual manifest entry when its published clip must have no audio. Phone footage carries GPS `location` tags;
    the script strips them and fails if any remain. Extract frames and look at them before writing alt text. Once the developer approves the
    draft, upload the clips to R2, which is outward-facing, so run the dry run first and get his go-ahead for the real copy:
-   `rclone copy public/trips/<slug> cloudflare-personal-site-videos:personal-site-videos/trips/<slug> --include "*.mp4" --dry-run`,
+   `rclone copy webapp/public/trips/<slug> cloudflare-personal-site-videos:personal-site-videos/trips/<slug> --include "*.mp4" --dry-run`,
    then the same without `--dry-run`, then `rclone check` on the same pair and a `curl -sI` of one clip on the media origin
    (200, `video/mp4`, `accept-ranges: bytes`). Keep the remote's `endpoint` at `https://<account-id>.r2.cloudflarestorage.com`
    with no bucket path, never print `rclone config show` secrets, and never commit or echo the credentials in
    `~/.config/rclone/rclone.conf`. Do not upload or delete anything else in the bucket.
    `pnpm build` HEAD-checks every clip URL on the media origin (`validate-build/media/`), so a forgotten upload fails
    the build and the deploy instead of shipping a broken video.
-6. **Publish.** Copy the chosen article under the frontmatter of `src/content/trip/entries/<slug>/index.md`, keeping
+6. **Publish.** Copy the chosen article under the frontmatter of `webapp/src/content/trip/entries/<slug>/index.md`, keeping
    the cover and its `coverAlt`. One figure per line, with non-blank alt text and a caption: images as
    `![alt](./_assets/x.jpg "Caption")`, clips as `![alt](/trips/<slug>/x.mp4 "Caption")` (root-absolute; a relative
    `.mp4` is not processed; the build prefixes the media origin, see `TripVideoOrigin.ts`). Videos use `preload="none"` and never autoplay; the `.jpg` poster is emitted as `data-poster` and
    applied by script near the viewport, because browsers fetch `poster` eagerly and a clip-heavy chapter then fails LCP. Every photo or video the developer
    selected — each `photos.json`/`videos.json` entry, and everything he tagged `@filename` in the draft — must end
-   up in the published article; never process one into `_assets/`/`public/trips/<slug>/` and then quietly leave it
+   up in the published article; never process one into `_assets/`/`webapp/public/trips/<slug>/` and then quietly leave it
    out. If a selected photo or video is later cut, remove its manifest entry and delete the stale derivative (and its R2 object, with the developer's approval) in the
    same pass rather than leaving an orphaned file, and never cut or delete one the developer selected without asking him
    first.
@@ -476,16 +518,16 @@ folder is the worked example.
    existing `##` heading instead when no rest day falls at a clean point inside an over-length stretch, and never
    invent, move or reword a heading purely to create a boundary. This is opt-in per trip — most trips are short
    enough to stay one page. Each chapter is its own
-   `src/content/trip/entries/<slug>/part-<n>-<chapter-slug>.md`, matching the `tripChapters` collection's
+   `webapp/src/content/trip/entries/<slug>/part-<n>-<chapter-slug>.md`, matching the `tripChapters` collection's
    `*/part-*.{md,mdx}` glob, with `title`, `order`, `startDate`, `endDate`, `coverImage` (`./_assets/...`, reuse a
    photo already in that chapter rather than commissioning anything new), `coverAlt`, `seoDescription` and `draft`
-   frontmatter (`src/content/trip/trip-chapter/TripChapterContent.ts`). The overview (`index.md`) keeps the trip's
+   frontmatter (`webapp/src/content/trip/trip-chapter/TripChapterContent.ts`). The overview (`index.md`) keeps the trip's
    intro and its own first, shortest part. Chapter routing, the "Part n of N" heading, the contents list, prev/next
    links and route-map highlighting are all derived from this collection at build time, so re-splitting later (as
    happened when Tokyo to Seoul's six chapters became ten) needs no code changes, only content moves. Chapter
    titles and descriptions are new copy — flag them in the handoff like any other agent-written text.
 8. **Verify.** Run `pnpm checks` and `pnpm build`, and confirm the built page has every figure, caption and video.
-   `lighthouserc.json` lists only some routes, so audit a new trip page with a temporary config (see `pnpm lighthouse`). If the trip has chapters, check `lighthouserc.json` still points at the current
+   `webapp/lighthouserc.json` lists only some routes, so audit a new trip page with a temporary config (see `pnpm lighthouse`). If the trip has chapters, check `lighthouserc.json` still points at the current
    heaviest chapter route, not one a later re-split renamed or removed. The developer may defer a failing LCP; report it
    rather than hiding it.
 9. **Hand off.** Report the gate results and any open questions. The developer approves the copy, images and clips.
@@ -496,13 +538,13 @@ folder is the worked example.
 - Follow the editorial-plus-outdoors direction already established in the site.
 - Work mobile first: base utilities describe the small viewport, with breakpoint utilities adding only
   the larger-layout changes.
-- Use the palette defined in `src/styles/global.css`: cool off-white `#F4F7F6`, muted sage `#E1E9E6`, ink navy
+- Use the palette defined in `webapp/src/styles/global.css`: cool off-white `#F4F7F6`, muted sage `#E1E9E6`, ink navy
   `#18262D`, forest `#244B3B`, petrol `#1F5960`, copper `#98462F`, and moss `#7B8D6B`.
 - Use copper sparingly so it complements rather than imitates the subject's hair. Use moss only for
   non-text decoration unless a specific pairing is independently shown to meet its contrast target.
 - Validate contrast for the actual component states; token-level contrast is guidance, not a
   substitute for testing rendered UI.
-- Style all markup with Tailwind utilities on the element; `src/styles/global.css` holds only
+- Style all markup with Tailwind utilities on the element; `webapp/src/styles/global.css` holds only
   `@font-face`, the `@theme` tokens, and a small `@layer base` for element defaults that Markdown content
   cannot carry classes for (headings, paragraphs, links, focus, disabled, forced colours). Do not add
   component or page classes there. Use theme tokens (`bg-paper`, `text-copper`, `max-w-copy`), not hex.
@@ -548,7 +590,7 @@ Before handing off a change:
 - Lighthouse runs in its own workflow; run `pnpm lighthouse` locally when a change could affect performance.
 - Verify mobile and desktop layouts for UI changes.
 - Check accessibility for changed interactions and content.
-- Confirm content-sensitive changes stay within the approved public/private boundary.
+- Confirm content-sensitive changes stay within the approved webapp/public/private boundary.
 - Keep Lighthouse targets at SEO/accessibility/best practices ≥95 and performance ≥90.
 - Preserve LCP below 2.5 seconds and CLS below 0.1 on representative mobile pages.
 - Do not weaken tests, content validation, accessibility, or SEO checks to make CI pass.
@@ -558,8 +600,12 @@ Before handing off a change:
 - Do not create Git commits or alter the index unless the developer explicitly asks; they stage and commit
   themselves, and staged files remain editable.
 - Target public repository: `neil-armstrong-fig/personal-site` (`origin`).
-- Production hosting: GitHub Pages through `.github/workflows/deploy.yml`, with `public/CNAME` for the custom domain.
-  `.github/workflows/lighthouse.yml` audits `dist/` separately.
+- Production hosting: GitHub Pages through `.github/workflows/deploy.yml`, with `webapp/public/CNAME` for the custom domain.
+  `.github/workflows/lighthouse.yml` audits `webapp/dist/` separately.
+- The contact Worker deploys through `.github/workflows/deploy-contact-worker.yml` on a push to `main` that changes
+  `workers/contact-worker/src/`, its `wrangler.jsonc` or `shared/src/`, or when run by hand from GitHub, after its
+  package checks. It needs the repository secrets
+  `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID`; the Worker's own secrets are set once with `wrangler secret put`.
 - Do not change DNS or GitHub Pages settings without an explicit deployment task.
 - Preserve `janggi.neilarmstrong.dev`; its CNAME and existing deployment are independent of the root site.
 

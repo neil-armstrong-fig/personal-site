@@ -1,0 +1,61 @@
+---
+interface SkillGroup {
+  label: string;
+  skills: string;
+}
+
+interface CareerLevel {
+  title: string;
+  period: string;
+}
+
+// Taken from the private CV's core competencies and the LinkedIn roles. It names no employers or clients.
+const skillGroups: readonly SkillGroup[] = [
+  {
+    label: "Architectural focus",
+    skills: "Serverless and cloud (event-driven AWS), AI-driven legacy modernisation, ATDD and quality DSLs",
+  },
+  {
+    label: "Cloud and infrastructure as code",
+    skills: "AWS (Lambda, DynamoDB, RDS, API Gateway, EventBridge), CDK, Terraform",
+  },
+  {label: "Front end", skills: "React, TypeScript, Vue, Redux Toolkit, threejs"},
+  {label: "Back end", skills: "Node.js, Kotlin, Java, REST, GraphQL"},
+  {label: "Testing and delivery", skills: "Playwright, GitHub Actions, Datadog"},
+];
+
+const careerLevels: readonly CareerLevel[] = [
+  {title: "Software Architect", period: "2025–2026"},
+  {title: "Principal Software Engineer", period: "2020–2025"},
+  {title: "Senior Software Engineer", period: "2017–2020"},
+  {title: "Software Engineer", period: "2013–2017"},
+];
+---
+
+<section class="mt-16 border-t border-ink pt-8" aria-labelledby="skills-heading">
+  <h2 id="skills-heading" class="text-[clamp(1.75rem,1.4rem+1.2vw,2.4rem)] tracking-[-0.03em]">
+    Skills and experience
+  </h2>
+
+  <dl class="mb-0 grid gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
+    {skillGroups.map(group => (
+      <div>
+        <dt class="font-bold text-forest">{group.label}</dt>
+
+        <dd class="mt-1 mb-0 max-w-[24rem]">{group.skills}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <h3 class="mt-10 text-[clamp(1.4rem,1.2rem+0.8vw,1.75rem)]">Career so far</h3>
+
+  <ol class="mb-0 grid list-none gap-x-8 gap-y-4 p-0 sm:grid-cols-2 lg:grid-cols-4">
+    {careerLevels.map(level => (
+      <li>
+        <span class="block font-bold">{level.title}</span>
+
+        <span class="block text-ink/75">{level.period}</span>
+      </li>
+    ))}
+  </ol>
+</section>

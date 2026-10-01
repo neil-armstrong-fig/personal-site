@@ -1,0 +1,55 @@
+---
+import Button from "@src/components/actions/button/Button.astro";
+import Container from "@src/components/layout/container/Container.astro";
+import Section from "@src/components/layout/section/Section.astro";
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import Prose from "@src/components/typography/prose/Prose.astro";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+import {siteConfig} from "@src/site/SiteConfig";
+
+import ContactForm from "./_components/contact-form/ContactForm.astro";
+---
+
+<BaseLayout
+  title="Contact Neil Armstrong | Software Architect in Belfast"
+  description="How to get in touch with Neil Armstrong: message him on LinkedIn or through the contact form about product engineering, software architecture, and careful modernisation. UK and EU right to work, open to relocation."
+>
+  <Section>
+    <Container>
+      <Prose>
+        <Eyebrow>Contact</Eyebrow>
+
+        <h1>Contact me</h1>
+
+        <p>
+          I’m open to conversations about product engineering, software architecture, leading delivery teams, and
+          careful modernisation. LinkedIn is the best way to reach me.
+        </p>
+
+        <p>
+          <Button variant="primary" href={siteConfig.socialLinks.linkedIn.href}>
+            Message me on LinkedIn
+          </Button>
+        </p>
+
+        <h2>Practical details</h2>
+
+        <ul>
+          <li>I’m based in Belfast, Northern Ireland, and I’m open to relocation.</li>
+
+          <li>I have the right to work in the UK and the EU.</li>
+
+          <li>My availability changes over time, so ask and I’ll tell you where it stands.</li>
+
+          <li>I’m happy to send my CV on request.</li>
+        </ul>
+
+        <h2>Send me a message</h2>
+
+        <p>If you’d rather not use LinkedIn, write to me here and I’ll reply by email.</p>
+      </Prose>
+
+      <ContactForm />
+    </Container>
+  </Section>
+</BaseLayout>

@@ -1,3 +1,10 @@
+# The root package only delegates; the Astro site is `webapp`, each Cloudflare Worker lives under `workers/`, and
+# `shared` holds the config and code they use in common.
+packages:
+  - shared
+  - webapp
+  - workers/*
+
 # Refuse pnpm add commands that would bypass an existing catalog version.
 catalogMode: strict
 
@@ -12,17 +19,22 @@ trustLockfile: false
 
 # esbuild's check-only postinstall is unnecessary because its optional platform package supplies the binary.
 # sharp's install check is unnecessary because its optional platform packages supply the image binaries.
+# workerd's postinstall only validates the binary, or downloads a fallback if the platform package is missing; the
+# optional @cloudflare/workerd-* platform package supplies the binary, verified by running it directly.
 # ffmpeg's platform package only runs chmod on a binary that ships executable, so its postinstall is denied.
 allowBuilds:
   "@ffmpeg-installer/linux-x64": false
   esbuild: false
   sharp: false
+  workerd: false
 
 catalog:
   # Astro's static type and content checker; current stable release at bootstrap.
   "@astrojs/check": 0.9.10
   # Astro's canonical sitemap integration; current stable release at bootstrap.
   "@astrojs/sitemap": 3.7.4
+  # Type declarations for the Workers runtime and the `cloudflare:email` module; 20261001.1 was less than 24 hours old.
+  "@cloudflare/workers-types": 5.20260930.1
   # ESLint's recommended JavaScript rules; current stable release at bootstrap.
   "@eslint/js": 10.0.1
   # Lighthouse CI runner for the performance, accessibility, SEO, and best-practice budgets; current stable release at bootstrap.
@@ -59,5 +71,7 @@ catalog:
   typescript-eslint: 8.70.1
   # Node-environment unit test runner; current stable release at bootstrap.
   vitest: 5.0.1
+  # Cloudflare Workers CLI for local dev, secrets and deploys of the contact Worker; 4.145.0 was less than 24 hours old.
+  wrangler: 4.144.0
   # Bundled ffmpeg binaries (platform packages) for the local trip-video script; 1.1.0 is the latest release, unmaintained since 2022 but LGPL and adequate for H.264/AAC encoding.
   "@ffmpeg-installer/ffmpeg": 1.1.0

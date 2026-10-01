@@ -1,0 +1,44 @@
+---
+import type {CollectionEntry} from "astro:content";
+
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import type {CaseStudyHeadingLevel} from "@src/pages/software/_components/types/CaseStudyHeadingLevel";
+
+interface Props {
+  caseStudy: CollectionEntry<"professionalCaseStudies">;
+  level?: CaseStudyHeadingLevel;
+}
+
+const {caseStudy, level = 2} = Astro.props;
+const Heading = `h${level}` as const;
+const {title, summary, careerPeriod, role, team, technologies} = caseStudy.data;
+const leadership = [role, team].filter((part): part is string => part !== undefined);
+---
+
+<article class="group relative flex h-full min-h-72 flex-col border border-ink bg-paper p-[clamp(1.5rem,4vw,3rem)] transition duration-160 hover:-translate-y-1 hover:shadow-[0.4rem_0.4rem_0_var(--color-moss)] motion-reduce:transition-none motion-reduce:hover:transform-none">
+  <Eyebrow>{careerPeriod}</Eyebrow>
+
+  <Heading class="text-[clamp(1.75rem,1.4rem+1vw,2.4rem)]">
+    <a class="after:absolute after:inset-0" href={`/software/${caseStudy.id}/`}>
+      {title}
+    </a>
+  </Heading>
+
+  <p class="max-w-[34rem]">{summary}</p>
+
+  {leadership.length > 0 && (
+    <p class="mb-4 max-w-[34rem] text-[0.95rem] font-bold text-forest">{leadership.join(" · ")}</p>
+  )}
+
+  <p class="mt-auto mb-4 font-bold text-copper">
+    Read the case study
+    <span
+      class="ml-2 inline-block transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
+      aria-hidden="true"
+    >
+      →
+    </span>
+  </p>
+
+  <Eyebrow>{technologies.join(" · ")}</Eyebrow>
+</article>
