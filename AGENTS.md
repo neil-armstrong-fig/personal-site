@@ -157,7 +157,8 @@ relax the exclusions for the private CV, raw photographs, GPS metadata, phone nu
 - Do not create Git commits or alter the index unless the developer explicitly asks; they stage and commit
   themselves, and staged files remain editable.
 - Target public repository: `neil-armstrong-fig/personal-site` (`origin`).
-- Production hosting: GitHub Pages through `.github/workflows/deploy.yml`, with `webapp/public/CNAME` for the custom domain.
+- CI/CD: `.github/workflows/ci-cd.yml` runs `pnpm build` on every pull request and push to `main`; only on `main` does it
+  then deploy to GitHub Pages and notify IndexNow, gated by that build. `webapp/public/CNAME` holds the custom domain.
   `.github/workflows/lighthouse.yml` audits `webapp/dist/` separately.
 - The contact Worker deploys through `.github/workflows/deploy-contact-worker.yml` on a push to `main` that changes
   `workers/contact-worker/src/`, its `wrangler.jsonc` or `shared/src/`, or when run by hand from GitHub, after its
