@@ -4,20 +4,29 @@ import Container from "@src/components/layout/container/Container.astro";
 import Section from "@src/components/layout/section/Section.astro";
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
 import Prose from "@src/components/typography/prose/Prose.astro";
+import Faq from "@src/pages/about/_components/faq/Faq.astro";
+import HowIWork from "@src/pages/about/_components/how-i-work/HowIWork.astro";
+import KeyFacts from "@src/pages/about/_components/key-facts/KeyFacts.astro";
 import SkillsMatrix from "@src/pages/about/_components/skills-matrix/SkillsMatrix.astro";
+import WhatIDo from "@src/pages/about/_components/what-i-do/WhatIDo.astro";
 import BaseLayout from "@src/layouts/BaseLayout.astro";
 import {siteConfig} from "@src/site/SiteConfig";
+import {faqEntries} from "@src/pages/about/_components/faq/FaqEntries";
+import {buildFaqPageNode} from "@src/pages/about/_components/faq-page-node/FaqPageNode";
 import {buildProfilePageNode} from "@src/pages/about/_components/profile-page-node/ProfilePageNode";
 
 const description =
-  "About Neil Armstrong, a Belfast software architect and developer specialising in resilient AWS systems, TypeScript products, continuous delivery, and AI-native engineering.";
+  "About Neil Armstrong, a Belfast software architect and developer for new products and legacy systems, specialising in resilient AWS systems, TypeScript products, continuous delivery, and AI-native engineering.";
 ---
 
 <BaseLayout
   title="About Neil Armstrong | Software Architect in Belfast"
   description={description}
   openGraphType="profile"
-  structuredData={[buildProfilePageNode({path: "/about/", description})]}
+  structuredData={[
+    buildProfilePageNode({path: "/about/", description}),
+    buildFaqPageNode({path: "/about/", entries: faqEntries}),
+  ]}
 >
   <Section>
     <Container>
@@ -27,14 +36,15 @@ const description =
         <h1>About Neil Armstrong</h1>
 
         <p>
-          I’m a software architect and developer in Belfast with a First Class Honours degree in Computer Science from
-          Ulster University and more than a decade of experience solving complex delivery problems.
+          I’m a software architect and developer in Belfast. I like getting new ideas into production quickly, and I’m
+          just as happy in an old system everyone is afraid to change. I have a First Class Honours degree in Computer
+          Science from Ulster University and more than a decade of experience solving complex delivery problems.
         </p>
 
         <p>
           My work spans new TypeScript and React products, resilient AWS and event-driven systems, and the modernisation
-          of established software. I enjoy taking ideas from prototype to production and enabling cross-functional teams
-          to deliver continuously, with architecture and pipelines that make safe changes routine — and dare I say, fun.
+          of established software. I enjoy enabling cross-functional teams to deliver continuously, with architecture
+          and pipelines that make safe changes routine — and dare I say, fun.
         </p>
 
         <p>
@@ -61,7 +71,15 @@ const description =
         </p>
       </Prose>
 
+      <WhatIDo />
+
+      <KeyFacts />
+
       <SkillsMatrix />
+
+      <HowIWork />
+
+      <Faq />
     </Container>
   </Section>
 </BaseLayout>

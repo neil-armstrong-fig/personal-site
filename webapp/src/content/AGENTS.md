@@ -34,6 +34,47 @@ people and organisations as the developer did.
   each version in isolation.
 - The primary contact action is a LinkedIn message framed as “open to conversations,” not “actively looking.”
 
+## Voice: sound like the developer, not an assistant
+
+Applies to every word on the site, including page copy, FAQ answers, meta descriptions and alt text, not only long-form
+entries. Before writing, read two or three existing entries (`build-it-again-better`, `serverless-insurance` and
+`project/entries/janggi` are good models) and match them.
+
+His voice, as the published entries show it:
+
+- Short, plain sentences, first person, with contractions ("doesn't", "I'm", "it's").
+- Concrete over general: a number, a tool, a duration or a named decision in preference to an adjective.
+- A little dry humour, an honest aside, or a direct question the page then answers ("So how do you make sign-up easy?").
+- A plain opinion stated as one ("Insurance can be a slow business, but that isn't the business I'm in").
+- Hedged where he is unsure ("I believe", "partly, I think") and silent where there is no evidence.
+
+Tells that make copy read as machine-written. Do not use them in new copy:
+
+- **Em dashes.** The published entries contain none. Use a full stop, a comma or a colon. A dash already in the
+  developer's own wording stays; do not add more or "tidy" it.
+- **Semicolons** joining two clauses. Use two sentences.
+- **Contrast framing**: "not X, but Y", "more than just X", "X rather than Y" as a stock rhythm, and "not an
+  afterthought" style asides. State the point once, directly.
+- **Reflexive triplets** and lists padded to three, and "whether you're X or Y" openers.
+- **Inflated or filler words**: seamless, robust, leverage, delve, crucial, pivotal, landscape, journey (when not a
+  literal journey), cutting-edge, passionate, deeply, truly, "world-class", "at its core".
+- **Self-praise phrased as modesty**: "I'm just as comfortable", "I'm at my best", "I pride myself". Say what was
+  done and let the figure or outcome carry it.
+- **Tidy closing lines** that restate the paragraph, and a summary sentence after every section.
+- **Uniform rhythm**: paragraph after paragraph of similar length, or a bold lead-in on every item. Vary it as the
+  existing entries do.
+- **A one-word answer followed by a neat explanation** ("Both.", "Absolutely.") as a habit. Use it where it is the
+  honest answer, not as a template.
+
+Before handing copy over:
+
+1. `grep -n "—\|;" <changed files>` over the new copy and remove the hits that are not the developer's own.
+2. Read the new text next to an existing entry. If it is smoother, more balanced or more adjective-heavy than its
+   neighbour, it is probably wrong; roughen it.
+3. Every claim must trace to a published entry or to `qa.md`. Name the source in the handoff and flag any wording the
+   developer should confirm. Do not invent a quantity, a capability or a "since" date to fill a template.
+4. Oxford commas stay, per the rule above, even where an existing entry omits them.
+
 ## Editorial review of long-form copy
 
 One workflow for trips, open-source projects and professional case studies. The trip-specific mechanics are in

@@ -14,7 +14,17 @@ export function assertRequestedCopy(html: string, route: string): void {
       "Read Tokyo to Seoul",
       "Building something new, or changing something difficult?",
     ],
-    "/about/": ["<h1>About Neil Armstrong</h1>", "cross-functional teams", "domain-specific languages"],
+    "/about/": [
+      "<h1>About Neil Armstrong</h1>",
+      "cross-functional teams",
+      "domain-specific languages",
+      "New products, fast",
+      "Legacy and migration",
+      "Key facts",
+      "How I work",
+      "Frequently asked questions",
+      '"@type":"FAQPage"',
+    ],
     "/cycling/": ["Pedals instead of pull requests"],
     "/software/": [
       "Software architecture and engineering",

@@ -1,0 +1,64 @@
+---
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import {siteConfig} from "@src/site/SiteConfig";
+
+interface KeyFact {
+  label: string;
+  value: string;
+}
+
+const keyFacts: readonly KeyFact[] = [
+  {label: "Name", value: siteConfig.identity.name},
+  {label: "Role", value: siteConfig.identity.publicTitle},
+  {label: "Based in", value: `${siteConfig.identity.location}. Open to relocation`},
+  {label: "Working in software since", value: "2011"},
+  {label: "Education", value: "First Class Honours in Computer Science, Ulster University"},
+  {label: "Focus", value: "New products taken to production quickly, legacy migration, upskilling and modernisation"},
+  {label: "Leadership", value: "Tech and engineering lead, with experience of line-management"},
+  {
+    label: "Stack",
+    value: "TypeScript, Javascript, React, Node.js, Kotlin, C#, and Java, with AWS serverless, CDK, and Terraform",
+  },
+  {label: "Availability", value: "Open to conversations. Right to work in the UK and the EU"},
+  {label: "Outside work", value: "Long-distance solo cycling, guitar, video games, Korean"},
+];
+---
+
+<section class="mt-16 border-t border-ink pt-8" aria-labelledby="key-facts-heading">
+  <h2 id="key-facts-heading" class="text-[clamp(1.75rem,1.4rem+1.2vw,2.4rem)] tracking-[-0.03em]">
+    Key facts
+  </h2>
+
+  <dl class="mb-0 grid gap-x-8 gap-y-6 md:grid-cols-2 lg:grid-cols-3">
+    {keyFacts.map(fact => (
+      <div>
+        <dt class="font-bold text-forest">{fact.label}</dt>
+
+        <dd class="mt-1 mb-0 max-w-[24rem]">{fact.value}</dd>
+      </div>
+    ))}
+
+    <div>
+      <dt class="font-bold text-forest">Contact</dt>
+
+      <dd class="mt-1 mb-0 max-w-[24rem]">
+        <ExternalLink href={siteConfig.socialLinks.linkedIn.href}>LinkedIn message</ExternalLink>, or the{" "}
+        <a href="/contact/">contact page</a>
+      </dd>
+    </div>
+
+    <div>
+      <dt class="font-bold text-forest">Profiles</dt>
+
+      <dd class="mt-1 mb-0 max-w-[24rem]">
+        <ul class="mb-0 list-none p-0">
+          {Object.values(siteConfig.socialLinks).map(link => (
+            <li>
+              <ExternalLink href={link.href}>{link.label}</ExternalLink>
+            </li>
+          ))}
+        </ul>
+      </dd>
+    </div>
+  </dl>
+</section>

@@ -212,6 +212,10 @@ webapp/src/pages/cycling/
 - Link LinkedIn, GitHub, Strava, and Instagram through visible links and `sameAs`.
 - Use only truthful structured data that matches visible content.
 - Generate a canonical sitemap, cycling image sitemap, and `robots.txt`.
+- `/llms.txt` is generated from `siteConfig` and the published case study and project collections
+  (`src/pages/llms.txt.ts`), so it cannot drift; never hand-write it.
+- The About page's FAQ is one typed list (`about/_components/faq/FaqEntries.ts`) rendered visibly and emitted as
+  `FAQPage` JSON-LD, so the two always match. Keep answers plain text, with no markup.
 - Never add `meta keywords` or a `SearchAction` without a real site search.
 - Optimise images through Astro, include dimensions, and use descriptive filenames and alt text.
 

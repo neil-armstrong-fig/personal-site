@@ -1,0 +1,19 @@
+---
+import {faqEntries} from "@src/pages/about/_components/faq/FaqEntries";
+---
+
+<section class="mt-16 border-t border-ink pt-8" aria-labelledby="faq-heading">
+  <h2 id="faq-heading" class="text-[clamp(1.75rem,1.4rem+1.2vw,2.4rem)] tracking-[-0.03em]">
+    Frequently asked questions
+  </h2>
+
+  <div class="grid gap-x-8 gap-y-6 md:grid-cols-2">
+    {faqEntries.map(entry => (
+      <div>
+        <h3 class="text-[clamp(1.2rem,1.1rem+0.5vw,1.4rem)]">{entry.question}</h3>
+
+        <p class="mt-1 mb-0 max-w-[32rem]">{entry.answer}</p>
+      </div>
+    ))}
+  </div>
+</section>

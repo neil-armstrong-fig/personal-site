@@ -23,7 +23,8 @@ file holds only what applies everywhere.
 - Do not reinterpret the site as an online CV, recruiting landing page, cycling-only site, or astronaut-themed novelty.
   Software is the primary content; cycling is a substantial secondary section.
 - The public positioning is “Software architect and developer in Belfast.” The voice is first person, concise,
-  technically credible, and written in UK English.
+  technically credible, and written in UK English. It must not read as machine-written: no em dashes or semicolons
+  in new copy, and no stock phrasing. `webapp/src/content/AGENTS.md` has the voice rules and the list of tells.
 
 ## Before changing code
 

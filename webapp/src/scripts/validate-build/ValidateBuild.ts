@@ -48,6 +48,7 @@ async function validateBuild(): Promise<void> {
   assertUniquePageProperties(pages);
   await assertSitemaps();
   await assertBuilt("/indexnow-key.txt", "/indexnow-key.txt");
+  await assertBuilt("/llms.txt", "/llms.txt");
 }
 
 function firstMatch(html: string, pattern: RegExp): string {
