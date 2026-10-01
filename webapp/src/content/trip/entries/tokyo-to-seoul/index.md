@@ -9,8 +9,10 @@ locations:
 countries:
   - "Japan"
   - "South Korea"
-coverImage: "./_assets/forested-valley-reservoir-in-japan.jpg"
-coverAlt: "A forested mountain valley with a reservoir under a partly cloudy sky"
+coverImage: "./_assets/loaded-bike-at-island-climb-viewpoint.jpg"
+coverAlt: "A loaded touring bike leaning against a wooden fence, overlooking misty layered hills"
+cardImage: "./_assets/shrine-on-stilts-in-lake-biwa.jpg"
+cardAlt: "A wooden shrine building standing on stilts out in Lake Biwa, known locally as the Ukimido"
 featured: true
 draft: false
 seoDescription: "A cycling trip from Tokyo to Seoul across Japan and South Korea by bike and ferry: day-by-day distance, climbing, and rest-day walks."

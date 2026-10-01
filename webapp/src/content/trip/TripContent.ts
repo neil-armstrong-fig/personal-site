@@ -14,6 +14,9 @@ interface TripContent {
   elevationMetres?: number;
   coverImage: ImageMetadata;
   coverAlt: string;
+  // The archive card's second picture; without it the card shows the story's first figure.
+  cardImage?: ImageMetadata;
+  cardAlt?: string;
   stravaUrls?: URL[];
   featured: boolean;
   draft: boolean;
@@ -43,6 +46,8 @@ export function createTripContentSchema({image}: SchemaContext): z.ZodType<TripC
       elevationMetres: z.number().positive().optional(),
       coverImage: image(),
       coverAlt: requiredText,
+      cardImage: image().optional(),
+      cardAlt: requiredText.optional(),
       stravaUrls: z.array(webUrl).min(1).optional(),
       featured: z.boolean(),
       draft: z.boolean(),
@@ -51,6 +56,10 @@ export function createTripContentSchema({image}: SchemaContext): z.ZodType<TripC
       seoTitle: requiredText.optional(),
       seoDescription: requiredText,
       firstPartTitle: requiredText.optional(),
+    })
+    .refine(trip => (trip.cardImage === undefined) === (trip.cardAlt === undefined), {
+      message: "A card image and its alt text must be given together.",
+      path: ["cardAlt"],
     })
     .refine(trip => trip.endDate === undefined || trip.endDate >= trip.startDate, {
       message: "End date must be on or after the start date.",

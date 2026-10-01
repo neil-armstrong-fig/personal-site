@@ -25,8 +25,10 @@ countries:
   - "France"
   - "Ireland"
   - "Northern Ireland"
-coverImage: "./_assets/winding-road-into-wide-mountain-valley.jpg"
-coverAlt: "A winding road descending into a wide green mountain valley under blue sky and clouds"
+coverImage: "./_assets/switchbacks-descending-into-a-green-mountain-valley.jpg"
+coverAlt: "A road zigzagging in tight hairpins down a steep green mountain valley under a blue sky with large white clouds"
+cardImage: "./_assets/mont-saint-michel-across-the-tidal-flats.jpg"
+cardAlt: "Mont-Saint-Michel rising above wide tidal flats, seen from a wooden walkway where a few visitors walk towards it"
 featured: false
 draft: false
 comingSoon: true

@@ -8,8 +8,8 @@ locations:
 countries:
   - "Netherlands"
   - "Belgium"
-coverImage: "./_assets/windmill-in-bright-sunlight.jpg"
-coverAlt: "A windmill silhouetted against a bright sun and clear blue sky"
+coverImage: "./_assets/straight-canal-under-a-blue-sky.jpg"
+coverAlt: "A wide, straight canal running between grassy banks and trees under a clear blue sky"
 featured: false
 draft: false
 comingSoon: true

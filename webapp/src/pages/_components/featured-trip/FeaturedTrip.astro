@@ -4,7 +4,6 @@ import type {CollectionEntry} from "astro:content";
 
 import Button from "@src/components/actions/button/Button.astro";
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
-import {getPublishedTripChapters} from "@src/content/trip/trip-chapter/GetPublishedTripChapters";
 import {getTripSnapshot} from "@src/content/trip/strava/snapshot/GetTripSnapshot";
 import {formatTripDistance} from "@src/pages/cycling/_components/measurements/TripDistance";
 
@@ -15,7 +14,6 @@ interface Props {
 const {trip} = Astro.props;
 const {title, coverImage, coverAlt} = trip.data;
 const snapshot = getTripSnapshot(trip.id);
-const parts = (await getPublishedTripChapters(trip.id)).length + 1;
 const days = snapshot?.totals.days;
 const distance = snapshot && formatTripDistance(snapshot.totals.distanceMetres / 1000);
 ---
@@ -33,7 +31,7 @@ const distance = snapshot && formatTripDistance(snapshot.totals.distanceMetres /
 
     {distance && days && (
       <p class="mb-8 font-serif text-[1.6rem] leading-tight">
-        {distance.metric} · {days} riding days · {parts} chapters
+        {distance.metric} · {days} riding days
       </p>
     )}
 

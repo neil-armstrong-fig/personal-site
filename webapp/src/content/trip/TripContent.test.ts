@@ -62,6 +62,21 @@ it("preserves an explicit first-part title", () => {
   expect(result.firstPartTitle).toBe("Arrival in Tokyo");
 });
 
+it("preserves an explicit card image with its alt text", () => {
+  const cardImage = {src: "/bridge.webp", width: 1600, height: 1200, format: "webp"};
+  const result = createTripContentSchema({image}).parse({...validTrip, cardImage, cardAlt: "A stone bridge"});
+
+  expect(result.cardImage).toEqual(cardImage);
+  expect(result.cardAlt).toBe("A stone bridge");
+});
+
+it("rejects a card image without alt text", () => {
+  const cardImage = {src: "/bridge.webp", width: 1600, height: 1200, format: "webp"};
+  const result = createTripContentSchema({image}).safeParse({...validTrip, cardImage});
+
+  expect(result.success).toBe(false);
+});
+
 it("rejects a trip whose end date is before its start date", () => {
   const result = createTripContentSchema({image}).safeParse({...validTrip, endDate: "2025-05-09"});
 

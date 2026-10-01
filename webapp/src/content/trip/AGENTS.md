@@ -78,7 +78,8 @@ folder is the worked example.
    `pnpm build` HEAD-checks every clip URL on the media origin (`validate-build/media/`), so a forgotten upload fails
    the build and the deploy instead of shipping a broken video.
 6. **Publish.** Copy the chosen article under the frontmatter of `webapp/src/content/trip/entries/<slug>/index.md`, keeping
-   the cover and its `coverAlt`. One figure per line, with non-blank alt text and a caption: images as
+   the cover and its `coverAlt`. The archive card's second picture is the story's first figure unless the frontmatter
+   sets `cardImage` and `cardAlt` together. One figure per line, with non-blank alt text and a caption: images as
    `![alt](./_assets/x.jpg "Caption")`, clips as `![alt](/trips/<slug>/x.mp4 "Caption")` (root-absolute; a relative
    `.mp4` is not processed; the build prefixes the media origin, see `TripVideoOrigin.ts`). Videos use `preload="none"` and never autoplay; the `.jpg` poster is emitted as `data-poster` and
    applied by script near the viewport, because browsers fetch `poster` eagerly and a clip-heavy chapter then fails LCP. Every photo or video the developer

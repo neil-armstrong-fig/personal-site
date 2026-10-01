@@ -16,8 +16,10 @@ countries:
   - "Scotland"
   - "England"
   - "Netherlands"
-coverImage: "./_assets/lunch-stop-in-the-netherlands.jpg"
-coverAlt: "A touring bike parked beside an outdoor cafe terrace in the Netherlands"
+coverImage: "./_assets/stone-arched-bridge-over-river.jpg"
+coverAlt: "A stone arched bridge crossing a calm river between leafy banks"
+cardImage: "./_assets/hofvijver-in-the-hague.jpg"
+cardAlt: "Historic buildings beside the Hofvijver in The Hague under a blue sky"
 featured: false
 draft: false
 seoDescription: "My second cycling trip from Belfast to Rotterdam: crossing Scotland to Newcastle, riding through the Netherlands, and returning via Hull and Liverpool."

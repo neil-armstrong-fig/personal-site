@@ -28,9 +28,10 @@ const storyImages = import.meta.glob<ImageMetadata>("/src/content/trip/entries/*
 });
 
 const {trip, prioritiseImages = false} = Astro.props;
-const {coverImage, coverAlt, title} = trip.data;
+const {coverImage, coverAlt, cardImage, cardAlt, title} = trip.data;
 const storyFigure = getTripStoryFigures(trip)[0];
-const storyImage = storyFigure && resolveStoryImage(trip.id, storyFigure.path);
+const storyImage = cardImage ?? (storyFigure && resolveStoryImage(trip.id, storyFigure.path));
+const storyImageAlt = cardAlt ?? storyFigure?.alt;
 const snapshot = getTripSnapshot(trip.id);
 const routes = getTripRoutes(trip.id);
 const ferries = getTripFerries(trip.id);
@@ -80,12 +81,12 @@ function resolveStoryImage(tripId: string, path: string): OptionalImage {
       />
     </div>
 
-    {storyImage !== undefined && storyFigure !== undefined && (
+    {storyImage !== undefined && storyImageAlt !== undefined && (
       <div class="relative min-h-0 overflow-hidden bg-paper-muted">
         <Image
           class="absolute inset-0 h-full w-full object-cover"
           src={storyImage}
-          alt={storyFigure.alt}
+          alt={storyImageAlt}
           widths={[240, 280, 400, 560]}
           sizes="(min-width: 64rem) 15rem, (min-width: 48rem) 20vw, 38vw"
           loading="lazy"
