@@ -44,7 +44,7 @@ const placements: Placement[] = Array.from({length: iconCount}, (_, index): Plac
 >
   <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)] bg-[linear-gradient(rgb(31_89_96/7%)_1px,transparent_1px),linear-gradient(90deg,rgb(31_89_96/7%)_1px,transparent_1px)] bg-[length:3rem_3rem]"></div>
 
-  <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]">
+  <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" data-backdrop-icons>
     {placements.map(({Icon, path, style, phone, small, reverse}) => (
       <Icon
         class:list={[
@@ -59,3 +59,23 @@ const placements: Placement[] = Array.from({length: iconCount}, (_, index): Plac
     ))}
   </div>
 </div>
+
+<script>
+  import {randomPlacement} from "@src/layouts/components/site-backdrop/randomisation/BackdropRandomisation";
+
+  // The build-time placements above are identical on every load, so give each icon a fresh start in the browser.
+  // Without JavaScript the icons simply keep those placements.
+  const roamClasses = ["animate-roam-a", "animate-roam-b", "animate-roam-c", "animate-roam-d"];
+  const icons = document.querySelectorAll<SVGElement>("[data-backdrop-icons] > *");
+
+  for (const icon of icons) {
+    const placement = randomPlacement(Math.random);
+    icon.classList.remove(...roamClasses, "[animation-direction:reverse]");
+    icon.classList.add(placement.pathClass);
+    icon.style.left = `${placement.left.toFixed(1)}%`;
+    icon.style.top = `${placement.top.toFixed(1)}%`;
+    icon.style.animationDelay = `-${placement.delay.toFixed(1)}s`;
+    icon.style.animationDuration = `${placement.duration.toFixed(1)}s`;
+    icon.style.animationDirection = placement.direction;
+  }
+</script>
