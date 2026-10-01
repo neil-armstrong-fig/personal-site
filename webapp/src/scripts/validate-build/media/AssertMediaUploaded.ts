@@ -1,3 +1,4 @@
+import {headWithRetry} from "@src/scripts/validate-build/media/head-request/HeadWithRetry";
 import {listMediaVideoUrls} from "@src/scripts/validate-build/media/ListMediaVideoUrls";
 
 const checked = new Set<string>();
@@ -11,7 +12,7 @@ export async function assertMediaUploaded(html: string, route: string): Promise<
     }
 
     checked.add(url);
-    const response = await fetch(url, {method: "HEAD"});
+    const response = await headWithRetry(url, fetch, {attempts: 3, delayMs: 2_000});
 
     if (!response.ok) {
       throw new Error(
