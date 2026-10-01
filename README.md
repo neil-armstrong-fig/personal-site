@@ -1,4 +1,8 @@
-# neilarmstrong.dev
+<p align="center">
+  <img src="webapp/public/favicon.svg" alt="The site icon: a bicycle drawn from the letter N" width="112" />
+</p>
+
+<h1 align="center">neilarmstrong.dev</h1>
 
 Source for [neilarmstrong.dev](https://neilarmstrong.dev), the personal website of Neil Armstrong, a software
 architect and developer in Belfast. It contains software case studies, open-source projects, and long-distance
