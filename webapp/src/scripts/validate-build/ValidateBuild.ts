@@ -4,6 +4,7 @@ import {assertBuilt} from "@src/scripts/validate-build/build-output/AssertBuilt"
 import {buildDirectory} from "@src/scripts/validate-build/build-output/BuildDirectory";
 import {assertRequestedCopy} from "@src/scripts/validate-build/copy/AssertRequestedCopy";
 import {assertCyclingOutput} from "@src/scripts/validate-build/cycling/AssertCyclingOutput";
+import {assertLinkSpacing} from "@src/scripts/validate-build/html/AssertLinkSpacing";
 import {findHtmlFiles} from "@src/scripts/validate-build/html-files/FindHtmlFiles";
 import {routeForHtmlPath} from "@src/scripts/validate-build/html-files/RouteForHtmlPath";
 import {assertUniquePageProperties} from "@src/scripts/validate-build/page-summary/AssertUniquePageProperties";
@@ -42,6 +43,7 @@ async function validateBuild(): Promise<void> {
     await assertRouteData(html, route);
     assertRequestedCopy(html, route);
     assertCyclingOutput(html, route);
+    assertLinkSpacing(html, route);
     await assertMediaUploaded(html, route);
   }
 

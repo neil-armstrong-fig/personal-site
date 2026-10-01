@@ -1,4 +1,5 @@
 ---
+import InlineLink from "@src/components/actions/inline-link/InlineLink.astro";
 import Container from "@src/components/layout/container/Container.astro";
 import SocialLinks from "@src/layouts/components/site-footer/components/social-links/SocialLinks.astro";
 import {siteConfig} from "@src/site/SiteConfig";
@@ -17,10 +18,10 @@ const currentYear = new Date().getFullYear();
     <SocialLinks />
 
     <p class="mb-0 max-w-[55rem] text-[0.82rem] md:col-span-full">
-      © {currentYear} {siteConfig.identity.name}. Code MIT licensed; writing and photography reserved.{" "}
-      <a href="/privacy/" class="underline underline-offset-4">
+      © {currentYear} {siteConfig.identity.name}. Code MIT licensed; writing and photography reserved.
+      <InlineLink href="/privacy/" class="underline underline-offset-4">
         Privacy
-      </a>
+      </InlineLink>
     </p>
   </Container>
 </footer>

@@ -12,7 +12,7 @@ technologies:
   - Point of sale
   - Automated testing
 draft: false
-seoDescription: "How I built the item-selection prototype that won an Android point-of-sale rewrite, then helped ship it on a locked-down payment device."
+seoDescription: "How I built the item-selection prototype that helped win an Android point-of-sale rewrite, then helped ship it on a locked-down payment device."
 ---
 
 ## A week to win the work, just over a year to ship it

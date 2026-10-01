@@ -79,6 +79,10 @@ adapted to Astro. Locality over layers: a file's depth tells you its blast radiu
   Something shared by several pages rises to their nearest common parent folder (`webapp/src/pages/software/_components/`
   for two software routes); it reaches `webapp/src/components` only when it is generic enough to belong to no page at
   all. Being site-wide in spirit (a header, a portrait, a route flourish) is not enough. `webapp/src/layouts` holds layouts shared by several routes.
+- Links inside a sentence use `InlineLink`, never a bare `<a>` or `ExternalLink` with a hand-written `{" "}`. Astro drops the
+  newline between a word and an inline tag, so a link Prettier wraps onto its own line loses the space around it
+  (`an<a>`). `InlineLink` writes the space itself (`spacing="around"` when a word follows, `"none"` after `(` or at the
+  start of a line) and `validate:build` fails on any glued link. A double space is harmless, a missing one is not.
 - A single-caller component still lives beside its caller, however site-wide it looks: the header, footer and
   skip link sit under `webapp/src/layouts/components/` because only `BaseLayout` renders them, and the home-only
   `Portrait`, `GridBackdrop` and `RouteLine` sit in `webapp/src/pages/_components/`. Shared code rises only when a

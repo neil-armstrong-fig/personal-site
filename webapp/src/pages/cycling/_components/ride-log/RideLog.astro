@@ -1,5 +1,5 @@
 ---
-import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import InlineLink from "@src/components/actions/inline-link/InlineLink.astro";
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
 import type {TripFerryRoute} from "@src/content/trip/ferries/types/TripFerryRoute";
 import type {RideMedia} from "@src/content/trip/strava/ride-media/types/RideMedia";
@@ -70,8 +70,8 @@ function groupLabel(leg?: number): string {
     </h2>
 
     <p>
-      Interested in the details? I’ve logged every activity on{" "}
-      <ExternalLink href="https://www.strava.com">Strava</ExternalLink>.
+      Interested in the details? I’ve logged every activity on
+      <InlineLink href="https://www.strava.com">Strava</InlineLink>.
     </p>
   </header>
 

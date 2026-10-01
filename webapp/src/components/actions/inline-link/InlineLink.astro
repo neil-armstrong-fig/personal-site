@@ -1,0 +1,30 @@
+---
+import type {HTMLAttributes} from "astro/types";
+
+import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import {isExternalHref} from "./IsExternalHref";
+import type {LinkSpacing} from "./LinkSpacing";
+
+interface Props extends HTMLAttributes<"a"> {
+  href: string;
+  spacing?: LinkSpacing;
+}
+
+// Astro drops the newline between a word and an inline tag, so the space is written explicitly. A stray double space
+// collapses, a missing one does not.
+const {spacing = "before", href, ...attributes} = Astro.props;
+const external = isExternalHref(href);
+const spaceBefore = spacing !== "none";
+const spaceAfter = spacing === "around";
+// Prettier wraps long link text onto its own lines, and the whitespace that leaves inside the anchor gets underlined.
+const label = (await Astro.slots.render("default")).trim();
+---
+
+{spaceBefore && " "}
+{external && (
+  <ExternalLink {...attributes} href={href}>
+    <Fragment set:html={label} />
+  </ExternalLink>
+)}
+{!external && <a {...attributes} href={href} set:html={label} />}
+{spaceAfter && " "}

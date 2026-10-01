@@ -1,8 +1,8 @@
 ---
+import InlineLink from "@src/components/actions/inline-link/InlineLink.astro";
 import {Image} from "astro:assets";
 import type {ImageMetadata} from "astro";
 
-import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
 import type {TripFerryRoute} from "@src/content/trip/ferries/types/TripFerryRoute";
 import type {TripTransitGap} from "@src/content/trip/transit-gaps/types/TripTransitGap";
 import type {TripTransitRoute} from "@src/content/trip/transit-routes/types/TripTransitRoute";
@@ -183,10 +183,10 @@ function buildMapLabel(): string {
       data-trip-route-attribution
       hidden
     >
-      ©{" "}
-      <ExternalLink class="text-ink" href="https://www.openstreetmap.org/copyright">
+      ©
+      <InlineLink class="text-ink" href="https://www.openstreetmap.org/copyright">
         OpenStreetMap
-      </ExternalLink>
+      </InlineLink>
     </p>
   )}
 

@@ -20,7 +20,7 @@ export const faqEntries: readonly FaqEntry[] = [
   {
     question: "How do you use AI in your work?",
     answer:
-      "I use AI-native practices to not only speed up but massively improve delivery, while the person is still accountable for every decision and result. Acceptance tests are how I check that nothing has regressed.",
+      "I use AI-native practices to speed up and improve delivery, while the person is still accountable for every decision and result. Acceptance tests are how I check that nothing has regressed.",
   },
   {
     question: "Where are you based, and would you relocate?",
@@ -36,8 +36,8 @@ export const faqEntries: readonly FaqEntry[] = [
     answer: "Message me on LinkedIn. The contact page has a form too, and I’m happy to send my CV on request.",
   },
   {
-    question: "That's some serious cycling!",
+    question: "That’s some serious cycling!",
     answer:
-      "Yep. It’s my counterweight to software. Nothing gets you a better resets from a computer screen that big cycle trips. My solo trips are written up in the cycling section, with maps and photos for those interested.",
+      "Yep. It’s my counterweight to software. Nothing resets you from a computer screen like a big cycle trip. My solo trips are written up in the cycling section, with maps and photos for those interested.",
   },
 ];

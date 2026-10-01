@@ -1,4 +1,6 @@
 ---
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+
 interface Proof {
   title: string;
   detail: string;
@@ -27,9 +29,11 @@ const proofs: readonly Proof[] = [
 ];
 ---
 
+<Eyebrow>What I bring</Eyebrow>
+
 <dl class="grid gap-6 md:grid-cols-3 md:gap-8">
   {proofs.map(proof => (
-    <div class="relative">
+    <div class="relative border-l-2 border-moss pl-4 md:border-l-0 md:pl-0">
       <dt class="font-serif text-[clamp(2rem,1.6rem+1.6vw,3rem)] leading-none tracking-[-0.03em] text-forest">
         {proof.title}
       </dt>

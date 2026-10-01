@@ -1,5 +1,5 @@
 ---
-import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
+import InlineLink from "@src/components/actions/inline-link/InlineLink.astro";
 import Container from "@src/components/layout/container/Container.astro";
 import Section from "@src/components/layout/section/Section.astro";
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
@@ -37,14 +37,14 @@ const description =
 
         <p>
           I’m a software architect and developer in Belfast. I like getting new ideas into production quickly, and I’m
-          just as happy in an old system everyone is afraid to change. I have a First Class Honours degree in Computer
+          also happy in an old system everyone is afraid to change. I have a First Class Honours degree in Computer
           Science from Ulster University and more than a decade of experience solving complex delivery problems.
         </p>
 
         <p>
           My work spans new TypeScript and React products, resilient AWS and event-driven systems, and the modernisation
           of established software. I enjoy enabling cross-functional teams to deliver continuously, with architecture
-          and pipelines that make safe changes routine — and dare I say, fun.
+          and pipelines that make safe changes routine, and dare I say, fun.
         </p>
 
         <p>
@@ -53,21 +53,20 @@ const description =
         </p>
 
         <p>
-          I care about clear boundaries in the products I build: quality that is enforced rather than hoped for, and
-          products people actually find useful. That includes extremely low regressions via acceptance tests written in
-          readable, maintainable domain-specific languages. I use AI-native engineering practices where they improve
-          delivery, with a person still accountable for every decision and result, not just speed at all costs.
+          I care about clear boundaries in the products I build, and about products people find useful. Quality is
+          enforced by acceptance tests written in readable, maintainable domain-specific languages, which keeps
+          regressions extremely low. I use AI-native engineering practices where they improve delivery, and a person
+          stays accountable for every decision and result.
         </p>
 
         <p>
-          My open-source projects make that approach visible: the architecture, tests, delivery tooling, and trade-offs,
-          not just the finished interface.
+          My open-source projects make that approach visible: the architecture, tests, delivery tooling, and trade-offs.
         </p>
 
         <p>
-          I’m open to conversations about interesting work.{" "}
-          <ExternalLink href={siteConfig.socialLinks.linkedIn.href}>Message me on LinkedIn</ExternalLink>, see my{" "}
-          <a href="/contact/">contact details</a>, or ask for my CV.
+          I’m open to conversations about interesting work.
+          <InlineLink href={siteConfig.socialLinks.linkedIn.href}>Message me on LinkedIn</InlineLink>, see my
+          <InlineLink href="/contact/">contact details</InlineLink>, or ask for my CV.
         </p>
       </Prose>
 
