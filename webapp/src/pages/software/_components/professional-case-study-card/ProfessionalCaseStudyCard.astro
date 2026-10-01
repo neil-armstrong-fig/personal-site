@@ -7,9 +7,10 @@ import type {CaseStudyHeadingLevel} from "@src/pages/software/_components/types/
 interface Props {
   caseStudy: CollectionEntry<"professionalCaseStudies">;
   level?: CaseStudyHeadingLevel;
+  compact?: boolean;
 }
 
-const {caseStudy, level = 2} = Astro.props;
+const {caseStudy, level = 2, compact = false} = Astro.props;
 const Heading = `h${level}` as const;
 const {title, summary, careerPeriod, role, team, technologies} = caseStudy.data;
 const leadership = [role, team].filter((part): part is string => part !== undefined);
@@ -24,7 +25,7 @@ const leadership = [role, team].filter((part): part is string => part !== undefi
     </a>
   </Heading>
 
-  <p class="max-w-[34rem]">{summary}</p>
+  <p class:list={["max-w-[34rem]", compact && "line-clamp-3"]}>{summary}</p>
 
   {leadership.length > 0 && (
     <p class="mb-4 max-w-[34rem] text-[0.95rem] font-bold text-forest">{leadership.join(" · ")}</p>
@@ -40,5 +41,5 @@ const leadership = [role, team].filter((part): part is string => part !== undefi
     </span>
   </p>
 
-  <Eyebrow>{technologies.join(" · ")}</Eyebrow>
+  {!compact && <Eyebrow>{technologies.join(" · ")}</Eyebrow>}
 </article>

@@ -8,24 +8,26 @@ interface Proof {
 // Each claim is taken from the linked case study, which holds the evidence and says what it measures.
 const proofs: readonly Proof[] = [
   {
-    title: "New product delivery",
-    detail: "A full digital motor-insurance journey delivered on AWS serverless in twelve months.",
-    href: "/software/serverless-insurance/",
-  },
-  {
-    title: "Ideas made tangible",
-    detail: "A one-week Android prototype that won the work and grew into a production point-of-sale app.",
+    title: "Build it new",
+    detail: "A one-week Android prototype won the work and became a production app.",
     href: "/software/point-of-sale-android-rewrite/",
   },
   {
-    title: "Safe transformation",
-    detail: "A daily loan application and more than 50 Lambdas replaced with acceptance tests as proof.",
+    title: "Change it safely",
+    detail:
+      "More than 50 Lambdas rebuilt in four weeks and a business critical loan processing webapp fully rebuilt in four months, with no regressions.",
     href: "/software/build-it-again-better/",
+  },
+  {
+    title: "Leadership and ownership",
+    detail:
+      "Took over two struggling teams on a full rewrite / modernisation engagement, and shipped both on tight deadlines.",
+    href: "/software/platform-modernisation-back-on-track/",
   },
 ];
 ---
 
-<dl class="grid gap-6 border-t border-ink pt-6 md:grid-cols-3 md:gap-8">
+<dl class="grid gap-6 md:grid-cols-3 md:gap-8">
   {proofs.map(proof => (
     <div class="relative">
       <dt class="font-serif text-[clamp(2rem,1.6rem+1.6vw,3rem)] leading-none tracking-[-0.03em] text-forest">

@@ -29,15 +29,13 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
         <Eyebrow>Belfast · Northern Ireland</Eyebrow>
 
         <h1 class="mb-6 max-w-[38rem] text-[clamp(1.6rem,1.3rem+1.3vw,2.3rem)] leading-[1.2] tracking-[-0.025em]">
-          I’m Neil Armstrong, a software architect in Belfast. I build new products and transform critical systems, with
-          architecture and tests that let teams keep shipping.
+          I’m Neil Armstrong, a software architect in Belfast. I lead teams that build new products and modernise
+          critical systems.
         </h1>
 
         <p class="mb-8 max-w-[36rem] text-[1.1rem]">
-          I’m a genuinely full stack developer. For more than a decade I’ve taken products from early prototypes to
-          production and led complex modernisations across React front ends, AWS serverless, Java/Kotlin back ends,
-          native Android, and 3D in the browser. I work closely with product and design, and I use AI tools with a
-          person accountable for every result.
+          Full stack for over a decade, from React and 3D in the browser to AWS serverless, Java, Kotlin, and native
+          Android. I’ve led teams of up to ten as tech lead and engineering lead.
         </p>
 
         <div class="flex flex-wrap gap-3">
@@ -59,7 +57,7 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
     <RouteLine />
   </Section>
 
-  <Section class="border-y border-moss" id="proof">
+  <Section class="border-y border-moss" compact id="proof">
     <Container>
       <ProofStrip />
     </Container>
@@ -71,7 +69,7 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
         level={2}
         eyebrow="Professional work"
         heading="Products and systems I’ve delivered"
-        intro="Selected anonymised case studies spanning new products, unusual interfaces, and careful transformation of critical systems."
+        intro="Anonymised case studies, from bespoke new products from scratch to critical system migrations."
       />
 
       <FeaturedCaseStudies caseStudies={caseStudies} />
@@ -90,7 +88,7 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
         level={2}
         eyebrow="Open source"
         heading="Projects built in the open"
-        intro="Useful software in its own right, and a practical view of how I approach architecture and AI-native delivery."
+        intro="Software I build in the open, and how I approach architecture."
       />
 
       <div class="grid gap-4 md:grid-cols-2">
@@ -118,19 +116,12 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
 
       <div class="grid justify-items-start gap-6">
         <p class="mb-0 max-w-[34rem]">
-          I’m open to conversations about product engineering, software architecture, leading delivery teams, and
-          careful modernisation.
+          Product engineering, software architecture, leading delivery teams, and modernisation.
         </p>
 
-        <Button variant="light" href={siteConfig.socialLinks.linkedIn.href}>
-          Message me on LinkedIn
+        <Button variant="light" href="/contact/">
+          Get in touch
         </Button>
-
-        <p class="mb-0">
-          <a class="font-bold" href="/contact/">
-            Availability and contact details →
-          </a>
-        </p>
       </div>
     </Container>
   </Section>
