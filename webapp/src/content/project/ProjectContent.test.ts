@@ -24,6 +24,7 @@ const image: SchemaContext["image"] = () =>
 
 const validProject = {
   title: "Janggi",
+  sortOrder: 1,
   summary: "A carefully engineered Korean chess application.",
   datePublished: "2024-01-15",
   technologies: ["TypeScript", "React"],
@@ -52,6 +53,18 @@ it("rejects a project without technologies or meaningful image alt text", () => 
 
 it("rejects a blank live-site link label", () => {
   const result = createProjectContentSchema({image}).safeParse({...validProject, liveLabel: " "});
+
+  expect(result.success).toBe(false);
+});
+
+it("rejects a project without a positive whole-number sort order", () => {
+  const result = createProjectContentSchema({image}).safeParse({...validProject, sortOrder: 0});
+
+  expect(result.success).toBe(false);
+});
+
+it("rejects a blank card title", () => {
+  const result = createProjectContentSchema({image}).safeParse({...validProject, cardTitle: " "});
 
   expect(result.success).toBe(false);
 });

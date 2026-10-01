@@ -1,5 +1,6 @@
 ---
 title: "Janggi"
+sortOrder: 1
 summary: "An offline-capable Korean chess app, built as much to show how I engineer software as to be played."
 datePublished: 2026-09-07
 dateModified: 2026-09-29

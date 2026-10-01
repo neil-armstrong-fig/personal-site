@@ -1,5 +1,6 @@
 ---
 title: "TQCC"
+sortOrder: 2
 summary: "A fast, accessible site for a Belfast cycling club, with content that non-technical editors can maintain."
 datePublished: 2026-02-15
 dateModified: 2026-09-29

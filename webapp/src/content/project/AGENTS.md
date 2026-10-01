@@ -12,6 +12,9 @@ project is useful in its own right, and the write-up shows the decisions behind 
 - Do not copy README files wholesale; rewrite them for a personal case-study audience.
 - Cross-link a related professional case study where it shows the same technique, and the reverse.
 - Verify technical claims against the repository.
+- Projects are listed by an explicit, required `sortOrder` (1 first), not by date, so a new entry can sit last. An optional
+  `heroBordered` adds a light border to the case-study cover for a pale screenshot that blends into the page. An optional
+  `cardTitle` replaces the title on list cards only (the card adds the full title for screen readers).
 - Projects require at least one technology. Case studies and projects have no chapter-splitting mechanism today, so a
   draft long enough to need one is a scope question for the developer, not something to build unilaterally.
 

@@ -1,0 +1,67 @@
+---
+// A joke for the page about this site: its own "Visit the site" button asks whether you're sure before opening.
+// Without JavaScript the button simply opens the site.
+---
+
+<div
+  class="pointer-events-none fixed top-1/2 left-1/2 z-50 w-[min(90vw,24rem)] -translate-x-1/2 -translate-y-1/2 border-2 border-ink bg-paper p-6 text-center text-lg font-semibold text-ink opacity-0 shadow-[0.4rem_0.4rem_0_var(--color-moss)] transition-opacity duration-160 motion-reduce:transition-none"
+  role="status"
+  data-self-link-toast
+></div>
+
+<script>
+  import {
+    CONFIRM_WINDOW_MS,
+    nextSelfLinkAction,
+  } from "@src/pages/software/_components/open-source-case-study/components/self-link-toast/self-link-action/SelfLinkAction";
+  import type {SelfLinkAction} from "@src/pages/software/_components/open-source-case-study/components/self-link-toast/self-link-action/SelfLinkAction";
+
+  const toast = document.querySelector<HTMLElement>("[data-self-link-toast]");
+  const links = document.querySelectorAll<HTMLAnchorElement>("a[data-self-link]");
+  let previousAction: SelfLinkAction | undefined;
+  let previousClickAt = 0;
+  let hideTimer: number | undefined;
+
+  links.forEach(link => {
+    link.addEventListener("click", event => {
+      if (toast === null) {
+        return;
+      }
+
+      event.preventDefault();
+      const now = Date.now();
+      const action = nextSelfLinkAction(previousAction, now - previousClickAt);
+      previousAction = action;
+      previousClickAt = now;
+
+      if (action === "open") {
+        hide(toast);
+        window.open(link.href, "_blank", "noopener,noreferrer");
+        return;
+      }
+
+      show(toast, action);
+    });
+  });
+
+  function show(element: HTMLElement, action: SelfLinkAction): void {
+    window.clearTimeout(hideTimer);
+    element.textContent = messageFor(action);
+    element.classList.remove("opacity-0");
+    hideTimer = window.setTimeout(() => hide(element), CONFIRM_WINDOW_MS);
+  }
+
+  function hide(element: HTMLElement): void {
+    window.clearTimeout(hideTimer);
+    element.classList.add("opacity-0");
+    element.textContent = "";
+  }
+
+  function messageFor(action: SelfLinkAction): string {
+    if (action === "ask") {
+      return "Are you sure...? You are already on the site.";
+    }
+
+    return "Really sure huh?";
+  }
+</script>

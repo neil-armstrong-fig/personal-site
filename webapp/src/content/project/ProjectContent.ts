@@ -4,7 +4,9 @@ import {z} from "astro/zod";
 
 interface ProjectContent {
   title: string;
+  cardTitle?: string;
   summary: string;
+  sortOrder: number;
   datePublished: Date;
   dateModified?: Date;
   technologies: string[];
@@ -13,6 +15,7 @@ interface ProjectContent {
   liveLabel?: string;
   heroImage: ImageMetadata;
   heroAlt: string;
+  heroBordered?: boolean;
   featured: boolean;
   draft: boolean;
   seoTitle?: string;
@@ -25,7 +28,9 @@ export function createProjectContentSchema({image}: SchemaContext): z.ZodType<Pr
 
   return z.object({
     title: requiredText,
+    cardTitle: requiredText.optional(),
     summary: requiredText,
+    sortOrder: z.number().int().positive(),
     datePublished: z.coerce.date(),
     dateModified: z.coerce.date().optional(),
     technologies: z.array(requiredText).min(1),
@@ -34,6 +39,7 @@ export function createProjectContentSchema({image}: SchemaContext): z.ZodType<Pr
     liveLabel: requiredText.optional(),
     heroImage: image(),
     heroAlt: requiredText,
+    heroBordered: z.boolean().optional(),
     featured: z.boolean(),
     draft: z.boolean(),
     seoTitle: requiredText.optional(),

@@ -12,7 +12,7 @@ interface Props {
 
 const {project, level = 2} = Astro.props;
 const Heading = `h${level}` as const;
-const {title, summary, technologies, heroImage, heroAlt} = project.data;
+const {title, cardTitle, summary, technologies, heroImage, heroAlt} = project.data;
 ---
 
 <article class="group relative flex min-h-84 flex-col border border-ink bg-paper p-[clamp(1.5rem,4vw,3rem)] transition duration-160 hover:-translate-y-1 hover:shadow-[0.4rem_0.4rem_0_var(--color-moss)] motion-reduce:transition-none motion-reduce:hover:transform-none">
@@ -22,7 +22,8 @@ const {title, summary, technologies, heroImage, heroAlt} = project.data;
 
   <Heading class="text-[clamp(1.75rem,1.4rem+1vw,2.4rem)]">
     <a class="after:absolute after:inset-0" href={`/software/${project.id}/`}>
-      {title}
+      {cardTitle ?? title}
+      {cardTitle !== undefined && <span class="sr-only"> {title}</span>}
     </a>
   </Heading>
 

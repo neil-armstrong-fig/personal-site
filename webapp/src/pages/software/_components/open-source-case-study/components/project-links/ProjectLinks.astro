@@ -8,14 +8,15 @@ interface Props {
   repositoryUrl: URL;
   liveUrl?: URL;
   liveLabel?: string;
+  selfLink?: boolean;
 }
 
-const {title, repositoryUrl, liveUrl, liveLabel = "Visit live site"} = Astro.props;
+const {title, repositoryUrl, liveUrl, liveLabel = "Visit live site", selfLink = false} = Astro.props;
 ---
 
 <div class="flex flex-wrap items-center gap-3">
   {liveUrl !== undefined && (
-    <Button variant="primary" href={liveUrl.href}>
+    <Button variant="primary" href={liveUrl.href} data-self-link={selfLink || undefined}>
       {liveLabel}
       <span class="ml-2" aria-hidden="true">
         ↗
