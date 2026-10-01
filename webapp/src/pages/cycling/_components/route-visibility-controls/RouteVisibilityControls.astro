@@ -10,7 +10,7 @@ const {hasFerries, hasOutings, hasTransit} = Astro.props;
 
 {hasOutings && (
   <button
-    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-ink/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
+    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-line/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
     type="button"
     aria-label="Hide walks and hikes"
     aria-pressed="true"
@@ -36,7 +36,7 @@ const {hasFerries, hasOutings, hasTransit} = Astro.props;
 
 {hasTransit && (
   <button
-    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-ink/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
+    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-line/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
     type="button"
     aria-label="Hide transit"
     aria-pressed="true"
@@ -62,7 +62,7 @@ const {hasFerries, hasOutings, hasTransit} = Astro.props;
 
 {hasFerries && (
   <button
-    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-ink/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
+    class="inline-flex min-h-8 items-center gap-1 rounded-sm border border-line/30 bg-paper px-1.5 font-semibold text-ink hover:bg-paper-muted"
     type="button"
     aria-label="Hide ferries"
     aria-pressed="true"

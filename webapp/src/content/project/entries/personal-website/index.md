@@ -10,12 +10,13 @@ repositoryUrl: "https://github.com/neil-armstrong-fig/personal-site"
 liveUrl: "https://neilarmstrong.dev/"
 liveLabel: "Visit the site"
 heroImage: "./_assets/personal-website-homepage.png"
+heroImageDark: "./_assets/personal-website-homepage-dark.png"
 heroBordered: true
 heroAlt: "The neilarmstrong.dev homepage: a navigation bar with Home, Software, Cycling, About, and Contact, a headline introducing Neil Armstrong as a software architect in Belfast, two buttons, and a portrait of a bearded man in glasses."
 featured: false
 draft: false
 seoTitle: "Personal website case study: Astro, Cloudflare and SEO | Neil Armstrong"
-seoDescription: "How Neil Armstrong built his personal website: a static Astro site with Strava-driven ride maps, a Cloudflare Worker contact form, R2 video storage, and a focus on SEO and AI indexing."
+seoDescription: "How Neil Armstrong built his personal website: a static Astro site with Strava-driven ride maps, a Cloudflare Worker contact form, R2 video storage, a true-black dark mode, and a focus on SEO and AI indexing."
 ---
 
 ## Two reasons to build it
@@ -25,6 +26,10 @@ This is my own website, and it has two jobs. The first is to be a reference for 
 ## Static, but not only static
 
 The site is static Astro, built once and served from GitHub Pages. It still does more than a pile of pages. Each trip pulls its figures from Strava at build time and shows them in metric and imperial. The ride maps are Leaflet and OpenStreetMap, and they only load when you open a ride log and scroll to the map. Without JavaScript you still get every ride name, distance and photograph.
+
+## A dark mode I can read
+
+I rarely use dark mode, because it usually tires my eyes. So I built one I'd actually use. The page background is true black, `#000000`, so an OLED screen can switch those pixels off and save energy. The colours come from the same palette as the light theme, and I settled on ones that work for me.
 
 ## The principles from my other projects
 

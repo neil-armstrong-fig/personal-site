@@ -17,6 +17,7 @@ coverage/
 .DS_Store
 # Stray Windows-style directories created by Chrome under WSL.
 /C:*
+/webapp/C:*
 # Cloudflare Worker local state and secrets (the contact Worker reads its secrets from .dev.vars under `wrangler dev`).
 /workers/*/.wrangler/
 /workers/*/.dev.vars

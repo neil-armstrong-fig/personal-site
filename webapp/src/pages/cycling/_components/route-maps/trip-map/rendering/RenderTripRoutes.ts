@@ -1,6 +1,6 @@
 import type {PolylinePoint} from "@src/content/trip/strava/routes/types/PolylinePoint";
 import {addStyledRouteLine} from "@src/pages/cycling/_components/route-maps/leaflet/AddStyledRouteLine";
-import {readRouteMapColours} from "@src/pages/cycling/_components/route-maps/leaflet/ReadRouteMapColours";
+import {routeMapColours} from "@src/pages/cycling/_components/route-maps/leaflet/RouteMapPalette";
 import type {LeafletModule} from "@src/pages/cycling/_components/route-maps/leaflet/types/LeafletModule";
 import type {RouteMapColours} from "@src/pages/cycling/_components/route-maps/leaflet/types/RouteMapColours";
 import type {StyledRouteLayer} from "@src/pages/cycling/_components/route-maps/leaflet/types/StyledRouteLayer";
@@ -31,7 +31,7 @@ interface TripRouteGroupOptions {
 
 export function renderTripRoutes(options: RenderTripRoutesOptions): RenderedTripRoute[] {
   const {detail, leaflet, map, routes} = options;
-  const colours = readRouteMapColours();
+  const colours = routeMapColours;
   const renderedRoutes: RenderedTripRoute[] = [];
   let normalWeight = 3;
   let casingWeight = 5;

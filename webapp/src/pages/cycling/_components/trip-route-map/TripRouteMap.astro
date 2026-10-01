@@ -82,7 +82,7 @@ function buildMapLabel(): string {
 
 <div
   class:list={[
-    "group/map relative isolate overflow-hidden bg-paper-muted",
+    "group/map relative isolate overflow-hidden bg-paper-muted [&_.leaflet-tile-pane]:[filter:var(--map-tile-filter)]",
     variant === "archive" && "h-full min-h-0",
     variant === "detail" &&
       "h-[clamp(22rem,56vw,44rem)] border border-moss/50 fullscreen:h-screen fullscreen:w-screen fullscreen:border-0 fullscreen:bg-paper",
@@ -118,7 +118,7 @@ function buildMapLabel(): string {
   <p
     class:list={[
       "absolute inset-x-4 bottom-4 z-10 mb-0 max-w-[18rem] text-sm",
-      variant === "archive" && "text-paper",
+      variant === "archive" && "text-on-fill",
       variant === "detail" && "rounded-sm bg-paper/95 p-3 text-ink shadow-sm",
     ]}
     data-trip-route-map-status
@@ -128,7 +128,7 @@ function buildMapLabel(): string {
 
   {hasRoutes && variant === "detail" && (
     <div class="absolute inset-x-3 top-3 z-[1000] flex items-start gap-2" data-trip-route-map-controls hidden>
-      <div class="min-w-0 flex-1 rounded-sm border border-ink/30 bg-paper/95 p-2 text-ink shadow-sm">
+      <div class="min-w-0 flex-1 rounded-sm border border-line/30 bg-paper/95 p-2 text-ink shadow-sm">
         <RoutePicker
           activities={activities}
           ferries={ferries}
@@ -151,7 +151,7 @@ function buildMapLabel(): string {
       </div>
 
       <button
-        class="flex size-11 shrink-0 items-center justify-center rounded-sm border-2 border-ink bg-paper text-sm font-semibold text-ink shadow-sm hover:bg-paper-muted sm:w-auto sm:px-3 sm:py-2"
+        class="flex size-11 shrink-0 items-center justify-center rounded-sm border-2 border-line bg-paper text-sm font-semibold text-ink shadow-sm hover:bg-paper-muted sm:w-auto sm:px-3 sm:py-2"
         type="button"
         data-map-fullscreen-button
         aria-pressed="false"

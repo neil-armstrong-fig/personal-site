@@ -33,22 +33,22 @@ const {
 
 <BaseLayout title={title} description={description} openGraphType="article" structuredData={structuredData}>
   <article>
-    <header class="bg-ink py-[clamp(3.5rem,8vw,7rem)] text-paper" data-trip-masthead>
+    <header class="bg-fill-ink py-[clamp(3.5rem,8vw,7rem)] text-on-fill" data-trip-masthead>
       <Container>
         <a
-          class="mb-10 inline-flex text-sm text-paper decoration-paper/50 hover:text-paper active:text-paper"
+          class="mb-10 inline-flex text-sm text-on-fill decoration-on-fill/50 hover:text-on-fill active:text-on-fill"
           href={backHref}
         >
           {backLabel}
         </a>
 
         <div class="max-w-[62rem]">
-          <Eyebrow tone="paper">{eyebrow}</Eyebrow>
+          <Eyebrow tone="inverse">{eyebrow}</Eyebrow>
 
           <h1 class:list={[headingMaxWidthClass, "text-[clamp(3rem,2.2rem+4vw,6.5rem)]"]}>{heading}</h1>
 
           {intro !== undefined && (
-            <p class="max-w-[45rem] text-[clamp(1.15rem,1rem+0.5vw,1.4rem)] text-paper/85">{intro}</p>
+            <p class="max-w-[45rem] text-[clamp(1.15rem,1rem+0.5vw,1.4rem)] text-on-fill/85">{intro}</p>
           )}
 
           <slot name="meta" />

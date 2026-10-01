@@ -68,3 +68,11 @@ it("rejects a blank card title", () => {
 
   expect(result.success).toBe(false);
 });
+
+it("accepts an optional dark-theme cover image and keeps it absent when not given", () => {
+  const dark = {src: "/janggi-dark.webp", width: 1600, height: 900, format: "webp"};
+  const schema = createProjectContentSchema({image});
+
+  expect(schema.parse({...validProject, heroImageDark: dark}).heroImageDark).toEqual(dark);
+  expect(schema.parse(validProject).heroImageDark).toBeUndefined();
+});

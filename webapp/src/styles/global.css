@@ -16,6 +16,19 @@
   src: url("../assets/fonts/newsreader-latin-variable.woff2") format("woff2");
 }
 
+/* `dark:` follows the explicit data-theme choice, or the system setting when none is stored. */
+@custom-variant dark {
+  &:where([data-theme="dark"] *) {
+    @slot;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme="light"]) *) {
+      @slot;
+    }
+  }
+}
+
 @theme {
   --color-paper: #f4f7f6;
   --color-paper-muted: #e1e9e6;
@@ -24,6 +37,15 @@
   --color-petrol: #1f5960;
   --color-copper: #98462f;
   --color-moss: #7b8d6b;
+  --color-fill-ink: #18262d;
+  --color-fill-footer: #18262d;
+  --color-fill-forest: #244b3b;
+  --color-fill-petrol: #1f5960;
+  --color-on-fill: #f4f7f6;
+  --color-action: #244b3b;
+  --color-action-hover: #18262d;
+  --color-on-action: #f4f7f6;
+  --color-line: #18262d;
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   --font-serif: "Newsreader", ui-serif, Georgia, serif;
   --font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Consolas, monospace;
@@ -107,8 +129,63 @@
   }
 }
 
+/*
+ * Dark theme: true black for OLED, tinted off-white text at about 15:1 rather than 21:1 (pure white on pure black
+ * halates for astigmatism), mid-spectrum greens and teals, and no blue or saturated red. The same values appear twice
+ * because a media query and an attribute selector cannot share a rule: once for "follow the system" and once for an
+ * explicit choice. Every text pair is checked against WCAG AA, including its translucent variants.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --color-paper: #000000;
+    --color-paper-muted: #0b100e;
+    --color-ink: #d6dedb;
+    --color-forest: #8fc4a8;
+    --color-petrol: #6fb0b8;
+    --color-copper: #d9967e;
+    --color-moss: #56634b;
+    --color-fill-ink: #0b100e;
+    --color-fill-footer: #000000;
+    --color-fill-forest: #12281f;
+    --color-fill-petrol: #0f2f33;
+    --color-on-fill: #d6dedb;
+    --color-action: #8fc4a8;
+    --color-action-hover: #b5dcc6;
+    --color-on-action: #04110b;
+    --color-line: #66756e;
+    --map-tile-filter: brightness(0.72);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-paper: #000000;
+  --color-paper-muted: #0b100e;
+  --color-ink: #d6dedb;
+  --color-forest: #8fc4a8;
+  --color-petrol: #6fb0b8;
+  --color-copper: #d9967e;
+  --color-moss: #56634b;
+  --color-fill-ink: #0b100e;
+  --color-fill-footer: #000000;
+  --color-fill-forest: #12281f;
+  --color-fill-petrol: #0f2f33;
+  --color-on-fill: #d6dedb;
+  --color-action: #8fc4a8;
+  --color-action-hover: #b5dcc6;
+  --color-on-action: #04110b;
+  --color-line: #66756e;
+  --map-tile-filter: brightness(0.72);
+  color-scheme: dark;
+}
+
 /* Element defaults for content that cannot carry classes, such as rendered Markdown. */
 @layer base {
+  :root {
+    color-scheme: light;
+    --map-tile-filter: none;
+  }
+
   h1,
   h2,
   h3 {
@@ -144,7 +221,7 @@
 
   button:disabled,
   [aria-disabled="true"] {
-    @apply cursor-not-allowed border-ink bg-paper-muted text-ink;
+    @apply cursor-not-allowed border-line bg-paper-muted text-ink;
   }
 
   @media (forced-colors: active) {

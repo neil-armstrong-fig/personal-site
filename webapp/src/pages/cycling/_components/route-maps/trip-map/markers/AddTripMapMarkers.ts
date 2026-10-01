@@ -1,4 +1,4 @@
-import {readRouteMapColours} from "@src/pages/cycling/_components/route-maps/leaflet/ReadRouteMapColours";
+import {routeMapColours} from "@src/pages/cycling/_components/route-maps/leaflet/RouteMapPalette";
 import type {LeafletModule} from "@src/pages/cycling/_components/route-maps/leaflet/types/LeafletModule";
 import type {PendingTripRoute} from "@src/pages/cycling/_components/route-maps/trip-map/types/PendingTripRoute";
 import type {CircleMarker, Map as LeafletMap} from "leaflet";
@@ -25,7 +25,7 @@ function addBoundaryMarkers(options: AddTripMapMarkersOptions): void {
     return;
   }
 
-  const colours = readRouteMapColours();
+  const colours = routeMapColours;
   const startLocation = leaflet.latLng(start);
   const finishLocation = leaflet.latLng(finish);
 
@@ -55,7 +55,7 @@ function addBoundaryMarkers(options: AddTripMapMarkersOptions): void {
 
 function addFerryTerminalMarkers(options: AddTripMapMarkersOptions): CircleMarker[] {
   const {leaflet, map, routes} = options;
-  const colours = readRouteMapColours();
+  const colours = routeMapColours;
   const markers: CircleMarker[] = [];
 
   for (const route of routes.filter(candidate => candidate.metadata.kind === "ferry")) {

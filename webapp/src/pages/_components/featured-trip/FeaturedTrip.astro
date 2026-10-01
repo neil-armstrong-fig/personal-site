@@ -20,7 +20,7 @@ const distance = snapshot && formatTripDistance(snapshot.totals.distanceMetres /
 
 <div class="grid items-center gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1fr)]">
   <div>
-    <Eyebrow tone="paper">Away from the desk</Eyebrow>
+    <Eyebrow tone="inverse">Away from the desk</Eyebrow>
 
     <h2>Pedals instead of pull requests</h2>
 
@@ -46,7 +46,7 @@ const distance = snapshot && formatTripDistance(snapshot.totals.distanceMetres /
     </div>
   </div>
 
-  <a href={`/cycling/${trip.id}/`} class="block border-2 border-paper/60" tabindex="-1">
+  <a href={`/cycling/${trip.id}/`} class="block border-2 border-on-fill/60" tabindex="-1">
     <Image
       class="aspect-[4/3] w-full object-cover"
       src={coverImage}

@@ -42,7 +42,7 @@ const placements: Placement[] = Array.from({length: iconCount}, (_, index): Plac
   aria-hidden="true"
   class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-svh overflow-hidden text-petrol/10 forced-colors:hidden"
 >
-  <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)] bg-[linear-gradient(rgb(31_89_96/7%)_1px,transparent_1px),linear-gradient(90deg,rgb(31_89_96/7%)_1px,transparent_1px)] bg-[length:3rem_3rem]"></div>
+  <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)] bg-[linear-gradient(color-mix(in_srgb,var(--color-petrol)_7%,transparent)_1px,transparent_1px),linear-gradient(90deg,color-mix(in_srgb,var(--color-petrol)_7%,transparent)_1px,transparent_1px)] bg-[length:3rem_3rem]"></div>
 
   <div class="absolute inset-0 [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" data-backdrop-icons>
     {placements.map(({Icon, path, style, phone, small, reverse}) => (

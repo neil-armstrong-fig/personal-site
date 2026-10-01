@@ -7,7 +7,7 @@ import {addStyledRouteLine} from "@src/pages/cycling/_components/route-maps/leaf
 import {createRouteMap} from "@src/pages/cycling/_components/route-maps/leaflet/CreateRouteMap";
 import {loadLeaflet} from "@src/pages/cycling/_components/route-maps/leaflet/LoadLeaflet";
 import {prefersReducedMotion} from "@src/pages/cycling/_components/route-maps/leaflet/PrefersReducedMotion";
-import {readRouteMapColours} from "@src/pages/cycling/_components/route-maps/leaflet/ReadRouteMapColours";
+import {routeMapColours} from "@src/pages/cycling/_components/route-maps/leaflet/RouteMapPalette";
 import type {LeafletModule} from "@src/pages/cycling/_components/route-maps/leaflet/types/LeafletModule";
 import type {RouteMapColours} from "@src/pages/cycling/_components/route-maps/leaflet/types/RouteMapColours";
 import type {StyledRouteLayer} from "@src/pages/cycling/_components/route-maps/leaflet/types/StyledRouteLayer";
@@ -74,7 +74,7 @@ export async function renderActivityMap(container: HTMLElement, routesUrl: strin
 
   const map = createRouteMap(leaflet, container, {interactive: true, overview: false});
   const points = PolylineCodec.decode(encodedRoute);
-  const colours = readRouteMapColours();
+  const colours = routeMapColours;
   const activityIdNumber = Number(activityId);
   const pointGroups = splitRouteAtFerries(points, activityIdNumber, routes.ferries);
   const transitGap = routes.transitGaps.find(candidate => candidate.activityId === activityIdNumber);

@@ -100,7 +100,7 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
   </Section>
 
   <Section
-    class="grid min-h-152 items-center bg-forest bg-[linear-gradient(90deg,var(--color-ink)_0_0.35rem,transparent_0.35rem)] text-paper"
+    class="grid min-h-152 items-center bg-fill-forest bg-[linear-gradient(90deg,var(--color-fill-ink)_0_0.35rem,transparent_0.35rem)] text-on-fill"
     id="cycling"
   >
     <Container>{featuredTrip && <FeaturedTrip trip={featuredTrip} />}</Container>

@@ -19,17 +19,17 @@ const externalLinks = [
 
 <article
   class:list={[
-    "flex min-h-84 flex-col border border-ink p-[clamp(1.5rem,4vw,3rem)]",
-    featured && "bg-petrol text-paper",
+    "flex min-h-84 flex-col border border-line p-[clamp(1.5rem,4vw,3rem)]",
+    featured && "bg-fill-petrol text-on-fill",
     !featured && "bg-paper",
   ]}
 >
-  {featured && <Eyebrow tone="paper">Software</Eyebrow>}
+  {featured && <Eyebrow tone="inverse">Software</Eyebrow>}
 
   {!featured && <Eyebrow tone="copper">Software</Eyebrow>}
 
   <h3>
-    <a class:list={[featured && "text-paper hover:text-paper"]} href={`/software/${project.id}/`}>
+    <a class:list={[featured && "text-on-fill hover:text-on-fill"]} href={`/software/${project.id}/`}>
       {title}
     </a>
   </h3>
@@ -37,7 +37,7 @@ const externalLinks = [
   <p class="max-w-[34rem]">{summary}</p>
 
   <div class="mt-auto flex flex-wrap gap-x-6 gap-y-3">
-    <a class:list={[featured && "text-paper hover:text-paper"]} href={`/software/${project.id}/`}>
+    <a class:list={[featured && "text-on-fill hover:text-on-fill"]} href={`/software/${project.id}/`}>
       Read the case study
       <span class="ml-2 inline-block" aria-hidden="true">
         →
@@ -45,7 +45,7 @@ const externalLinks = [
     </a>
 
     {externalLinks.map(link => (
-      <ExternalLink class:list={[featured && "text-paper hover:text-paper"]} href={link.href}>
+      <ExternalLink class:list={[featured && "text-on-fill hover:text-on-fill"]} href={link.href}>
         {link.label}
         <span class="ml-2 inline-block" aria-hidden="true">
           ↗

@@ -13,10 +13,10 @@ interface Props {
 const {alt, image, ratio = "4:5"} = Astro.props;
 ---
 
-<figure class="relative mx-auto max-w-[31rem] pb-6 pl-6 before:absolute before:top-6 before:right-6 before:bottom-0 before:left-0 before:-z-10 before:bg-forest forced-colors:before:hidden">
+<figure class="relative mx-auto max-w-[31rem] pb-6 pl-6 before:absolute before:top-6 before:right-6 before:bottom-0 before:left-0 before:-z-10 before:bg-fill-forest forced-colors:before:hidden">
   <div
     class:list={[
-      "overflow-hidden border border-ink bg-paper-muted [&_img]:size-full [&_img]:object-cover [&_picture]:block [&_picture]:size-full",
+      "overflow-hidden border border-line bg-paper-muted [&_img]:size-full [&_img]:object-cover [&_picture]:block [&_picture]:size-full",
       ratio === "4:5" && "aspect-[4/5]",
       ratio === "3:4" && "aspect-[3/4]",
     ]}

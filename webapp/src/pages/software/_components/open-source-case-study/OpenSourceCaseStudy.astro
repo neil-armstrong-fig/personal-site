@@ -1,5 +1,4 @@
 ---
-import {Image} from "astro:assets";
 import {render} from "astro:content";
 import type {CollectionEntry} from "astro:content";
 
@@ -7,6 +6,7 @@ import ExternalLink from "@src/components/actions/external-link/ExternalLink.ast
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
 import {siteConfig} from "@src/site/SiteConfig";
 import SelfLinkToast from "@src/pages/software/_components/open-source-case-study/components/self-link-toast/SelfLinkToast.astro";
+import ThemedImage from "@src/pages/software/_components/themed-image/ThemedImage.astro";
 import ArticleLayout from "@src/pages/software/_components/article-layout/ArticleLayout.astro";
 import ProjectCard from "@src/pages/software/_components/project-card/ProjectCard.astro";
 import ProjectLinks from "@src/pages/software/_components/open-source-case-study/components/project-links/ProjectLinks.astro";
@@ -27,6 +27,7 @@ const {
   liveUrl,
   liveLabel,
   heroImage,
+  heroImageDark,
   heroAlt,
   heroBordered = false,
   datePublished,
@@ -75,27 +76,27 @@ const {Content} = await render(project);
 
   <Fragment slot="figure">
     {(liveUrl === undefined || selfLink) && (
-      <Image
-        class:list={["mb-12 w-full", heroBordered && "border border-ink/20"]}
+      <ThemedImage
+        class:list={["mb-12 w-full", heroBordered && "border border-line/20"]}
         src={heroImage}
+        darkSrc={heroImageDark}
         alt={heroAlt}
         widths={[640, 1280]}
         sizes="(min-width: 60rem) 60rem, 100vw"
-        loading="eager"
-        fetchpriority="high"
+        eager
       />
     )}
 
     {liveUrl !== undefined && !selfLink && (
       <ExternalLink class="mb-12 block" href={liveUrl.href} aria-label={`Visit the live ${title} site`}>
-        <Image
-          class:list={["w-full", heroBordered && "border border-ink/20"]}
+        <ThemedImage
+          class:list={["w-full", heroBordered && "border border-line/20"]}
           src={heroImage}
+          darkSrc={heroImageDark}
           alt={heroAlt}
           widths={[640, 1280]}
           sizes="(min-width: 60rem) 60rem, 100vw"
-          loading="eager"
-          fetchpriority="high"
+          eager
         />
       </ExternalLink>
     )}

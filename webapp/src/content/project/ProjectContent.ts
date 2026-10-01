@@ -14,6 +14,7 @@ interface ProjectContent {
   liveUrl?: URL;
   liveLabel?: string;
   heroImage: ImageMetadata;
+  heroImageDark?: ImageMetadata;
   heroAlt: string;
   heroBordered?: boolean;
   featured: boolean;
@@ -38,6 +39,7 @@ export function createProjectContentSchema({image}: SchemaContext): z.ZodType<Pr
     liveUrl: webUrl.optional(),
     liveLabel: requiredText.optional(),
     heroImage: image(),
+    heroImageDark: image().optional(),
     heroAlt: requiredText,
     heroBordered: z.boolean().optional(),
     featured: z.boolean(),

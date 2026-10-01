@@ -24,14 +24,14 @@ const {activities, ferries, transitGaps, transitRoutes, routesUrl, title, image,
   Astro.props;
 ---
 
-<section class="bg-forest py-[clamp(2rem,5vw,4rem)]" aria-labelledby="route-visual-heading" data-route-visual>
+<section class="bg-fill-forest py-[clamp(2rem,5vw,4rem)]" aria-labelledby="route-visual-heading" data-route-visual>
   <Container>
-    <div class="mb-3 flex items-center justify-between gap-4 text-paper">
+    <div class="mb-3 flex items-center justify-between gap-4 text-on-fill">
       <h2 id="route-visual-heading" class="mb-0 font-mono text-xs font-bold tracking-[0.12em] uppercase">
         Full route
       </h2>
 
-      <p class="mb-0 text-xs text-paper/70">Privacy-trimmed; some starts and finishes are shortened.</p>
+      <p class="mb-0 text-xs text-on-fill/70">Privacy-trimmed; some starts and finishes are shortened.</p>
     </div>
 
     <TripRouteMap

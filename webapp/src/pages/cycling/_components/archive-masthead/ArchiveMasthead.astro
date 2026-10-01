@@ -12,44 +12,44 @@ const distance = formatTripDistance(totals.distanceMetres / 1000);
 const wholeNumber = new Intl.NumberFormat("en-GB", {maximumFractionDigits: 0});
 ---
 
-<header class="bg-ink py-[clamp(2.5rem,6vw,4rem)] text-paper" data-cycling-archive-masthead>
+<header class="bg-fill-ink py-[clamp(2.5rem,6vw,4rem)] text-on-fill" data-cycling-archive-masthead>
   <Container class="grid items-end gap-8 md:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)]">
     <div>
-      <Eyebrow tone="paper">Cycling archive</Eyebrow>
+      <Eyebrow tone="inverse">Cycling archive</Eyebrow>
 
       <h1 class="mb-4 max-w-[14ch] text-[clamp(2.6rem,2rem+3vw,4.5rem)]">Pedals instead of pull requests</h1>
 
-      <p class="mb-0 max-w-[36rem] text-[clamp(1.05rem,1rem+0.3vw,1.25rem)] text-paper/85">
+      <p class="mb-0 max-w-[36rem] text-[clamp(1.05rem,1rem+0.3vw,1.25rem)] text-on-fill/85">
         Highlights from the journeys I wanted to keep: the roads, weather, and detours, with the detailed ride data kept
         as a reference.
       </p>
     </div>
 
     <div>
-      <dl class="grid grid-cols-3 gap-4 border-t border-paper/25 pt-4">
+      <dl class="grid grid-cols-3 gap-4 border-t border-on-fill/25 pt-4">
         <div>
-          <dt class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-paper/65 uppercase">Trips</dt>
+          <dt class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-on-fill/65 uppercase">Trips</dt>
 
           <dd class="mt-1 font-serif text-3xl leading-none">{totals.publishedTrips}</dd>
         </div>
 
         <div>
-          <dt class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-paper/65 uppercase">Distance</dt>
+          <dt class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-on-fill/65 uppercase">Distance</dt>
 
           <dd class="mt-1 font-serif text-3xl leading-none">{distance.metric}</dd>
 
-          <dd class="mt-1 text-sm text-paper/70">{distance.imperial}</dd>
+          <dd class="mt-1 text-sm text-on-fill/70">{distance.imperial}</dd>
         </div>
 
         <div>
-          <dt class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-paper/65 uppercase">Riding days</dt>
+          <dt class="font-mono text-[0.68rem] font-bold tracking-[0.12em] text-on-fill/65 uppercase">Riding days</dt>
 
           <dd class="mt-1 font-serif text-3xl leading-none">{wholeNumber.format(totals.ridingDays)}</dd>
         </div>
       </dl>
 
       {totals.documentedTrips < totals.publishedTrips && (
-        <p class="mt-4 mb-0 text-sm text-paper/70">
+        <p class="mt-4 mb-0 text-sm text-on-fill/70">
           Totals cover {totals.documentedTrips} of {totals.publishedTrips} published trips with a Strava snapshot.
         </p>
       )}

@@ -32,13 +32,47 @@ const socialImageAlt = `${siteConfig.identity.name}, ${siteConfig.identity.publi
 <!doctype html>
 <html
   lang="en-GB"
-  class="scroll-smooth bg-paper text-ink scheme-light [font-synthesis:none] [text-rendering:optimizeLegibility] motion-reduce:scroll-auto"
+  class="scroll-smooth bg-paper text-ink [font-synthesis:none] [text-rendering:optimizeLegibility] motion-reduce:scroll-auto"
 >
   <head>
     <meta charset="UTF-8" />
 
     <meta name="viewport" content="width=device-width" />
 
+    <meta name="theme-color" content="#f4f7f6" media="(prefers-color-scheme: light)" />
+
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+
+    <!--
+      Applies a light or dark choice before first paint, so there is no flash: a ?theme=light or ?theme=dark link wins
+      and is remembered, otherwise the saved choice. ThemePreference.ts holds the same values.
+    -->
+    <script is:inline>
+      {
+        const requested = new URLSearchParams(location.search).get("theme");
+        let theme = null;
+
+        try {
+          theme = localStorage.getItem("theme");
+        } catch {
+          // Storage can be blocked, so the page follows the system setting.
+        }
+
+        if (requested === "light" || requested === "dark") {
+          theme = requested;
+
+          try {
+            localStorage.setItem("theme", requested);
+          } catch {
+            // Blocked storage still lets the link apply to this page.
+          }
+        }
+
+        if (theme === "light" || theme === "dark") {
+          document.documentElement.dataset.theme = theme;
+        }
+      }
+    </script>
     <link rel="preload" href={newsreaderFontUrl} as="font" type="font/woff2" crossorigin />
 
     <link rel="preload" href={interFontUrl} as="font" type="font/woff2" crossorigin />

@@ -177,6 +177,22 @@ webapp/src/pages/cycling/
   the larger-layout changes.
 - Use the palette defined in `webapp/src/styles/global.css`: cool off-white `#F4F7F6`, muted sage `#E1E9E6`, ink navy
   `#18262D`, forest `#244B3B`, petrol `#1F5960`, copper `#98462F`, and moss `#7B8D6B`.
+- **Dark theme.** The same token names are overridden for dark (true black `#000000` page for OLED, tinted off-white
+  ink at about 15:1 rather than 21:1, mid-spectrum greens and teals, no blue or saturated red), because pure white on pure
+  black halates for astigmatism and automated contrast checks do not catch it. Dark follows `prefers-color-scheme`
+  unless the footer toggle stores `light` or `dark` (`localStorage` key `theme`, applied as `data-theme` by a small
+  inline script in `BaseLayout` before first paint). A link ending `?theme=dark` or `?theme=light` sets and remembers
+  that choice, which is how to share a link that opens in dark (for example `https://neilarmstrong.dev/?theme=dark`).
+  The two override blocks in `global.css` must stay identical. Check
+  every new text pair in both themes, including translucent variants such as `text-on-fill/65`.
+- Colour roles, not hues: a token that is both a text colour and a fill flips in opposite directions in dark, so use
+  `bg-fill-ink`, `bg-fill-forest` and `bg-fill-petrol` for large dark fills (`bg-fill-footer` for the footer, which is black in dark so it does not merge with the sage section above it) with `text-on-fill` on them, `bg-action`,
+  `hover:bg-action-hover` and `text-on-action` for buttons and other small controls (light in dark mode), and
+  `border-line` for structural borders. Never put `bg-ink`, `bg-forest`, `bg-petrol` or `text-paper` on a fill.
+  `text-paper` on `bg-copper` is the one correct use, because both flip together.
+- Route maps stay a light panel in both themes (OpenStreetMap tiles are light), so their line colours are the fixed
+  light values in `route-maps/leaflet/RouteMapPalette.ts`, and dark mode only dims the tile pane through
+  `--map-tile-filter`. Lighthouse audits the light scheme only, so check dark by hand.
 - Use copper sparingly so it complements rather than imitates the subject's hair. Use moss only for
   non-text decoration unless a specific pairing is independently shown to meet its contrast target.
 - Validate contrast for the actual component states; token-level contrast is guidance, not a

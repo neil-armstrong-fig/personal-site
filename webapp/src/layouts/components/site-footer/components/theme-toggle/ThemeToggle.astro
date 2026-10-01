@@ -1,0 +1,71 @@
+---
+// Cycles System Colours, Light and Dark. Without JavaScript the button stays hidden and the page follows the system setting.
+---
+
+<button
+  type="button"
+  class="hidden min-h-11 items-center gap-2 rounded-sm border border-on-fill/60 px-3 py-2 text-[0.8rem] font-bold tracking-[0.06em] uppercase hover:bg-on-fill hover:text-fill-footer data-[ready]:flex"
+  data-theme-toggle
+>
+  <span class="sr-only">Colour theme:</span>
+
+  <span data-theme-toggle-label>System Colours</span>
+</button>
+
+<script>
+  import {
+    THEME_STORAGE_KEY,
+    nextThemePreference,
+    parseThemePreference,
+    themeAttribute,
+    themePreferenceLabel,
+  } from "@src/layouts/components/site-footer/components/theme-toggle/theme-preference/ThemePreference";
+  import type {ThemePreference} from "@src/layouts/components/site-footer/components/theme-toggle/theme-preference/ThemePreference";
+
+  const button = document.querySelector<HTMLButtonElement>("[data-theme-toggle]");
+  const label = document.querySelector<HTMLElement>("[data-theme-toggle-label]");
+
+  if (button && label) {
+    // The early script in BaseLayout has already applied a saved or linked choice, so start from what it set.
+    let preference = parseThemePreference(document.documentElement.dataset.theme ?? null);
+
+    render(preference);
+    button.dataset.ready = "";
+
+    button.addEventListener("click", () => {
+      preference = nextThemePreference(preference);
+      render(preference);
+      storePreference(preference);
+    });
+
+    function render(current: ThemePreference): void {
+      const attribute = themeAttribute(current);
+
+      if (attribute === undefined) {
+        document.documentElement.removeAttribute("data-theme");
+      }
+
+      if (attribute !== undefined) {
+        document.documentElement.dataset.theme = attribute;
+      }
+
+      if (label) {
+        label.textContent = themePreferenceLabel(current);
+      }
+    }
+  }
+
+  function storePreference(preference: ThemePreference): void {
+    try {
+      if (preference === "system") {
+        localStorage.removeItem(THEME_STORAGE_KEY);
+      }
+
+      if (preference !== "system") {
+        localStorage.setItem(THEME_STORAGE_KEY, preference);
+      }
+    } catch {
+      // Storage can be blocked. The choice still applies for this page view.
+    }
+  }
+</script>

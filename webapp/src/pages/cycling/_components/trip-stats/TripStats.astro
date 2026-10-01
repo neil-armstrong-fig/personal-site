@@ -81,7 +81,7 @@ function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripEle
   class:list={[
     "grid gap-x-6 gap-y-4",
     variant === "card" && "grid-cols-2 border-t border-moss/50 pt-4",
-    variant === "masthead" && "mt-10 border-t border-paper/25 pt-6 sm:grid-cols-2 lg:grid-cols-5",
+    variant === "masthead" && "mt-10 border-t border-on-fill/25 pt-6 sm:grid-cols-2 lg:grid-cols-5",
   ]}
 >
   <div class:list={[variant === "card" && "col-span-2"]}>
@@ -89,7 +89,7 @@ function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripEle
       class:list={[
         "font-mono text-[0.7rem] font-bold tracking-[0.1em] uppercase",
         variant === "card" && "text-petrol",
-        variant === "masthead" && "text-paper/70",
+        variant === "masthead" && "text-on-fill/70",
       ]}
     >
       {variant === "card" && "Duration"}
@@ -113,7 +113,7 @@ function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripEle
         class:list={[
           "font-mono text-[0.7rem] font-bold tracking-[0.1em] uppercase",
           variant === "card" && "text-petrol",
-          variant === "masthead" && "text-paper/70",
+          variant === "masthead" && "text-on-fill/70",
         ]}
       >
         {labelPrefix}Distance
@@ -122,18 +122,20 @@ function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripEle
       <dd class="mt-1">
         {distance.metric}
         {variant === "card" && <span class="block text-sm text-ink/70">{distance.imperial}</span>}
-        {variant === "masthead" && <span class="block text-sm text-paper/75">{distance.imperial}</span>}
+        {variant === "masthead" && <span class="block text-sm text-on-fill/75">{distance.imperial}</span>}
       </dd>
     </div>
   )}
 
   {variant === "masthead" && elevation !== undefined && (
     <div>
-      <dt class="font-mono text-[0.7rem] font-bold tracking-[0.1em] text-paper/70 uppercase">{labelPrefix}Climbing</dt>
+      <dt class="font-mono text-[0.7rem] font-bold tracking-[0.1em] text-on-fill/70 uppercase">
+        {labelPrefix}Climbing
+      </dt>
 
       <dd class="mt-1">
         {elevation.metric}
-        <span class="block text-sm text-paper/75">{elevation.imperial}</span>
+        <span class="block text-sm text-on-fill/75">{elevation.imperial}</span>
       </dd>
     </div>
   )}
@@ -144,7 +146,7 @@ function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripEle
         class:list={[
           "font-mono text-[0.7rem] font-bold tracking-[0.1em] uppercase",
           variant === "card" && "text-petrol",
-          variant === "masthead" && "text-paper/70",
+          variant === "masthead" && "text-on-fill/70",
         ]}
       >
         {labelPrefix}Riding days
@@ -153,7 +155,7 @@ function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripEle
       <dd class="mt-1">
         {ridingDays.days}
         {variant === "masthead" && ridingDays.transitionDays > 0 && (
-          <span class="block text-sm text-paper/75">
+          <span class="block text-sm text-on-fill/75">
             {ridingDays.transitionDays} short transition {ridingDays.transitionDays === 1 && "day"}
             {ridingDays.transitionDays !== 1 && "days"}
             {" excluded"}
@@ -161,7 +163,7 @@ function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripEle
         )}
 
         {variant === "masthead" && ridingDays.bonusRides > 0 && (
-          <span class="block text-sm text-paper/75">
+          <span class="block text-sm text-on-fill/75">
             {ridingDays.bonusRides} bonus {ridingDays.bonusRides === 1 && "ride"}
             {ridingDays.bonusRides !== 1 && "rides"}
             {" included"}
@@ -173,7 +175,7 @@ function optionalTripElevation(elevationMetres: OptionalNumber): OptionalTripEle
 
   {variant === "masthead" && partRange === undefined && (
     <div>
-      <dt class="font-mono text-[0.7rem] font-bold tracking-[0.1em] text-paper/70 uppercase">Countries</dt>
+      <dt class="font-mono text-[0.7rem] font-bold tracking-[0.1em] text-on-fill/70 uppercase">Countries</dt>
 
       <dd class="mt-1">{countries.join(", ")}</dd>
     </div>

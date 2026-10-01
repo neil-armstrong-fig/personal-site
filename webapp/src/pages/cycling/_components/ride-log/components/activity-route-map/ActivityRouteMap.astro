@@ -17,7 +17,7 @@ const hasVisibilityControls = hasFerries || hasOutings || hasTransit;
 ---
 
 <div
-  class="relative isolate h-60 overflow-hidden border border-moss/50 bg-paper-muted fullscreen:h-screen fullscreen:w-screen fullscreen:border-0 fullscreen:bg-paper"
+  class="relative isolate h-60 overflow-hidden border border-moss/50 bg-paper-muted [&_.leaflet-tile-pane]:[filter:var(--map-tile-filter)] fullscreen:h-screen fullscreen:w-screen fullscreen:border-0 fullscreen:bg-paper"
   data-route-map-shell
   data-activity-route-map-shell
 >
@@ -36,7 +36,7 @@ const hasVisibilityControls = hasFerries || hasOutings || hasTransit;
 
   {hasVisibilityControls && (
     <div
-      class="absolute top-16 left-2 z-[1000] flex max-w-[calc(100%-1rem)] flex-wrap gap-1 rounded-sm border border-ink/30 bg-paper/95 p-2 text-[0.66rem] leading-none text-ink shadow-sm"
+      class="absolute top-16 left-2 z-[1000] flex max-w-[calc(100%-1rem)] flex-wrap gap-1 rounded-sm border border-line/30 bg-paper/95 p-2 text-[0.66rem] leading-none text-ink shadow-sm"
       role="group"
       aria-label="Activity map layer controls"
       data-activity-route-controls
@@ -47,7 +47,7 @@ const hasVisibilityControls = hasFerries || hasOutings || hasTransit;
   )}
 
   <button
-    class="absolute top-2 right-2 z-[1000] min-h-11 rounded-sm border-2 border-ink bg-paper px-3 py-2 text-sm font-semibold text-ink shadow-sm hover:bg-paper-muted"
+    class="absolute top-2 right-2 z-[1000] min-h-11 rounded-sm border-2 border-line bg-paper px-3 py-2 text-sm font-semibold text-ink shadow-sm hover:bg-paper-muted"
     type="button"
     data-map-fullscreen-button
     aria-pressed="false"

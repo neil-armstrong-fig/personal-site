@@ -32,14 +32,14 @@ const entries: ChapterLinkEntry[] = [
     {entries.map(entry => (
       <Fragment>
         {entry.order === currentOrder && (
-          <span class="text-paper" aria-current="page">
+          <span class="text-on-fill" aria-current="page">
             Part {entry.order}: {entry.title}
           </span>
         )}
 
         {entry.order !== currentOrder && (
           <a
-            class="text-paper underline decoration-paper/40 underline-offset-4 hover:text-paper hover:decoration-paper"
+            class="text-on-fill underline decoration-on-fill/40 underline-offset-4 hover:text-on-fill hover:decoration-on-fill"
             href={entry.href}
           >
             Part {entry.order}: {entry.title}

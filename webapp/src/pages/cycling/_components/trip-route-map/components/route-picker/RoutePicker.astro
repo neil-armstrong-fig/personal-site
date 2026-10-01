@@ -27,7 +27,7 @@ const clearTitle = hasHighlight ? "Show this part again" : "Show all routes";
 
 <div class="flex min-w-0 items-start gap-1.5">
   <details class="group relative min-w-0 flex-1" data-trip-route-picker>
-    <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-sm border border-ink bg-paper px-3 py-2 text-sm font-semibold hover:bg-paper-muted [&::-webkit-details-marker]:hidden">
+    <summary class="flex min-h-11 cursor-pointer list-none items-center justify-between gap-2 rounded-sm border border-line bg-paper px-3 py-2 text-sm font-semibold hover:bg-paper-muted [&::-webkit-details-marker]:hidden">
       <span class="truncate" data-trip-route-picker-label>
         {defaultLabel}
       </span>
@@ -46,11 +46,11 @@ const clearTitle = hasHighlight ? "Show this part again" : "Show all routes";
     </summary>
 
     <div
-      class="absolute inset-x-0 top-[calc(100%+0.35rem)] z-10 max-h-[min(22rem,55vh)] overflow-y-auto overscroll-contain rounded-sm border border-ink bg-paper p-1 shadow-[0.35rem_0.35rem_0_var(--color-moss)]"
+      class="absolute inset-x-0 top-[calc(100%+0.35rem)] z-10 max-h-[min(22rem,55vh)] overflow-y-auto overscroll-contain rounded-sm border border-line bg-paper p-1 shadow-[0.35rem_0.35rem_0_var(--color-moss)]"
       data-trip-route-options
     >
       <button
-        class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm font-semibold hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+        class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm font-semibold hover:bg-paper-muted aria-pressed:bg-action aria-pressed:text-on-action"
         type="button"
         data-trip-route-option
         data-route-id=""
@@ -67,7 +67,7 @@ const clearTitle = hasHighlight ? "Show this part again" : "Show all routes";
 
           {highlightedActivities.map(activity => (
             <button
-              class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+              class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-action aria-pressed:text-on-action"
               type="button"
               data-trip-route-option
               data-route-id={activity.id}
@@ -79,7 +79,7 @@ const clearTitle = hasHighlight ? "Show this part again" : "Show all routes";
 
           {highlightedFerries.map(ferry => (
             <button
-              class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+              class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-action aria-pressed:text-on-action"
               type="button"
               data-trip-route-option
               data-route-id={ferry.id}
@@ -105,7 +105,7 @@ const clearTitle = hasHighlight ? "Show this part again" : "Show all routes";
 
       {otherActivities.map(activity => (
         <button
-          class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+          class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-action aria-pressed:text-on-action"
           type="button"
           data-trip-route-option
           data-route-id={activity.id}
@@ -121,7 +121,7 @@ const clearTitle = hasHighlight ? "Show this part again" : "Show all routes";
 
       {otherFerries.map(ferry => (
         <button
-          class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-forest aria-pressed:text-paper"
+          class="min-h-11 w-full rounded-sm px-3 py-2 text-left text-sm leading-snug hover:bg-paper-muted aria-pressed:bg-action aria-pressed:text-on-action"
           type="button"
           data-trip-route-option
           data-route-id={ferry.id}
@@ -134,7 +134,7 @@ const clearTitle = hasHighlight ? "Show this part again" : "Show all routes";
   </details>
 
   <button
-    class="flex size-11 shrink-0 items-center justify-center rounded-sm border border-ink bg-paper text-xl leading-none font-semibold hover:bg-paper-muted"
+    class="flex size-11 shrink-0 items-center justify-center rounded-sm border border-line bg-paper text-xl leading-none font-semibold hover:bg-paper-muted"
     type="button"
     aria-label={clearLabel}
     title={clearTitle}

@@ -9,7 +9,7 @@ const socialLinks = Object.values(siteConfig.socialLinks);
   <ul class="flex list-none flex-wrap gap-x-6 gap-y-3">
     {socialLinks.map(link => (
       <li>
-        <ExternalLink class="text-paper hover:text-paper hover:decoration-[0.16em]" href={link.href} rel="me">
+        <ExternalLink class="text-on-fill hover:text-on-fill hover:decoration-[0.16em]" href={link.href} rel="me">
           {link.label}
         </ExternalLink>
       </li>

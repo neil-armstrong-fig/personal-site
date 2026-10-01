@@ -15,7 +15,7 @@ function isCurrent(href: string, pathname: string): boolean {
 ---
 
 <details class="group relative md:[&::details-content]:[content-visibility:visible]">
-  <summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-sm border border-ink px-3 py-2 text-[0.8rem] font-bold tracking-[0.06em] text-ink uppercase group-open:bg-ink group-open:text-paper md:hidden [&::-webkit-details-marker]:hidden">
+  <summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-sm border border-line px-3 py-2 text-[0.8rem] font-bold tracking-[0.06em] text-ink uppercase group-open:bg-fill-ink group-open:text-on-fill md:hidden [&::-webkit-details-marker]:hidden">
     <span>Menu</span>
 
     <svg
@@ -33,7 +33,7 @@ function isCurrent(href: string, pathname: string): boolean {
   </summary>
 
   <nav
-    class="absolute top-[calc(100%+0.75rem)] right-0 min-w-[min(18rem,calc(100vw-3rem))] border border-ink bg-paper p-3 shadow-[0.5rem_0.5rem_0_var(--color-moss)] md:static md:block md:min-w-0 md:border-0 md:bg-transparent md:p-0 md:shadow-none"
+    class="absolute top-[calc(100%+0.75rem)] right-0 min-w-[min(18rem,calc(100vw-3rem))] border border-line bg-paper p-3 shadow-[0.5rem_0.5rem_0_var(--color-moss)] md:static md:block md:min-w-0 md:border-0 md:bg-transparent md:p-0 md:shadow-none"
     aria-label="Primary navigation"
   >
     <ul class="flex list-none flex-col md:flex-row md:gap-2">
@@ -41,7 +41,7 @@ function isCurrent(href: string, pathname: string): boolean {
         <li>
           {!item.external && (
             <a
-              class="block p-3 text-ink no-underline hover:bg-forest hover:text-paper aria-[current=page]:shadow-[inset_0_-0.2rem_var(--color-copper)]"
+              class="block p-3 text-ink no-underline hover:bg-action hover:text-on-action aria-[current=page]:shadow-[inset_0_-0.2rem_var(--color-copper)]"
               href={item.href}
               aria-current={isCurrent(item.href, currentPath) && "page"}
             >

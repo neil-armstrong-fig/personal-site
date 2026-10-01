@@ -16,7 +16,7 @@ const {title, summary, careerPeriod, role, team, technologies} = caseStudy.data;
 const leadership = [role, team].filter((part): part is string => part !== undefined);
 ---
 
-<article class="group relative flex h-full min-h-72 flex-col border border-ink bg-paper p-[clamp(1.5rem,4vw,3rem)] transition duration-160 hover:-translate-y-1 hover:shadow-[0.4rem_0.4rem_0_var(--color-moss)] motion-reduce:transition-none motion-reduce:hover:transform-none">
+<article class="group relative flex h-full min-h-72 flex-col border border-line bg-paper p-[clamp(1.5rem,4vw,3rem)] transition duration-160 hover:-translate-y-1 hover:shadow-[0.4rem_0.4rem_0_var(--color-moss)] motion-reduce:transition-none motion-reduce:hover:transform-none">
   <Eyebrow>{careerPeriod}</Eyebrow>
 
   <Heading class="text-[clamp(1.75rem,1.4rem+1vw,2.4rem)]">

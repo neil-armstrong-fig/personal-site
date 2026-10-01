@@ -29,9 +29,10 @@ if (external) {
     "inline-flex min-h-13 items-center justify-center rounded-sm border-2 border-forest py-3 text-center text-[0.92rem] leading-[1.2] font-[750] no-underline transition duration-160 hover:-translate-y-[0.14rem] motion-reduce:transition-none motion-reduce:hover:transform-none",
     shape === "text" && "px-6",
     shape === "icon" && "w-13",
-    variant === "primary" && "bg-forest text-paper hover:border-ink hover:bg-ink hover:text-paper",
+    variant === "primary" &&
+      "bg-action text-on-action hover:border-action-hover hover:bg-action-hover hover:text-on-action",
     variant === "secondary" && "bg-paper text-forest hover:border-petrol hover:text-petrol",
-    variant === "light" && "bg-ink text-paper hover:border-forest hover:bg-forest hover:text-paper",
+    variant === "light" && "bg-fill-ink text-on-fill hover:border-forest hover:bg-fill-forest hover:text-on-fill",
     className,
   ]}
   {...attributes}
