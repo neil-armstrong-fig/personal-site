@@ -2,6 +2,8 @@
 title: "Replacing a legacy document builder"
 summary: "Replacing an end-of-life, plug-in-based editor for legal loan documents in a single summer, with a contract at stake."
 careerPeriod: "2025"
+role: "Hands-on individual contributor"
+team: "2 from my company, 1 line-managed, alongside the client's editor team of about ten across multiple teams"
 sortOrder: 2
 technologies:
   - React
@@ -35,6 +37,8 @@ There were two of us from our side, split across the client's template and edito
 
 Neither of us knew the domain as well as the client's engineers. So we focused where our experience would help most: parsing and performance. We also skilled up their engineers along the way, through pairing, sessions and documentation.
 
+I worked US hours from Belfast, roughly midday to 8pm, which gave us the most overlap to pair, mentor and upskill. I line-managed my colleague, and I was skilling up the client's unofficial tech lead at the same time. The approach to performance, refactoring and testing improvements was mine to decide, working with the client's engineering manager and that tech lead.
+
 ## Performance
 
 Before we joined, the browser would literally freeze on big files or fast scrolls. Loading a large document could crash the software. Scrolling and editing both lagged.
@@ -60,3 +64,5 @@ We did not use acceptance tests on this engagement, because of the rush.
 We delivered the required spec just in time. What shipped was an MVP. Some features were agreed cuts, and the client's team carried on without us to deliver them. But scope moved a fair amount in the weeks before release, as some of the cuts turned out to be absolutely required.
 
 Performance is the part I'm proudest of. And we didn't just leave a codebase behind. We left the team in a much better spot, with better testing, better standards and a better understanding of the library, ready to keep going.
+
+The client's team released the MVP and carried on with post-MVP work. They were pleased enough to extend the contract by a month and asked for us back more than once, but we were already committed to another client.

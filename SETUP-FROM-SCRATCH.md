@@ -75,7 +75,7 @@ scripts, and photo and video processing. Pushing the site does not publish the W
    rules from the table, and leave the `r2.dev` URL disabled. Create an R2 API token and the rclone remote. Check each
    setting afterwards with `wrangler r2 bucket domain list`, `cors list`, `dev-url get` and `lifecycle list`.
 4. **Local files.** Restore `private-source/` and `.env`. Re-create the videos with `pnpm trip:videos <trip-slug>`, then
-   upload them with the `rclone copy ... --dry-run` and real copy steps in `AGENTS.md`. **The production build fails until
+   upload them with the `rclone copy ... --dry-run` and real copy steps in `webapp/src/content/trip/AGENTS.md`. **The production build fails until
    every clip exists in R2.**
 5. **Email and Turnstile.** Enable Email Routing and verify `<inbox>` as a destination. Create the Turnstile widget for
    `neilarmstrong.dev` and put its site key in `webapp/src/site/SiteConfig.ts`.

@@ -83,4 +83,4 @@ We had very limited time to prove this, and we had an MVP in weeks. Without it t
 
 The exported file worked perfectly and the tool was released. Users in testing loved it, and the speed improvement came out of that testing.
 
-When the work ended, the team rolled off together. I flew to the client's US office on my own to run the technical handover as tech lead.
+When the work ended, the team rolled off together. I flew to the client's US office on my own to run the technical handover as tech lead with the client's technical leadership.

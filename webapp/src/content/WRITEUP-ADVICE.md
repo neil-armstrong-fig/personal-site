@@ -2,7 +2,7 @@
 
 Read this before drafting, reviewing, or restructuring any long piece of writing on the site: a trip story, a
 software case study, a project write-up, or anything added later. It is reference material, not a workflow —
-`AGENTS.md`'s "Adding a trip story" and "Adding or replacing a project screenshot" sections hold the actual
+`trip/AGENTS.md`'s "Adding a trip story" and `project/AGENTS.md`'s "Adding or replacing a project screenshot" sections hold the actual
 steps and file mechanics. This file exists so the reasoning behind those steps, and behind any future length
 or structure decision, sits in one place instead of being re-researched or re-argued each time.
 
@@ -65,13 +65,13 @@ every other chapter against that benchmark, and re-measuring after each split, g
 that ended up in the roughly **900–1,650 word / 10–44 figure** range read fine; the ones still well above that
 (originally 2,550–2,835 words / 62–64 figures) were the ones flagged as too heavy and subsequently split.
 Words-per-figure stayed remarkably constant throughout — roughly one figure per 40–55 words — across both the
-short and long chapters, so that ratio is not itself a useful signal; total length is. `AGENTS.md`'s "Adding a
+short and long chapters, so that ratio is not itself a useful signal; total length is. `trip/AGENTS.md`'s "Adding a
 trip story" step 7 turns this into the concrete rule used when deciding whether, and where, to split a trip.
 
 ## Applying this beyond trips
 
 Trips have a purpose-built mechanism for splitting into chapter pages (the `tripChapters` collection; see
-`AGENTS.md`). **Case studies and projects have no equivalent multi-page mechanism today** — don't build one
+`trip/AGENTS.md`). **Case studies and projects have no equivalent multi-page mechanism today** — don't build one
 speculatively. If a case-study or project draft is running long enough that this research would suggest
 splitting it, that is a scope question for the developer (a new content type, new routing, new schema) before any code
 is written, not something to solve unilaterally the way a trip chapter split can be. Until then, apply the

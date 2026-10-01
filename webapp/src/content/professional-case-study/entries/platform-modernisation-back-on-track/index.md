@@ -2,6 +2,8 @@
 title: "Getting a platform modernisation back on track"
 summary: "Recovering two struggling teams on a time-critical PHP modernisation, with a walkable rough frontend and a proxy between the old API and the new services."
 careerPeriod: "2025–2026"
+role: "Lead engineer"
+team: "Two teams in turn: leading a frontend of 3 engineers, then a backend of 4 engineers, all line-managed"
 sortOrder: 3
 technologies:
   - React
@@ -49,6 +51,8 @@ Throughout, I worked out what we would deliver and how, ran demos, and delivered
 
 ## The backend: clearing the decks
 
+The second team was four engineers and me, and all four were my direct reports. I worked with the client's product owner and engineering manager, and held most of the control over architecture, approach and delivery: the direction, the timelines and milestones, the alternatives that could hit the deadline, and the scope cuts.
+
 After that I took over another struggling team: the four-engineer team building the new backend services behind signup and the "my account" pages. It was stuck in the mud and a bit rudderless, and had missed the year-end deadline before I joined. This was at the start of the following year, on SST and AWS Lambda.
 
 First I took stock of what was in progress. The team had been downsized from 7 to 4 engineers, which left about ten orphaned pull requests and a lot of half-done work. I asked the team to pause and swarm on those first. It took two weeks and served two purposes:
@@ -68,4 +72,4 @@ It became clear that other parts of the product wouldn't be ready in time. To hi
 
 Moving everything off the old system needed a data migration, because the PHP database differed from the DynamoDB used in V2. I wasn't part of that migration as the contract ended first, but I laid the foundation for it. The backend had missed the year-end deadline and the client asked its board and investors for an extension. Recovering it in the new year fell to me, and the proxy shipped at the end of March 2026. Testing was a mix of unit and manual tests.
 
-It was intense and needed a keen eye to stop the code turning into spaghetti. I believe we landed a really clean abstraction layer, so the team would be in a good place after we rolled off. I believe they did fully migrate, but I'm not certain.
+It was intense and needed a keen eye to stop the code turning into spaghetti. I believe we landed a really clean abstraction layer, so the team would be in a good place after we rolled off. I believe they did fully migrate, but I'm not certain. The client carried on building V2 and stripping back V1. A missed deadline put the board and investors in play, and we found a compromise that kept everyone reasonably happy while still delivering real value.

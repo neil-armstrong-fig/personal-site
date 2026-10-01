@@ -2,6 +2,8 @@
 title: "Rewriting point of sale for Android"
 summary: "Winning an Android point-of-sale rewrite with a one-week prototype, then shipping it on a locked-down payment device."
 careerPeriod: "2018–2019"
+role: "Technical owner of our side (second half)"
+team: "4 engineers on our side, 3 on the client's"
 sortOrder: 7
 technologies:
   - Kotlin
@@ -38,6 +40,8 @@ We demoed the prototype to the client and they reacted extremely positively to h
 We then turned the prototype into the real thing, working closely with product and design on the client's side. That meant processing real payments, capturing real signatures, calculating complex tax rules and talking to a comprehensive backend built for the iOS app. Tax rules varied by US state and even by item, so the backend payload described them and we had to parse and apply them. Thankfully the backend was extremely easy to work with. We asked for some changes and kept up with constant changes made for the iOS build.
 
 I was part of the team from the start and led specific areas: item selection, the transparency effects, payment and tax, the Clover integration and printing. There were four of us on our side and three on the client's, with a separate client-side lead for the whole project. Later I became team lead for our side.
+
+Features came from the client's product and engineering leads, but we held full technical ownership of implementation. How to build it, the testing strategy and how we proved it was correct were ours to decide.
 
 ## Building it better
 

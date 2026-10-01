@@ -15,7 +15,7 @@ export async function assertMediaUploaded(html: string, route: string): Promise<
 
     if (!response.ok) {
       throw new Error(
-        `${route} references ${url}, which returned ${response.status}. Upload it to R2 (see AGENTS.md).`,
+        `${route} references ${url}, which returned ${response.status}. Upload it to R2 (see webapp/src/content/trip/AGENTS.md).`,
       );
     }
   }

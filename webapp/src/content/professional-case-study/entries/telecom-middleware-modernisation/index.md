@@ -2,6 +2,8 @@
 title: "Modernising telecom middleware"
 summary: "Four products for one of Canada's largest telecoms, and the testing culture that made them safe to change."
 careerPeriod: "2015–2018"
+role: "Technical lead (towards the end)"
+team: "Led 3 engineers from a tech point of view"
 sortOrder: 8
 technologies:
   - Java
@@ -18,6 +20,8 @@ seoDescription: "An anonymised case study about building a mobile homepage, an A
 From 2015 to 2018 I was a core member of our engagement with one of the largest telecom providers in Canada, and towards the end I became its effective lead. Below are the key deliveries. I was also closely involved in mentoring and delivery on the others, even when I wasn't writing the day-to-day code.
 
 Most of it was Java, with a lot of tools around it. All of it carried a lot of traffic and none of it was allowed to fall over.
+
+In the last stretch I led three other engineers from a tech point of view being the longest serving employee on the engagement, though I was still a relatively junior engineer myself. Delivery, deployments and approach were mine. The client chose Java, the server technology and where it ran, so my say was in how it was deployed. We also set it up on our own Jenkins instance for CI tests.
 
 ## A homepage for every mobile device
 

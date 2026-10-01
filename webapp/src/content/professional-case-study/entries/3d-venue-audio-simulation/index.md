@@ -2,6 +2,8 @@
 title: "Simulating sound in 3D venues"
 summary: "Rebuilding an extremely old venue-modelling tool in TypeScript, React, and Electron, with a declarative 3D layer, until Covid cancelled it close to completion."
 careerPeriod: "2020–2021"
+role: "Senior engineer"
+team: "About 8 people, with mentoring"
 sortOrder: 6
 technologies:
   - TypeScript
@@ -19,6 +21,8 @@ seoDescription: "An anonymised case study about rebuilding pro-audio venue simul
 For a global professional-audio manufacturer, we rebuilt an extremely old tool for modelling sound pressure level (SPL) in 3D venues. We did it from the ground up, alongside an installation partner. The venue editor, speaker placement and SPL display all worked, and speaker arrays were starting to render in 3D. Then Covid made gigs and concerts uncertain and the project was cancelled close to completion. It turned out to be the wrong call, who knew.
 
 I was there from the start of 2020 and stayed on after the cancellation to tie off loose ends, until near the end of the year. The most useful thing I took away was how I'd structure the next one.
+
+I was a senior engineer rather than a lead, on a team of about eight, with mentoring and some one-to-ones. I owned the approach to 3D modelling and abstraction, deployments and Electron bundling, developer experience and testing, and I was a key player on the difficult maths of rotating 2D planes in 3D space.
 
 ## The problem
 
@@ -63,7 +67,7 @@ With the 3D layer behaving like normal React, the rest of the team could focus o
 
 Acceptance testing wasn't part of my thinking on this project. We wrote a lot of unit tests and a few lightweight Cypress tests where we could. Electron made UI tests pretty difficult.
 
-Covid was the stated reason for the cancellation. The code was archived and the team moved on. There was talk of starting again once the pandemic eased, but the budget never came back, partly because of Covid.
+Covid was the stated reason for the cancellation. The code was archived and the team moved on. There was talk of starting again once the pandemic eased, but the budget never came back, partly because of Covid. That leaves the client on extremely old software that doesn't work with the new signal processing.
 
 The last 20% was still to come, and it always takes longer than anyone expects (the classic 80/20 rule). What I'd do differently is what I did on the next one:
 
