@@ -96,6 +96,24 @@ it("rejects a token Cloudflare does not accept", async () => {
   expect(services.deliver).not.toHaveBeenCalled();
 });
 
+it("logs a delivery failure without the error text, which can quote the recipient address", async () => {
+  const logged = vi.spyOn(console, "error").mockImplementation(() => undefined);
+  fakeServices({
+    deliver: vi.fn(async () => {
+      throw new Error("destination address not verified: owner@example.org");
+    }),
+  });
+
+  await handleContactRequest(post(validForm()));
+
+  expect(logged).toHaveBeenCalledTimes(1);
+  // `String` rather than JSON, which would render an Error as `{}` and hide its text.
+  const loggedText = logged.mock.calls.flat().map(String).join(" ");
+
+  expect(loggedText).toContain("Contact message delivery failed");
+  expect(loggedText).not.toContain("owner@example.org");
+});
+
 it("answers 502 when delivery fails", async () => {
   fakeServices({
     deliver: vi.fn(async () => {

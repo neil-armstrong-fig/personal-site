@@ -65,12 +65,21 @@ export async function handleContactRequest(request: Request): Promise<Response> 
   try {
     await deliverContactMessage(contactMessageValidation.message);
   } catch (error) {
-    console.error("Contact message delivery failed", error);
+    // Log what failed, never the error text: it can quote the recipient address.
+    console.error("Contact message delivery failed", errorName(error));
 
     return respond({ok: false}, 502, headers);
   }
 
   return respond({ok: true}, 200, headers);
+}
+
+function errorName(error: unknown): string {
+  if (error instanceof Error) {
+    return error.name;
+  }
+
+  return "UnknownError";
 }
 
 async function readForm(request: Request): Promise<FormData | undefined> {

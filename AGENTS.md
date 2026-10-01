@@ -6,6 +6,11 @@ This is the Astro/TypeScript personal website for the site owner (“the develop
 
 - Read `WRITEUP-ADVICE.md` before drafting, reviewing, or restructuring any trip story, case study, or project
   write-up; it holds the readability research behind the trip-chapter threshold below.
+- Read `SETUP-FROM-SCRATCH.md` before changing anything that lives outside the code: Cloudflare (DNS, R2, the Worker,
+  Turnstile, Email Routing, tokens), GitHub settings and secrets, workflow triggers, or local-only files. It catalogues
+  what was created by hand, what is automated, and the order to rebuild it. **Update it in the same pass as any such
+  change** (a new resource, secret, DNS record, bucket setting, workflow or deployment step), and never put an account ID,
+  zone ID, token, secret or personal address in it.
 - Do not reinterpret the site as an online CV, recruiting landing page, cycling-only site, or astronaut-themed novelty.
 - Software is the primary content; cycling is a substantial secondary section.
 - The public positioning is “Software architect and developer in Belfast.”
@@ -632,5 +637,5 @@ Update `AGENTS.md` when any of the following becomes concrete:
 - Content schema invariants
 - Image-processing workflow
 - Copy/style guidance discovered during review
-- CI and deployment details
+- CI and deployment details, and any infrastructure or secret that exists outside the code (`SETUP-FROM-SCRATCH.md`)
 - Any recurring failure mode or non-obvious project rule
