@@ -2,7 +2,7 @@
 title: "Simulating sound in 3D venues"
 summary: "Rebuilding an extremely old venue-modelling tool in TypeScript, React, and Electron, with a declarative 3D layer, until Covid cancelled it close to completion."
 careerPeriod: "2020–2021"
-role: "Senior engineer"
+role: "Senior engineer, promoted to principal during close-out"
 team: "About 8 people, with mentoring"
 sortOrder: 6
 technologies:
@@ -20,9 +20,9 @@ seoDescription: "An anonymised case study about rebuilding pro-audio venue simul
 
 For a global professional-audio manufacturer, we rebuilt an extremely old tool for modelling sound pressure level (SPL) in 3D venues. We did it from the ground up, alongside an installation partner. The venue editor, speaker placement and SPL display all worked, and speaker arrays were starting to render in 3D. Then Covid made gigs and concerts uncertain and the project was cancelled close to completion. It turned out to be the wrong call, who knew.
 
-I was there from the start of 2020 and stayed on after the cancellation to tie off loose ends, until near the end of the year. The most useful thing I took away was how I'd structure the next one.
+I was there from the start of 2020 and stayed on after the cancellation to tie off loose ends into early 2021. I was promoted to principal during that close-out. The most useful thing I took away was how I'd structure the next one.
 
-I was a senior engineer rather than a lead, on a team of about eight, with mentoring and some one-to-ones. I owned the approach to 3D modelling and abstraction, deployments and Electron bundling, developer experience and testing, and I was a key player on the difficult maths of rotating 2D planes in 3D space.
+For the main build I was a senior engineer rather than a lead, on a team of about eight, with mentoring and some one-to-ones. I owned the approach to 3D modelling and abstraction, deployments and Electron bundling, developer experience and testing, and I was a key player on the difficult maths of rotating 2D planes in 3D space.
 
 ## The problem
 

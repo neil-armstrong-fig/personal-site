@@ -22,6 +22,7 @@ zone ID, and `<inbox>` is the address contact messages are delivered to.
 | DNS: `www`, `janggi`           | CNAME to `neil-armstrong-fig.github.io`. `janggi` belongs to the separate Janggi repository and its own Pages deployment.                                                                                                                                                                                                      |
 | DNS: `media`, `contact`        | Proxied records created automatically by the R2 custom domain and the Worker custom domain. Do not create them by hand.                                                                                                                                                                                                        |
 | DNS: mail                      | MX `route1`, `route2` and `route3.mx.cloudflare.net` and the SPF TXT `v=spf1 include:_spf.mx.cloudflare.net ~all`, added by enabling Email Routing. Enabling it affects any other mail on the domain.                                                                                                                          |
+| DNS: Google Search Console     | TXT record generated when the Search Console domain property was verified. Keep the value in Cloudflare, not in this file.                                                                                                                                                                                                     |
 | R2 bucket                      | `personal-site-videos`. Custom domain `media.neilarmstrong.dev` (active). The public `r2.dev` URL is **disabled**. CORS: GET and HEAD from `https://neilarmstrong.dev` and `http://localhost:4321` (the Astro dev server). Minimum TLS 1.2. Lifecycle: the default rule that aborts incomplete multipart uploads after 7 days. |
 | R2 S3 credentials              | An R2 API token (Object Read & Write on the bucket), used by rclone only. Stored in the local `~/.config/rclone/rclone.conf` as the remote `cloudflare-personal-site-videos`, whose `endpoint` is `https://<account-id>.r2.cloudflarestorage.com` (no bucket path).                                                            |
 | Worker `personal-site-contact` | Created by the first `wrangler deploy` from `workers/contact-worker/`. Custom domain `contact.neilarmstrong.dev`; `workers.dev` and preview URLs are off (`wrangler.jsonc`). Observability is off.                                                                                                                             |
@@ -40,6 +41,12 @@ zone ID, and `<inbox>` is the address contact messages are delivered to.
 - **No other repository secrets.** The Strava credentials live only in the local `.env` (the sync runs locally), and
   `CONTACT_TO_ADDRESS` and `TURNSTILE_SECRET` live only on the Worker. Copies of all five were deleted from GitHub on
   2026-10-01 because no workflow read them. The Turnstile secret can be read again in the Turnstile dashboard.
+
+### Google Search Console (created by hand)
+
+- The `neilarmstrong.dev` domain property is verified through the Cloudflare DNS record above.
+- `https://neilarmstrong.dev/sitemap-index.xml` is submitted. Search generative AI inclusion is an account setting.
+  Keep it set to **Include my site's links and content in Search generative AI features**.
 
 ### Local only (not in git)
 
@@ -61,7 +68,7 @@ zone ID, and `<inbox>` is the address contact messages are delivered to.
 | Push to `main` that changes `workers/contact-worker/src/**`, its `wrangler.jsonc` or `shared/src/**`, or a manual run | `deploy-contact-worker.yml` | The `shared` and Worker checks, then `wrangler deploy`, which also applies the custom-domain route from `wrangler.jsonc`. Secrets are untouched.                                            |
 
 **Not automated, always by hand:** uploading videos to R2 (`rclone copy`, dry run first), the bucket's domain and CORS,
-every secret, Turnstile, Email Routing, DNS beyond the automatic records, the Strava sync and media
+every secret, Turnstile, Email Routing, DNS beyond the automatic records, Search Console, the Strava sync and media
 scripts, and photo and video processing. Pushing the site does not publish the Worker unless its source changed.
 
 ## Rebuilding from nothing
@@ -70,22 +77,25 @@ scripts, and photo and video processing. Pushing the site does not publish the W
 2. **GitHub.** Create the repository, push the code, and in Settings → Pages choose GitHub Actions as the source, set the
    custom domain and enforce HTTPS. Add the four apex A records and the `www` CNAME. Do the same for the Janggi
    repository if it is being rebuilt.
-3. **R2.** Create the bucket `personal-site-videos`, attach the custom domain `media.neilarmstrong.dev`, add the CORS
+3. **Google Search Console.** Create the `neilarmstrong.dev` domain property, add its generated verification record to
+   Cloudflare DNS, submit `https://neilarmstrong.dev/sitemap-index.xml`, and keep Search generative AI inclusion set to
+   **Include my site's links and content in Search generative AI features**. Never copy the verification value here.
+4. **R2.** Create the bucket `personal-site-videos`, attach the custom domain `media.neilarmstrong.dev`, add the CORS
    rules from the table, and leave the `r2.dev` URL disabled. Create an R2 API token and the rclone remote. Check each
    setting afterwards with `wrangler r2 bucket domain list`, `cors list`, `dev-url get` and `lifecycle list`.
-4. **Local files.** Restore `private-source/` and `.env`. Re-create the videos with `pnpm trip:videos <trip-slug>`, then
+5. **Local files.** Restore `private-source/` and `.env`. Re-create the videos with `pnpm trip:videos <trip-slug>`, then
    upload them with the `rclone copy ... --dry-run` and real copy steps in `webapp/src/content/trip/AGENTS.md`. **The production build fails until
    every clip exists in R2.**
-5. **Email and Turnstile.** Enable Email Routing and verify `<inbox>` as a destination. Create the Turnstile widget for
+6. **Email and Turnstile.** Enable Email Routing and verify `<inbox>` as a destination. Create the Turnstile widget for
    `neilarmstrong.dev` and put its site key in `webapp/src/site/SiteConfig.ts`.
-6. **Worker.** Run `wrangler login`, then `pnpm run deploy` from `workers/contact-worker/`. Set `TURNSTILE_SECRET` and
+7. **Worker.** Run `wrangler login`, then `pnpm run deploy` from `workers/contact-worker/`. Set `TURNSTILE_SECRET` and
    `CONTACT_TO_ADDRESS` with `wrangler secret put`, and confirm `contact.neilarmstrong.dev` shows as a Custom Domain on
    the Worker.
-7. **CI.** Create the Cloudflare API token, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository secrets,
+8. **CI.** Create the Cloudflare API token, add `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repository secrets,
    and push to `main`.
-8. **Abuse protection.** Nothing to set up: there is no rate-limit rule (see the table). Add one only if abuse appears.
-9. **Check.** Open the live contact page, send a message, and confirm it arrives with the visitor as `Reply-To`.
-   Check `https://neilarmstrong.dev/`, `https://janggi.neilarmstrong.dev/` and a trip video URL on the media origin.
+9. **Abuse protection.** Nothing to set up: there is no rate-limit rule (see the table). Add one only if abuse appears.
+10. **Check.** Open the live contact page, send a message, and confirm it arrives with the visitor as `Reply-To`.
+    Check `https://neilarmstrong.dev/`, `https://janggi.neilarmstrong.dev/` and a trip video URL on the media origin.
 
 ## Privacy notes
 

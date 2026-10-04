@@ -1,7 +1,7 @@
 ---
 title: "Getting a platform modernisation back on track"
 summary: "Recovering two struggling teams on a time-critical PHP modernisation, with a walkable rough frontend and a proxy between the old API and the new services."
-careerPeriod: "2025–2026"
+careerPeriod: "2024–2025"
 role: "Lead engineer"
 team: "Two teams in turn: leading a frontend of 3 engineers, then a backend of 4 engineers, all line-managed"
 sortOrder: 3
@@ -17,7 +17,7 @@ seoDescription: "An anonymised case study about recovering two struggling teams 
 
 ## Two struggling teams, one deadline
 
-I joined a full rewrite of a legacy PHP application at a UK deals business part of the way through, and took on two teams in turn. The first was the frontend team building the signup and renewal journey. It was judged unlikely to make its delivery date. Under my leadership we delivered the whole journey by the year-end deadline, in December 2025, two months after I joined. The second was a backend team that had already missed its own deadline. I cleared its half-finished work, fixed its delivery pipeline and built a proxy layer. The new services could go live while the old API handled everything that wasn't ready. The client asked its board and investors for an extension, and I had to recover the backend in the new year. That release shipped at the end of March 2026.
+I joined a full rewrite of a legacy PHP application at a UK deals business part of the way through in November 2024, and took on two teams in turn. The first was the frontend team building the signup and renewal journey. It was judged unlikely to make its delivery date. Under my leadership we delivered the whole journey by the year-end deadline, in December 2024, about two months after I joined. The second was a backend team that had already missed its own deadline. I cleared its half-finished work, fixed its delivery pipeline and built a proxy layer. The new services could go live while the old API handled everything that wasn't ready. The client asked its board and investors for an extension, and I had to recover the backend in the new year. That release shipped at the end of March 2025.
 
 ## Coming in part-way
 
@@ -70,6 +70,6 @@ As with the frontend, I created an extremely lightweight end-to-end flow in the 
 
 It became clear that other parts of the product wouldn't be ready in time. To hit the extended deadline we built a proxy layer. Areas that could use the new way of working went to the new "V2" services and everything else went to the old API. Environment variables decided the routing, which also made it easy to A/B test per environment.
 
-Moving everything off the old system needed a data migration, because the PHP database differed from the DynamoDB used in V2. I wasn't part of that migration as the contract ended first, but I laid the foundation for it. The backend had missed the year-end deadline and the client asked its board and investors for an extension. Recovering it in the new year fell to me, and the proxy shipped at the end of March 2026. Testing was a mix of unit and manual tests.
+Moving everything off the old system needed a data migration, because the PHP database differed from the DynamoDB used in V2. I wasn't part of that migration as the contract ended first, but I laid the foundation for it. The backend had missed the year-end deadline and the client asked its board and investors for an extension. Recovering it in the new year fell to me, and the proxy shipped at the end of March 2025. Testing was a mix of unit and manual tests.
 
 It was intense and needed a keen eye to stop the code turning into spaghetti. I believe we landed a really clean abstraction layer, so the team would be in a good place after we rolled off. I believe they did fully migrate, but I'm not certain. The client carried on building V2 and stripping back V1. A missed deadline put the board and investors in play, and we found a compromise that kept everyone reasonably happy while still delivering real value.

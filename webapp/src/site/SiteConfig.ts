@@ -31,11 +31,13 @@ interface ContactFormConfiguration {
 }
 
 interface SiteConfiguration {
+  alternateSiteNames: readonly string[];
   contactForm: ContactFormConfiguration;
   description: string;
   identity: SiteIdentity;
   navigation: readonly NavigationItem[];
   origin: string;
+  siteName: string;
   socialLinks: SiteSocialLinks;
   title: string;
 }
@@ -50,6 +52,7 @@ const navigation: readonly NavigationItem[] = [
 ];
 
 export const siteConfig = {
+  alternateSiteNames: ["Neil Armstrong", "neilarmstrong.dev"],
   contactForm: {
     endpoint: "https://contact.neilarmstrong.dev/",
     turnstileSiteKey: "0x4AAAAAAFKqAHuA_va64uY7",
@@ -63,6 +66,7 @@ export const siteConfig = {
   },
   navigation,
   origin: "https://neilarmstrong.dev",
+  siteName: "Neil Armstrong Belfast",
   socialLinks: {
     linkedIn: {label: "LinkedIn", href: "https://www.linkedin.com/in/neil-armstrong-dev/"},
     github: {label: "GitHub", href: "https://github.com/neil-armstrong-fig"},

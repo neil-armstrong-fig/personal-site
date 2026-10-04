@@ -6,6 +6,12 @@ import {siteIdentifiers} from "@src/site/structured-data/SiteIdentifiers";
 it("describes the website without a search action", () => {
   const node = buildWebSiteNode();
 
-  expect(node).toMatchObject({"@type": "WebSite", "@id": siteIdentifiers.webSite, url: "https://neilarmstrong.dev/"});
+  expect(node).toMatchObject({
+    "@type": "WebSite",
+    "@id": siteIdentifiers.webSite,
+    url: "https://neilarmstrong.dev/",
+    name: "Neil Armstrong Belfast",
+    alternateName: ["Neil Armstrong", "neilarmstrong.dev"],
+  });
   expect(node).not.toHaveProperty("potentialAction");
 });
