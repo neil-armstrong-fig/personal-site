@@ -70,7 +70,7 @@ export function baseConfig({tsconfigRootDir, allowedPackages = []} = {}) {
       rules: {
         eqeqeq: ["error", "smart"],
         "no-multiple-empty-lines": ["error", {max: 1}],
-        "no-console": ["warn", {allow: ["warn", "error"]}],
+        "no-console": ["warn", {allow: ["info", "warn", "error"]}],
         "@typescript-eslint/consistent-type-imports": "error",
         "@typescript-eslint/explicit-function-return-type": ["error", {allowExpressions: true}],
         "@typescript-eslint/explicit-module-boundary-types": ["error", {allowArgumentsExplicitlyTypedAsAny: true}],

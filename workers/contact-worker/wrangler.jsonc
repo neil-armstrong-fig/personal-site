@@ -10,8 +10,13 @@
   // No `destination_address`: the recipient is the CONTACT_TO_ADDRESS secret, so it never enters git.
   // Email Routing still only delivers to an address verified in the dashboard.
   "send_email": [{"name": "CONTACT_MAIL"}],
-  // No stored logs: nothing about a visitor (address, message, IP) is kept by the Worker.
-  "observability": {"enabled": false},
+  // Persist one privacy-safe outcome per request, without Cloudflare's request-metadata invocation logs or traces.
+  "observability": {
+    "enabled": true,
+    "redact_query_string": true,
+    "logs": {"enabled": true, "head_sampling_rate": 1, "invocation_logs": false, "persist": true},
+    "traces": {"enabled": false},
+  },
   "vars": {
     "ALLOWED_ORIGIN": "https://neilarmstrong.dev",
     "CONTACT_FROM_ADDRESS": "contact@neilarmstrong.dev",

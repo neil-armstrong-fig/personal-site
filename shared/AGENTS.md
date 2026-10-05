@@ -10,6 +10,8 @@ answers with. The webapp's form and `contact-worker` both import it, so the two 
 where a thing is a contract between packages, not wherever code happens to repeat.
 
 - **Change a lint, format, tsconfig or vitest rule here, not in a package.** Packages extend these files.
+- `console.info` is reserved for deliberate structured operational events. `console.log` and `console.debug` remain
+  disallowed by the shared lint rule.
 - `src/` is consumed as raw TypeScript through the `exports` map. There is no build step; do not add one.
 - Anything here is imported as `@personal-site/shared/<path>`. Within `shared`, one folder reaches another by that same
   name and a sibling as `./X`; `../` is refused, and an `@src` alias cannot work in raw source another package compiles.

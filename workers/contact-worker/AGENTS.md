@@ -8,7 +8,10 @@ origin, the honeypot and the field limits, verifies the Turnstile token, and sen
 
 - **Secrets are Worker secrets, never in git, the page or `wrangler.jsonc`:** `CONTACT_TO_ADDRESS` and
   `TURNSTILE_SECRET`, set once with `wrangler secret put`.
-- **The Worker stores nothing.** Do not log message contents or addresses.
+- Workers Logs retains one structured outcome for every request. Cloudflare invocation logs and traces stay disabled to
+  avoid persisting their full request metadata. Worker code logs only the outcome, method, status and an optional error
+  class. Never add URLs, headers, IPs, locations, origins, form fields or values, addresses, messages, Turnstile tokens,
+  secrets or exception messages.
 - Bindings and secrets come from the shared `workerEnvironment` (`src/env/WorkerEnvironment.ts`, the runtime's global
   `env`), not threaded through `fetch`.
 - `WorkerEnvironment.ts`, `ContactWorker.ts` and `DeliverContactMessage.ts` import `cloudflare:*` modules and so are
