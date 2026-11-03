@@ -14,6 +14,18 @@ export async function assertSitemaps(): Promise<void> {
     }
   }
 
+  const pageSitemap = await readFile(path.join(buildDirectory, "sitemap-0.xml"), "utf8");
+
+  for (const entry of pageSitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
+    const block = entry[1] ?? "";
+
+    if (!/<lastmod>\d{4}-\d{2}-\d{2}/.test(block)) {
+      throw new Error(
+        `Sitemap entry ${/<loc>([^<]*)<\/loc>/.exec(block)?.[1] ?? block} must say when the page last changed.`,
+      );
+    }
+  }
+
   const imageSitemap = await readFile(path.join(buildDirectory, "sitemap-images.xml"), "utf8");
 
   for (const match of imageSitemap.matchAll(/<image:loc>([^<]*)<\/image:loc>/g)) {

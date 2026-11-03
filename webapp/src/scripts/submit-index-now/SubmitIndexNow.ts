@@ -9,6 +9,9 @@ const KEY_FILE_NAME = "indexnow-key.txt";
 const INDEX_NOW_ENDPOINT = "https://api.indexnow.org/indexnow";
 const MAX_ATTEMPTS = 3;
 
+/** IndexNow wants the pages that changed, not the whole site, so only those the sitemap dates this recently go. */
+const CHANGED_WITHIN_MS = 2 * 24 * 60 * 60 * 1_000;
+
 await submitIndexNow();
 
 async function submitIndexNow(): Promise<void> {
@@ -23,7 +26,18 @@ async function submitIndexNow(): Promise<void> {
   sitemapUrl.searchParams.set("indexnow", Date.now().toString());
 
   const sitemapResponse = await fetchWithRetries(sitemapUrl, {cache: "no-store"});
-  const urlList = extractIndexNowUrls(await sitemapResponse.text(), origin.origin);
+  const urlList = extractIndexNowUrls(
+    await sitemapResponse.text(),
+    origin.origin,
+    dayOf(Date.now() - CHANGED_WITHIN_MS),
+  );
+
+  if (urlList.length === 0) {
+    process.stdout.write("No page changed recently, so there is nothing to tell IndexNow.\n");
+
+    return;
+  }
+
   const payload = buildIndexNowPayload({
     key,
     keyLocation: new URL(`/${KEY_FILE_NAME}`, origin),
@@ -61,6 +75,10 @@ async function fetchWithRetries(url: URL | string, init: RequestInit): Promise<R
   }
 
   throw lastError;
+}
+
+function dayOf(timestamp: number): string {
+  return new Date(timestamp).toISOString().slice(0, 10);
 }
 
 async function delay(milliseconds: number): Promise<void> {

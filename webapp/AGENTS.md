@@ -7,7 +7,7 @@ touching content, and `src/scripts/AGENTS.md` before touching a command-line scr
 
 Astro 7.3.4, TypeScript 6.0.3 strict (TypeScript 7 is deferred until Astro Check and typescript-eslint support it),
 Tailwind CSS 4.3.3, Leaflet 1.9.4 with `@types/leaflet` for lazy, read-only cycling maps, Node.js 24.21.0, Astro content
-collections for projects, anonymised case studies and trips, static output.
+collections for projects, professional case studies and trips, static output.
 
 Prefer static Astro components and build-time work. Do not add React, Vue, a CMS, a further server runtime, a database,
 or client-side state unless a concrete requirement justifies it and the developer approves the scope change. The contact
@@ -22,8 +22,8 @@ Run from the repository root; the root package forwards to `webapp/`. The generi
 - `pnpm type-check` — Astro and TypeScript validation
 - `pnpm build` — quality gate, production build, and built-output validation
 - `pnpm validate:build` — validate built links and essential SEO invariants in `webapp/dist/`
-- `pnpm indexnow:submit` — read the deployed canonical sitemap and notify IndexNow after a successful production
-  deployment; the public validation key is `webapp/public/indexnow-key.txt`
+- `pnpm indexnow:submit` — read the deployed canonical sitemap and notify IndexNow of the pages it dates in the last
+  two days, after a successful production deployment; the public validation key is `webapp/public/indexnow-key.txt`
 - `pnpm strava:sync` — pull activities with the credentials in `.env`, keep raw responses in `private-source/`,
   and write a coordinate-free `strava.json` snapshot plus privacy-trimmed `routes.json` into each trip folder
 - `pnpm strava:sync-media` — rate-limit and cache Strava activity photo lists and originals under
@@ -232,6 +232,10 @@ webapp/src/pages/cycling/
 - Link LinkedIn, GitHub, Strava, and Instagram through visible links and `sameAs`.
 - Use only truthful structured data that matches visible content.
 - Generate a canonical sitemap, cycling image sitemap, and `robots.txt`.
+- Every sitemap entry carries a `lastmod`: the day of the last commit to touch the route and content that draw the page
+  (`src/site/sitemap/`), never the build day, which would tell a crawler every page changed on every deploy. A new kind
+  of route needs a case in `SitemapSources.ts`, which throws on a page it cannot date, and `validate:build` fails on an
+  undated entry. The build job checks out the whole history (`fetch-depth: 0`), or every page would take one date.
 - `/llms.txt` is generated from `siteConfig` and the published case study and project collections
   (`src/pages/llms.txt.ts`), so it cannot drift; never hand-write it.
 - The About page's FAQ is one typed list (`about/_components/faq/FaqEntries.ts`) rendered visibly and emitted as

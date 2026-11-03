@@ -23,6 +23,7 @@ trustLockfile: false
 # optional @cloudflare/workerd-* platform package supplies the binary, verified by running it directly.
 # ffmpeg's platform package only runs chmod on a binary that ships executable, so its postinstall is denied.
 allowBuilds:
+  "@ffmpeg-installer/darwin-arm64": false
   "@ffmpeg-installer/linux-x64": false
   esbuild: false
   sharp: false

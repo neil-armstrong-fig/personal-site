@@ -17,7 +17,11 @@ jobs:
       group: ci-cd-${{ github.ref }}
       cancel-in-progress: true
     steps:
+      # The whole history, because the sitemap dates each page by the last commit that changed it
+      # (`webapp/src/site/sitemap/`); a one-commit checkout would date every page the same day.
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
 
       - uses: pnpm/action-setup@v6
 

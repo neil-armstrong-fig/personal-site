@@ -80,6 +80,7 @@ Adopt the code-quality standards from the [Janggi repository](https://github.com
   enable all build scripts as a shortcut.
 - `esbuild` and `sharp` install scripts are denied: their optional platform packages provide the
   binaries, verified through the production build and a direct Sharp image operation.
+- ffmpeg's Linux x64 and macOS ARM64 install scripts are denied: they only run chmod on binaries that ship executable.
 - Pin `pnpm@12.3.4` in `packageManager` and commit `pnpm-lock.yaml`.
 - CI installs with `pnpm install --frozen-lockfile`.
 - ESLint flat config covers JavaScript, TypeScript, and Astro and runs with `--max-warnings=0`.

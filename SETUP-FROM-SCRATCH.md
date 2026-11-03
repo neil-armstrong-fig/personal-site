@@ -48,6 +48,16 @@ zone ID, and `<inbox>` is the address contact messages are delivered to.
 - `https://neilarmstrong.dev/sitemap-index.xml` is submitted. Search generative AI inclusion is an account setting.
   Keep it set to **Include my site's links and content in Search generative AI features**.
 
+### Naver Search Advisor (created by hand)
+
+- `https://neilarmstrong.dev` is registered in Naver Search Advisor and verified by the HTML file method: the file
+  Naver generates is committed as `webapp/public/naver<hex>.html`, served from the site root. It is not a page, so
+  `validate:build` leaves it out of the page checks. Naver registers per host, so `janggi.neilarmstrong.dev` is a
+  separate entry.
+- `https://neilarmstrong.dev/sitemap-index.xml` is submitted.
+- Bing Webmaster Tools has the site with its sitemaps submitted. IndexNow reaches Bing and Naver with one ping, and
+  Google does not take part.
+
 ### Local only (not in git)
 
 - **`.env`** in the repository root: the Strava credentials. The refresh token rotates, and the sync script rewrites it.
@@ -80,6 +90,8 @@ scripts, and photo and video processing. Pushing the site does not publish the W
 3. **Google Search Console.** Create the `neilarmstrong.dev` domain property, add its generated verification record to
    Cloudflare DNS, submit `https://neilarmstrong.dev/sitemap-index.xml`, and keep Search generative AI inclusion set to
    **Include my site's links and content in Search generative AI features**. Never copy the verification value here.
+   Then register the site in Naver Search Advisor, download its HTML verification file into `webapp/public/`, deploy,
+   verify, and submit the same sitemap index.
 4. **R2.** Create the bucket `personal-site-videos`, attach the custom domain `media.neilarmstrong.dev`, add the CORS
    rules from the table, and leave the `r2.dev` URL disabled. Create an R2 API token and the rclone remote. Check each
    setting afterwards with `wrangler r2 bucket domain list`, `cors list`, `dev-url get` and `lifecycle list`.
