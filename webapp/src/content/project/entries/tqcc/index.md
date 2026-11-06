@@ -18,7 +18,7 @@ seoDescription: "How Neil Armstrong built the Titanic Quarter Cycling Club websi
 
 ## A club website built around the first ride
 
-TQCC is the website for Titanic Quarter Cycling Club in Belfast. It lists the weekly group rides at five pace levels, the annual events, the newsletters and how to join.
+TQCC is the website for [Titanic Quarter Cycling Club](https://www.titanicquartercc.com/) in Belfast. It lists the weekly group rides at five pace levels, the annual events, the newsletters and how to join.
 
 The purpose is simple: get somebody out on the road with the club as quickly and easily as possible. The site puts the ride levels, the practical requirements, the taster rides and the contact details into one clear journey.
 
@@ -36,33 +36,33 @@ I built a credible first version over one weekend. Coding agents helped me go fa
 
 That meant more than writing new pages. I redesigned the route from first visit to first club ride. I built a visual system around the club's yellow, black and Giro-inspired pink. I also picked the hosting, set up the domain, rebuilt the search and sharing metadata, and added privacy-conscious analytics and automated quality checks.
 
-Hosting on GitHub Pages is free, **saving the club £62 a year**. The domain is now the only running cost.
+Hosting on [GitHub Pages](https://pages.github.com/) is free, **saving the club £62 a year**. The domain is now the only running cost.
 
 ## Clearer joining, current content, and lower costs
 
 - A website the club can actually update and improve.
-- Clear steps for joining: taster rides, insurance, Cycling Ireland licences, fees, the right ride group and how to prepare for a first ride.
+- Clear steps for joining: taster rides, insurance, [Cycling Ireland](https://www.cyclingireland.ie/) licences, fees, the right ride group and how to prepare for a first ride.
 - Current information on weekly rides, annual events and newsletters.
 - A miles or kilometres setting for anyone who struggles with the conversion 😉.
 
 ### Search evidence after the relaunch
 
-Search Console covers Google search performance. Google Analytics only measures visits from people who opt in:
+[Search Console](https://search.google.com/search-console/about) covers Google search performance. [Google Analytics](https://marketingplatform.google.com/about/analytics/) only measures visits from people who opt in:
 
 - Comparing Search Console's first and latest 28-day periods (3–30 April and 31 August–27 September), impressions rose 35% from 1,249 to 1,682. Average position improved from 6.64 to 5.81. Clicks fell from 214 to 152, but four seasonal “Lap the Lough” searches account for 32 of that 62-click drop. So I treat this as wider visibility, not traffic growth.
 - Over the same periods “Belfast cycling club” held steady at position 2.43 then 2.44. “Cycling clubs Belfast” improved from 1.67 to 1.20.
 - From 28 March to 27 September Google Analytics measured 1,693 visits. Search engines brought 1,163 of them, or 69%.
 
-The original homepage also had a recent-rides feed from Strava. When Strava withdrew the club-activities API in September 2026, I swapped it for the club’s member count and a clear link to Strava. Better than pretending the old feature still worked.
+The original homepage also had a recent-rides feed from [Strava](https://www.strava.com/). When Strava withdrew the club-activities API in September 2026, I swapped it for the club’s member count and a clear link to Strava. Better than pretending the old feature still worked.
 
 ## Keeping publishing simple and dependable
 
 - **Content as structured Markdown.** Events, rides, pace groups and newsletters are content collections with typed schemas. Malformed content fails the build instead of reaching the site.
-- **Astro and static GitHub Pages output.** The site is built ahead of time and deployed by GitHub Actions. Recent deployments take about a minute, and there is no application server to host or secure.
+- **[Astro](https://astro.build/) and static GitHub Pages output.** The site is built ahead of time and deployed by [GitHub Actions](https://github.com/features/actions). Recent deployments take about a minute, and there is no application server to host or secure.
 - **Build-time API access.** Strava club data is fetched during the build with credentials held as GitHub secrets. Those keys never reach a visitor’s browser.
-- **Optional editing UI.** Sveltia CMS gives non-technical editors a visual way into the Markdown, and the repository stays the source of truth.
-- **Automated checks.** Type checking and production builds run before every deployment. Lighthouse audits performance, accessibility, best practices and SEO separately.
-- **Search and sharing.** Reusable metadata, organisation and event structured data, careful sitemap exclusions and IndexNow submissions help search engines find and understand new pages.
+- **Optional editing UI.** [Sveltia CMS](https://github.com/sveltia/sveltia-cms) gives non-technical editors a visual way into the Markdown, and the repository stays the source of truth.
+- **Automated checks.** Type checking and production builds run before every deployment. [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview) audits performance, accessibility, best practices and SEO separately.
+- **Search and sharing.** Reusable metadata, organisation and event structured data, careful sitemap exclusions and [IndexNow](https://www.indexnow.org/) submissions help search engines find and understand new pages.
 - **Coding agents with human review.** An agent can draft a small change in seconds. Review and the one-minute checked deployment are still separate steps.
 
 ## From search result to a suitable first ride

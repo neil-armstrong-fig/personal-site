@@ -63,6 +63,13 @@ zone ID, and `<inbox>` is the address contact messages are delivered to.
 - **`.env`** in the repository root: the Strava credentials. The refresh token rotates, and the sync script rewrites it.
 - **`private-source/`**: the CV, original photographs and videos, drafts and Strava caches. **The processed MP4s exist
   only in R2; `private-source/` holds the originals they are regenerated from, so keep it backed up.**
+- **CVs** live in `private-source/professional/CVs/` as HTML, with PDFs generated manually in Firefox. The two main
+  filenames have no version suffix. Previous versions live in `archived/` beneath that folder, with the archive date
+  appended as `YYYY-MM-DD` for comparison.
+- **Client review exports** stay beneath `private-source/professional/`, separate from previous review files. Render
+  drafts with the current Astro article layout in a temporary copy, then embed styles, fonts and assets for offline
+  HTML. Compare against the previous review copy, and export clean Markdown alongside it. These are private files,
+  never public routes or deployment inputs.
 - **A Strava API application** (strava.com/settings/api) with the `activity:read` scope.
 - **The rclone remote** described above.
 - **A Wrangler login** (`wrangler login`) for deploying the Worker by hand. CI uses the token instead.

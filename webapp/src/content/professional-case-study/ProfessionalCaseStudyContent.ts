@@ -1,4 +1,14 @@
+import type {ImageMetadata} from "astro";
+import type {SchemaContext} from "astro:content";
 import {z} from "astro/zod";
+
+interface ProfessionalCaseStudyDiagram {
+  image: ImageMetadata;
+  mobileImage: ImageMetadata;
+  imageDark?: ImageMetadata;
+  mobileImageDark?: ImageMetadata;
+  alt: string;
+}
 
 interface ProfessionalCaseStudyContent {
   title: string;
@@ -12,9 +22,12 @@ interface ProfessionalCaseStudyContent {
   draft: boolean;
   seoTitle?: string;
   seoDescription: string;
+  diagram?: ProfessionalCaseStudyDiagram;
 }
 
-export function createProfessionalCaseStudyContentSchema(): z.ZodType<ProfessionalCaseStudyContent, unknown> {
+export function createProfessionalCaseStudyContentSchema({
+  image,
+}: SchemaContext): z.ZodType<ProfessionalCaseStudyContent, unknown> {
   const requiredText = z.string().trim().min(1);
 
   return z.object({
@@ -29,5 +42,14 @@ export function createProfessionalCaseStudyContentSchema(): z.ZodType<Profession
     draft: z.boolean(),
     seoTitle: requiredText.optional(),
     seoDescription: requiredText,
+    diagram: z
+      .object({
+        image: image(),
+        mobileImage: image(),
+        imageDark: image().optional(),
+        mobileImageDark: image().optional(),
+        alt: requiredText,
+      })
+      .optional(),
   });
 }

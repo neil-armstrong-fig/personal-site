@@ -13,7 +13,6 @@ it("selects homepage case studies in their explicit order without changing the i
   expect(selectHomepageCaseStudies(caseStudies).map(caseStudy => caseStudy.id)).toEqual([
     "new-product",
     "new-platform",
-    "transformation",
   ]);
   expect(caseStudies.map(caseStudy => caseStudy.id)).toEqual([
     "latest",

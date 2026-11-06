@@ -1,0 +1,59 @@
+---
+import {render} from "astro:content";
+import type {CollectionEntry} from "astro:content";
+
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import ArticleLayout from "@src/pages/_components/article-layout/ArticleLayout.astro";
+import ArticleDiagram from "@src/pages/_components/article-diagram/ArticleDiagram.astro";
+import {buildBreadcrumbListNode} from "@src/pages/_components/breadcrumb-list-node/BreadcrumbListNode";
+import BlogPostCard from "@src/pages/_components/blog-post-card/BlogPostCard.astro";
+import {formatPostDate} from "@src/pages/_components/blog-post-date/FormatPostDate";
+import {buildBlogPostNode} from "./blog-post-node/BlogPostNode";
+
+interface Props {
+  post: CollectionEntry<"blogPosts">;
+  related: CollectionEntry<"blogPosts">[];
+}
+
+const {post, related} = Astro.props;
+const {title, summary, datePublished, dateModified, topics, seoTitle, seoDescription} = post.data;
+const path = `/blog/${post.id}/`;
+const {Content} = await render(post);
+---
+
+<ArticleLayout
+  title={seoTitle ?? `${title} | Neil Armstrong`}
+  description={seoDescription}
+  eyebrow="Software blog"
+  heading={title}
+  intro={summary}
+  structuredData={[
+    buildBlogPostNode({headline: title, description: seoDescription, path, datePublished, dateModified, topics}),
+    buildBreadcrumbListNode([
+      {name: "Software", path: "/software/"},
+      {name: title, path},
+    ]),
+  ]}
+>
+  <Fragment slot="meta">
+    <Eyebrow>
+      {formatPostDate(datePublished)} · {topics.join(" · ")}
+    </Eyebrow>
+  </Fragment>
+
+  <Fragment slot="figure">{post.data.diagram && <ArticleDiagram {...post.data.diagram} />}</Fragment>
+
+  <Content />
+
+  <section slot="after" class="mt-16" aria-labelledby="related-posts" hidden={related.length === 0}>
+    <h2 id="related-posts" class="text-[clamp(1.75rem,1.4rem+1.2vw,2.4rem)] tracking-[-0.03em]">
+      More posts
+    </h2>
+
+    <div class="grid gap-4 md:grid-cols-2">
+      {related.map(other => (
+        <BlogPostCard post={other} level={3} />
+      ))}
+    </div>
+  </section>
+</ArticleLayout>

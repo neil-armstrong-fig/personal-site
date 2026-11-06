@@ -6,5 +6,6 @@ export interface LlmsTextOptions {
   description: string;
   caseStudies: readonly LlmsLink[];
   projects: readonly LlmsLink[];
+  blogPosts: readonly LlmsLink[];
   profiles: readonly LlmsProfile[];
 }

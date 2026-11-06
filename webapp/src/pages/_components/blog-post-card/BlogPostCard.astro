@@ -1,0 +1,84 @@
+---
+import ThemedImage from "@src/pages/_components/themed-image/ThemedImage.astro";
+import type {CollectionEntry} from "astro:content";
+
+import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import {formatPostDate} from "@src/pages/_components/blog-post-date/FormatPostDate";
+import {COMPACT_CARD_IMAGE} from "@src/pages/_components/card-rail/CompactCardImage";
+
+type HeadingLevel = 2 | 3;
+
+interface Props {
+  post: CollectionEntry<"blogPosts">;
+  level?: HeadingLevel;
+  compact?: boolean;
+}
+
+const {post, level = 2, compact = false} = Astro.props;
+const Heading = `h${level}` as const;
+let imageWidths = [400, 800];
+let imageSizes = "(min-width: 60rem) 30rem, 100vw";
+if (compact) {
+  imageWidths = COMPACT_CARD_IMAGE.widths;
+  imageSizes = COMPACT_CARD_IMAGE.sizes;
+}
+const {title, summary, datePublished, topics, diagram} = post.data;
+---
+
+<article
+  class:list={[
+    "group relative flex h-full flex-col border border-line bg-paper transition duration-160 hover:-translate-y-1 hover:shadow-[0.4rem_0.4rem_0_var(--color-moss)] motion-reduce:transition-none motion-reduce:hover:transform-none",
+    !compact && "min-h-72 p-[clamp(1.5rem,4vw,3rem)]",
+    compact && "p-5 md:p-6",
+  ]}
+>
+  {diagram && (
+    <a
+      class:list={[
+        "block aspect-[16/10] shrink-0 overflow-hidden rounded-lg border border-line/20 bg-paper",
+        !compact && "mb-6",
+        compact && "mb-4",
+      ]}
+      href={`/blog/${post.id}/`}
+      tabindex="-1"
+    >
+      <ThemedImage
+        class="h-full w-full"
+        contain
+        src={diagram.image}
+        darkSrc={diagram.imageDark}
+        alt={diagram.alt}
+        widths={imageWidths}
+        sizes={imageSizes}
+        quality={90}
+      />
+    </a>
+  )}
+
+  <Eyebrow>{formatPostDate(datePublished)}</Eyebrow>
+
+  <Heading
+    class:list={[
+      !compact && "text-[clamp(1.75rem,1.4rem+1vw,2.4rem)]",
+      compact && "text-[1.35rem] leading-[1.2] md:text-[1.5rem]",
+    ]}
+  >
+    <a class="after:absolute after:inset-0" href={`/blog/${post.id}/`}>
+      {title}
+    </a>
+  </Heading>
+
+  <p class:list={["max-w-[34rem]", compact && "line-clamp-3"]}>{summary}</p>
+
+  <p class="mt-auto mb-4 font-bold text-copper">
+    Read the post
+    <span
+      class="ml-2 inline-block transition-transform group-hover:translate-x-1 motion-reduce:transition-none"
+      aria-hidden="true"
+    >
+      →
+    </span>
+  </p>
+
+  {!compact && <Eyebrow>{topics.join(" · ")}</Eyebrow>}
+</article>

@@ -13,6 +13,12 @@ technologies:
   - Gatling
 draft: false
 seoDescription: "An anonymised case study about building a mobile homepage, an Android widget, opt-in middleware, and an RCS proof of concept for a major Canadian telecom."
+diagram:
+  image: "./_assets/mobile-device-variety.png"
+  mobileImage: "./_assets/mobile-device-variety-mobile.png"
+  imageDark: "./_assets/mobile-device-variety-dark.png"
+  mobileImageDark: "./_assets/mobile-device-variety-mobile-dark.png"
+  alt: "A simple homepage reaches around 500,000 unique visitors daily across tiny WAP screens, keypad phones, old Android browsers, and iOS devices."
 ---
 
 ## Four products for one of Canada's largest telecoms
@@ -21,17 +27,17 @@ From 2015 to 2018 I was a core member of our engagement with one of the largest 
 
 Most of it was Java, with a lot of tools around it. All of it carried a lot of traffic and none of it was allowed to fall over.
 
-In the last stretch I led three other engineers from a tech point of view being the longest serving employee on the engagement, though I was still a relatively junior engineer myself. Delivery, deployments and approach were mine. The client chose Java, the server technology and where it ran, so my say was in how it was deployed. We also set it up on our own Jenkins instance for CI tests.
+In the last stretch I led three other engineers from a tech point of view being the longest serving employee on the engagement, though I was still a relatively junior engineer myself. Delivery, deployments and approach were mine. The client chose Java, the server technology and where it ran, so my say was in how it was deployed. We also set it up on our own [Jenkins](https://www.jenkins.io/) instance for CI tests.
 
 ## A homepage for every mobile device
 
-The first piece was the default homepage on the carrier's mobile devices, used by around half a million unique visitors a day. That figure comes from Google Analytics, so it's probably an undercount. Anyone blocking tracking wouldn't appear.
+The first piece was the default homepage on the carrier's mobile devices, used by around half a million unique visitors a day. That figure comes from [Google Analytics](https://marketingplatform.google.com/about/analytics/), so it's probably an undercount. Anyone blocking tracking wouldn't appear.
 
 The devices were the challenge. Some were WAP handsets with tiny screens, and many custom Android browsers were very old and badly supported. I rendered the pages as HTML from Java on the server, with JavaScript only where a device could take it, such as the app catalogues. That allowed great caching, so the homepage loaded extremely fast with minimal backend processing. Device detection showed an Android phone Android apps and an iPhone iOS apps where possible.
 
 The key experience was a Google search bar, and every search earned the client money. You can imagine that at over half a million users it was quite a decent revenue stream. I had to style it to match Google's own search bar using CSS old enough to work on those devices. In practice that meant tables, and sometimes no CSS at all. It looked simple but took a lot of testing on WAP devices, small screens and old browsers to get right. A side effect was that the pages were extremely fast, because there was so little to process.
 
-It ran as two load-balanced services. Rendering a simple page isn't much work, so we were well inside our performance limits. I still wrote Gatling load tests and ran them before the first production deployment, as evidence.
+It ran as two load-balanced services. Rendering a simple page isn't much work, so we were well inside our performance limits. I still wrote [Gatling](https://gatling.io/) load tests and ran them before the first production deployment, as evidence.
 
 ## An Android widget on every device
 
@@ -43,7 +49,7 @@ It was also on the Play Store, though I expect very few people installed it that
 
 New privacy legislation meant the carrier had to track whether each customer had opted in to personalised advertising across all its web services. I helped build the middleware that did it.
 
-It intercepted backend requests and identified the customer's phone number from the payload, then checked a local cache for their opt-in status. A customer who hadn't decided yet was redirected to an opt-in page, then sent back to the request they'd originally made. Postgres was the source of truth, with the cache in front so the check stayed quick.
+It intercepted backend requests and identified the customer's phone number from the payload, then checked a local cache for their opt-in status. A customer who hadn't decided yet was redirected to an opt-in page, then sent back to the request they'd originally made. [Postgres](https://www.postgresql.org/) was the source of truth, with the cache in front so the check stayed quick.
 
 This was the most heavily used piece, since it sat in front of many services. It was load balanced like the homepage, with more instances available. The services behind it could effectively be treated as black boxes in a pipeline, so they were fairly isolated from it. Our tests extensively covered the behaviour we delivered, and the client validated the rest from a legal and compliance point of view.
 
@@ -53,9 +59,9 @@ The last piece was an early proof of concept for Rich Communication Services (RC
 
 ## Bringing engineering practices into a legacy estate
 
-Around all four pieces the more lasting change was cultural. The client's other projects, which we worked on and alongside, had no tests, manual deployments, no linting, hard-to-follow code and long release cycles. We brought test-driven development, thorough test coverage and integration testing, plus linting and CI/CD deployments. Some projects were on Java 7 with shims to give them Java 8 features such as lambdas, and some used Lombok.
+Around all four pieces the more lasting change was cultural. The client's other projects, which we worked on and alongside, had no tests, manual deployments, no linting, hard-to-follow code and long release cycles. We brought test-driven development, thorough test coverage and integration testing, plus linting and CI/CD deployments. Some projects were on Java 7 with shims to give them Java 8 features such as lambdas, and some used [Lombok](https://projectlombok.org/).
 
-The effect was a dramatic drop in our lead time to release. The client tracked bugs in Bugzilla, and our releases were such high quality that we were rarely mentioned in it.
+The effect was a dramatic drop in our lead time to release. The client tracked bugs in [Bugzilla](https://www.bugzilla.org/), and our releases were such high quality that we were rarely mentioned in it.
 
 ## What stayed with me
 

@@ -15,6 +15,12 @@ technologies:
 draft: false
 seoTitle: "Replacing a legacy document builder | Software case study"
 seoDescription: "How I helped replace an end-of-life legal-document editor with a React and TypeScript rebuild in the summer of 2025, focusing on XML parsing and editor performance."
+diagram:
+  image: "./_assets/editor-performance-overrides.png"
+  mobileImage: "./_assets/editor-performance-overrides-mobile.png"
+  imageDark: "./_assets/editor-performance-overrides-dark.png"
+  mobileImageDark: "./_assets/editor-performance-overrides-mobile-dark.png"
+  alt: "Investigate the editor library, override unnecessary checks, and compare performance and behaviour with the overrides switched on and off."
 ---
 
 ## An end-of-life editor, and a contract at risk
@@ -25,7 +31,7 @@ That caused two problems. Few people knew how to develop for the framework, so t
 
 ## Why we were brought in
 
-The client was rebuilding the product in React and TypeScript, and the team had made great progress before we joined. But it was an extremely complex space and the deadline was a few short months away, in the summer of 2025.
+The client was rebuilding the product in [React](https://react.dev/) and [TypeScript](https://www.typescriptlang.org/), and the team had made great progress before we joined. But it was an extremely complex space and the deadline was a few short months away, in the summer of 2025.
 
 The document format was completely bespoke XML. A separate template editor created the template data. The document editor then added the specifics: numbered entry points and "bookmarks" where a user could add text. A finished document had to look and feel like its template but still allow overrides. The format was built for the old editor, so it carried metadata that needed changing and plenty of data nobody needed any more. The editor also had to parse changes back into the format constantly so auto-save could persist them.
 

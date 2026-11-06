@@ -14,7 +14,7 @@ function isCurrent(href: string, pathname: string): boolean {
 }
 ---
 
-<details class="group relative md:[&::details-content]:[content-visibility:visible]">
+<details class="group relative md:[&::details-content]:[content-visibility:visible]" data-site-navigation>
   <summary class="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-sm border border-line px-3 py-2 text-[0.8rem] font-bold tracking-[0.06em] text-ink uppercase group-open:bg-fill-ink group-open:text-on-fill md:hidden [&::-webkit-details-marker]:hidden">
     <span>Menu</span>
 
@@ -68,3 +68,40 @@ function isCurrent(href: string, pathname: string): boolean {
     </ul>
   </nav>
 </details>
+
+<script>
+  // Enhancement only: without JavaScript the menu still opens and closes with its button.
+  initSiteNavigation();
+
+  function initSiteNavigation(): void {
+    const disclosure = document.querySelector<HTMLDetailsElement>("[data-site-navigation]");
+    const summary = disclosure?.querySelector<HTMLElement>("summary");
+
+    if (disclosure === null || disclosure === undefined || summary === null || summary === undefined) {
+      return;
+    }
+
+    closeOnLeave(disclosure, summary);
+  }
+
+  function closeOnLeave(disclosure: HTMLDetailsElement, summary: HTMLElement): void {
+    disclosure.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        disclosure.open = false;
+      });
+    });
+
+    document.addEventListener("click", event => {
+      if (disclosure.open && event.target instanceof Node && !disclosure.contains(event.target)) {
+        disclosure.open = false;
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (disclosure.open && event.key === "Escape") {
+        disclosure.open = false;
+        summary.focus();
+      }
+    });
+  }
+</script>

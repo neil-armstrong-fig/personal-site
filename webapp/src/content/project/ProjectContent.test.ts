@@ -76,3 +76,15 @@ it("accepts an optional dark-theme cover image and keeps it absent when not give
   expect(schema.parse({...validProject, heroImageDark: dark}).heroImageDark).toEqual(dark);
   expect(schema.parse(validProject).heroImageDark).toBeUndefined();
 });
+
+it("preserves the narrow light and dark illustrated heroes", () => {
+  const heroImageMobile = {src: "/hero-mobile.png", width: 780, height: 2310, format: "png"};
+  const heroImageMobileDark = {...heroImageMobile, src: "/hero-mobile-dark.png"};
+
+  expect(
+    createProjectContentSchema({image}).parse({...validProject, heroImageMobile, heroImageMobileDark}),
+  ).toMatchObject({
+    heroImageMobile,
+    heroImageMobileDark,
+  });
+});

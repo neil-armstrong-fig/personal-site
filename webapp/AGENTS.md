@@ -7,7 +7,7 @@ touching content, and `src/scripts/AGENTS.md` before touching a command-line scr
 
 Astro 7.3.4, TypeScript 6.0.3 strict (TypeScript 7 is deferred until Astro Check and typescript-eslint support it),
 Tailwind CSS 4.3.3, Leaflet 1.9.4 with `@types/leaflet` for lazy, read-only cycling maps, Node.js 24.21.0, Astro content
-collections for projects, professional case studies and trips, static output.
+collections for projects, professional case studies, blog posts and trips, static output.
 
 Prefer static Astro components and build-time work. Do not add React, Vue, a CMS, a further server runtime, a database,
 or client-side state unless a concrete requirement justifies it and the developer approves the scope change. The contact
@@ -142,11 +142,11 @@ webapp/src/pages/cycling/
   not its shape: `neighbours/` and `measurements/` say what is inside; `helpers/`, `common/`, `misc/` and
   `styles/` describe form and leave a reader no wiser. Never create top-level `utils/`, `helpers/`,
   `common/` or `misc/` folders.
-- **Content and loaders** stay together under `webapp/src/content/`, one folder per content type: `trip/`, `project/`
-  and `professional-case-study/`. Each holds its schema factory, published-content getter, tests and helpers,
+- **Content and loaders** stay together under `webapp/src/content/`, one folder per content type: `trip/`, `project/`,
+  `professional-case-study/` and `blog/`. Each holds its schema factory, published-content getter, tests and helpers,
   with the Markdown in an `entries/<slug>/` subfolder. Trip-only code that pages or the build read (`strava/`
   snapshots, routes and ride media, `trip-figures/`) lives inside `trip/`; code only a script runs lives under
-  `webapp/src/scripts/`. Anything all three types use, such as `IsPublished` and `SortNewestFirst`, lives in `webapp/src/content/shared/`.
+  `webapp/src/scripts/`. Anything several types use, such as `IsPublished` and `SortNewestFirst`, lives in `webapp/src/content/shared/`.
 - Split or rename a section on one side only if you do the same for anything that mirrors it.
 
 ### Files
@@ -173,6 +173,29 @@ webapp/src/pages/cycling/
 ## Design rules
 
 - Follow the editorial-plus-outdoors direction already established in the site.
+- **Listings stay short.** `/` and `/software/` list cards through `CardRail` (`pages/_components/card-rail/`): a
+  swipeable snap row on a phone, a grid from `md` (three columns from `lg` unless `columns="two"`), all CSS and all in the
+  HTML. Cards there use `compact` (clamped summary, no technology line, tighter padding), not the full card, and the
+  rail sits outside `Container` and carries the page gutter itself because negative margins are banned. Check the
+  page height at 390 and 1440 px before and after a change. `SectionNav` is one landmark: a floating bottom-left
+  "On this page" pill below 88rem (a native `<details>`, so it works without JS; a small script adds the current
+  section, closes it on a link, outside click or Escape, and hides it over the footer) and the dot rail above it. It is
+  deliberately away from the header menu so the two never read as one navigation. Only the sticky header (from `md`)
+  needs clearing, so an anchored `Section` takes `scroll-mt-4 md:scroll-mt-24`.
+  There is no `/blog/` index: it redirects to `/software/#blog`, and posts keep their `/blog/<slug>/` URLs.
+  `/software/` is short enough that Chrome's lazy-load distance reaches every card image, which put LCP at the 2.5 s
+  limit. Its sections below the fold use `content-visibility: auto` with a `contain-intrinsic-size` per breakpoint
+  (measure the section's rendered height at 390, 820 and 1440 px and keep the estimates close), so their images wait
+  until the reader nears them. It is CSS only and the content stays in the HTML. Use it on any other listing that
+  grows enough to threaten the LCP budget, and check an anchor jump still lands the heading below the sticky bars.
+- **`/bc/` is a flippable business card**, a link to hand out (`neilarmstrong.dev/bc`), not part of the site's
+  navigation. It uses `BaseLayout` with `bare` (no skip link, backdrop, header or footer, but still the one `<main>`) and
+  `noindex`, and is kept out of the sitemap by `src/site/unlisted-pages/UnlistedPages.ts`, which `astro.config.ts`
+  reads. Its Lighthouse entry omits the SEO category, because a `noindex` page cannot pass `is-crawlable`. The card is
+  85 x 55 mm and every size inside it is in `cqw`, so it scales like a printed one. Both faces share one grid cell from
+  first paint and the script (the approved client-side exception) only toggles `data-face` and `inert` on the hidden
+  face, so it never moves layout. Without scripting, the `noscript:` variants stack the faces as two plain cards. Keep
+  the back's copy to fragments that fit at 390 px with no overflow: check `scrollHeight` against `clientHeight`.
 - Work mobile first: base utilities describe the small viewport, with breakpoint utilities adding only
   the larger-layout changes.
 - Use the palette defined in `webapp/src/styles/global.css`: cool off-white `#F4F7F6`, muted sage `#E1E9E6`, ink navy
@@ -236,7 +259,7 @@ webapp/src/pages/cycling/
   (`src/site/sitemap/`), never the build day, which would tell a crawler every page changed on every deploy. A new kind
   of route needs a case in `SitemapSources.ts`, which throws on a page it cannot date, and `validate:build` fails on an
   undated entry. The build job checks out the whole history (`fetch-depth: 0`), or every page would take one date.
-- `/llms.txt` is generated from `siteConfig` and the published case study and project collections
+- `/llms.txt` is generated from `siteConfig` and the published case study, project and blog collections
   (`src/pages/llms.txt.ts`), so it cannot drift; never hand-write it.
 - The About page's FAQ is one typed list (`about/_components/faq/FaqEntries.ts`) rendered visibly and emitted as
   `FAQPage` JSON-LD, so the two always match. Keep answers plain text, with no markup.

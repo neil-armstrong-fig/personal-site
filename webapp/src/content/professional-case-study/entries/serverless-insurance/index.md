@@ -5,7 +5,6 @@ careerPeriod: "2021–2022"
 role: "Tech lead"
 team: "4 engineers, mentored and one to ones but not line-managed, in a cross-functional team of about ten"
 sortOrder: 5
-homepageOrder: 2
 technologies:
   - TypeScript
   - AWS CDK
@@ -16,11 +15,17 @@ technologies:
   - Storybook
 draft: false
 seoDescription: "An anonymised case study about delivering a serverless motor-insurance platform on AWS in twelve months, with a focus on developer experience."
+diagram:
+  image: "./_assets/reusable-insurance-components.png"
+  mobileImage: "./_assets/reusable-insurance-components-mobile.png"
+  imageDark: "./_assets/reusable-insurance-components-dark.png"
+  mobileImageDark: "./_assets/reusable-insurance-components-mobile-dark.png"
+  alt: "Interface components reviewed in Storybook fit together like building blocks, then become a customer flow for early feedback."
 ---
 
 ## A full insurance journey in twelve months
 
-I was tech lead on a new UK digital motor-insurance platform built on AWS serverless. A cross-functional team of about ten delivered the full sign-up journey, and two other teams covered policy and account management. All of it in twelve months. Renewals were left out of the first release on purpose.
+I was tech lead on a new UK digital motor-insurance platform built on [AWS](https://aws.amazon.com/) serverless. A cross-functional team of about ten delivered the full sign-up journey, and two other teams covered policy and account management. All of it in twelve months. Renewals were left out of the first release on purpose.
 
 I led four of the engineers technically, with mentoring and one-to-ones, though I wasn't their official manager. I owned the tech stack, the front-end approach, the CI/CD, onboarding and the testing strategy, and chose the car-registration and address-lookup data suppliers. The client's product owner signed off decisions, and bigger ones also went past my own head of engineering.
 
@@ -36,7 +41,7 @@ So how do you make sign-up easy, renewal pain-free and any issue quick to solve?
 
 We went all in on serverless. Infrastructure scales down to zero when there are no users (usually overnight) and reacts when demand arrives, say when a marketing campaign wins.
 
-The stack is fairly standard these days: AWS CDK, Lambda, DynamoDB, EventBridge and SQS queues. We tried RDS first because we knew it better than DynamoDB. It doesn't play nicely with Lambda because of connection-pool problems. RDS Proxy would have fixed that, but it has constant running costs. DynamoDB is pay per use.
+The stack is fairly standard these days: [AWS CDK](https://aws.amazon.com/cdk/), [Lambda](https://aws.amazon.com/lambda/), [DynamoDB](https://aws.amazon.com/dynamodb/), [EventBridge](https://aws.amazon.com/eventbridge/) and [SQS](https://aws.amazon.com/sqs/) queues. We tried [RDS](https://aws.amazon.com/rds/) first because we knew it better than DynamoDB. It doesn't play nicely with Lambda because of connection-pool problems. [RDS Proxy](https://aws.amazon.com/rds/proxy/) would have fixed that, but it has constant running costs. DynamoDB is pay per use.
 
 But that's only half of it. How do you build it quickly and well? Insurance can be a slow business, but that isn't the business I'm in. I want to deliver high value quickly.
 
@@ -59,13 +64,47 @@ A shiny UI isn't enough. We also needed easy-to-use backend services, built quic
 
 Solve these early and engineering teams can do their best work. They might even enjoy it.
 
-**Onboarding.** A guided bootstrap script got a new engineer running. It pulled local secrets from 1Password with its command-line tool and installed dependencies (both the Yarn and Node versions). If the environment wasn't ready it gave clear steps. It offered an AWS account selection screen so you could deploy to any account you had access to, then validated the deployment. It ran until it needed something from you, you did it, and it carried on until everything was up. You needed very little knowledge because it was so clear what to set up.
+**Onboarding.** A guided bootstrap script got a new engineer running. It pulled local secrets from [1Password](https://1password.com/) with its command-line tool and installed dependencies (both the [Yarn](https://yarnpkg.com/) and [Node](https://nodejs.org/) versions). If the environment wasn't ready it gave clear steps. It offered an AWS account selection screen so you could deploy to any account you had access to, then validated the deployment. It ran until it needed something from you, you did it, and it carried on until everything was up. You needed very little knowledge because it was so clear what to set up.
 
 **Their own accounts.** Everyone had their own AWS account to deploy to and test on. Lambda, DynamoDB and the queues cost nothing when idle, so an unused account cost pennies. No runaway costs per environment.
 
-**Testing and debugging.** Every Lambda had post-deployment tests that ran its real code on the deployed account, and a failure posted to Slack. Separate "debug tests" ran the Lambda code locally in TypeScript against any configured AWS account. That let me debug local code against real AWS services.
+**Testing and debugging.** Every Lambda had post-deployment tests that ran its real code on the deployed account, and a failure posted to Slack. Separate "debug tests" ran the Lambda code locally in [TypeScript](https://www.typescriptlang.org/) against any configured AWS account. That let me debug local code against real AWS services.
 
-**Storybook for product and design.** Every design-system component built in code was rendered in Storybook, with options to show variants, styles and colours. Designers had full access, so a developer didn't need to attend validation sessions. We could also simulate steps in the quote journey to see what it looked like at any point.
+<figure class="relative left-1/2 my-12 w-[min(62.5rem,calc(100vw-3rem))] -translate-x-1/2 [&_p]:m-0 [&_img]:w-full [&_img]:h-auto">
+
+<div class="block dark:hidden">
+<div class="hidden md:block">
+
+![Debug tests run Lambda TypeScript locally against real services in a configured AWS account. Post-deployment tests run the deployed Lambda code, with failed tests reported to Slack.](./_assets/local-debugging-deployed-tests.png)
+
+</div>
+
+<div class="md:hidden">
+
+![Debug tests run Lambda TypeScript locally against real services in a configured AWS account. Post-deployment tests run the deployed Lambda code, with failed tests reported to Slack.](./_assets/local-debugging-deployed-tests-mobile.png)
+
+</div>
+
+</div>
+
+<div class="hidden dark:block">
+<div class="hidden md:block">
+
+![Debug tests run Lambda TypeScript locally against real services in a configured AWS account. Post-deployment tests run the deployed Lambda code, with failed tests reported to Slack.](./_assets/local-debugging-deployed-tests-dark.png)
+
+</div>
+
+<div class="md:hidden">
+
+![Debug tests run Lambda TypeScript locally against real services in a configured AWS account. Post-deployment tests run the deployed Lambda code, with failed tests reported to Slack.](./_assets/local-debugging-deployed-tests-mobile-dark.png)
+
+</div>
+
+</div>
+
+</figure>
+
+**[Storybook](https://storybook.js.org/) for product and design.** Every design-system component built in code was rendered in Storybook, with options to show variants, styles and colours. Designers had full access, so a developer didn't need to attend validation sessions. We could also simulate steps in the quote journey to see what it looked like at any point.
 
 **Fast feedback from the client.** An end-to-end journey was up early, so the client could test the flow and give quick, regular feedback.
 
@@ -78,6 +117,6 @@ Renewals were cut from the first release. They only fall due after twelve months
 ## What I would do differently
 
 - **Agree responsibilities and goals from the start.** It was my first time managing a cross-functional team, and clear roles and goals from day one would have been far more effective.
-- **Choose a delivery platform and stay on it.** We moved from Bitbucket to AWS CodeDeploy to GitHub Actions during development. Lots of churn.
+- **Choose a delivery platform and stay on it.** We moved from [Bitbucket](https://bitbucket.org/) to [AWS CodeDeploy](https://aws.amazon.com/codedeploy/) to [GitHub Actions](https://github.com/features/actions) during development. Lots of churn.
 - **Keep design and engineering in sync.** Things drifted as more requirements came in. I got much better at this on later projects.
-- **Use Playwright, not Cypress.** The Cypress tests were extremely valuable but so slow they could bring a whole laptop to a halt. Playwright is a much better option, especially now. It's what I later used for [Janggi](/software/janggi/).
+- **Use [Playwright](https://playwright.dev/), not [Cypress](https://www.cypress.io/).** The Cypress tests were extremely valuable but so slow they could bring a whole laptop to a halt. Playwright is a much better option, especially now. It's what I later used for [Janggi](/software/janggi/).

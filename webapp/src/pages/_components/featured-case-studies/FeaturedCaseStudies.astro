@@ -1,6 +1,7 @@
 ---
 import type {CollectionEntry} from "astro:content";
 
+import CardRail from "@src/pages/_components/card-rail/CardRail.astro";
 import ProfessionalCaseStudyCard from "@src/pages/software/_components/professional-case-study-card/ProfessionalCaseStudyCard.astro";
 import {selectHomepageCaseStudies} from "./homepage-case-studies/SelectHomepageCaseStudies";
 
@@ -12,10 +13,10 @@ const {caseStudies} = Astro.props;
 const homepageCaseStudies = selectHomepageCaseStudies(caseStudies);
 ---
 
-<ul class="grid list-none gap-4 p-0 md:grid-cols-3">
+<CardRail label="Featured professional work" columns="two">
   {homepageCaseStudies.map(caseStudy => (
     <li>
       <ProfessionalCaseStudyCard caseStudy={caseStudy} level={3} compact />
     </li>
   ))}
-</ul>
+</CardRail>

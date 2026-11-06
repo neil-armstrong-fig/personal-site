@@ -1,0 +1,29 @@
+---
+import Container from "@src/components/layout/container/Container.astro";
+import Section from "@src/components/layout/section/Section.astro";
+import SectionHeading from "@src/components/layout/section-heading/SectionHeading.astro";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Case study coming soon | Neil Armstrong"
+  description="A software case study that is on its way."
+  noindex
+>
+  <Section data-pending-page>
+    <Container>
+      <SectionHeading
+        compact
+        eyebrow="Case study"
+        heading="Coming soon"
+        intro="This case study is still being written. The rest of my software work is on the software page."
+      />
+
+      <p class="mb-0">
+        <a class="font-bold" href="/software/">
+          See all software work →
+        </a>
+      </p>
+    </Container>
+  </Section>
+</BaseLayout>

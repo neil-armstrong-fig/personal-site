@@ -4,8 +4,10 @@ import type {GetStaticPaths} from "astro";
 
 import {getPublishedProfessionalCaseStudies} from "@src/content/professional-case-study/GetPublishedProfessionalCaseStudies";
 import {getPublishedProjects} from "@src/content/project/GetPublishedProjects";
+import {selectPlaceholderSlugs} from "@src/site/pending-pages/PendingPages";
 import {assertUniqueSoftwareCaseStudyIds} from "@src/pages/software/_components/case-study-ids/SoftwareCaseStudyIds";
 import OpenSourceCaseStudy from "./_components/open-source-case-study/OpenSourceCaseStudy.astro";
+import PendingPage from "./_components/pending-page/PendingPage.astro";
 import ProfessionalCaseStudy from "./_components/professional-case-study/ProfessionalCaseStudy.astro";
 
 interface OpenSourcePageProps {
@@ -20,7 +22,11 @@ interface ProfessionalPageProps {
   related: CollectionEntry<"professionalCaseStudies">[];
 }
 
-type PageProps = OpenSourcePageProps | ProfessionalPageProps;
+interface PlaceholderPageProps {
+  kind: "placeholder";
+}
+
+type PageProps = OpenSourcePageProps | ProfessionalPageProps | PlaceholderPageProps;
 
 export const getStaticPaths = (async () => {
   const [projects, professionalCaseStudies] = await Promise.all([
@@ -50,6 +56,10 @@ export const getStaticPaths = (async () => {
         related: professionalCaseStudies.filter(other => other.id !== caseStudy.id),
       },
     })),
+    ...selectPlaceholderSlugs([...projects, ...professionalCaseStudies].map(entry => entry.id)).map(slug => ({
+      params: {slug},
+      props: {kind: "placeholder" as const},
+    })),
   ];
 }) satisfies GetStaticPaths;
 
@@ -59,3 +69,5 @@ const props: PageProps = Astro.props;
 {props.kind === "open-source" && <OpenSourceCaseStudy project={props.project} related={props.related} />}
 
 {props.kind === "professional" && <ProfessionalCaseStudy caseStudy={props.caseStudy} related={props.related} />}
+
+{props.kind === "placeholder" && <PendingPage />}

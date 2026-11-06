@@ -5,7 +5,7 @@ careerPeriod: "2025–2026"
 role: "Tech lead"
 team: "2 engineers on the React rewrite, 3 on the Lambda migration, all line-managed"
 sortOrder: 1
-homepageOrder: 3
+homepageOrder: 2
 technologies:
   - TypeScript
   - React
@@ -17,17 +17,23 @@ technologies:
 draft: false
 seoTitle: "Build it again, but better | Software case study"
 seoDescription: "How I rebuilt a critical Vue 2 loan application and 50+ AWS Lambdas in React and TypeScript, with acceptance tests proving no regressions."
+diagram:
+  image: "./_assets/scenarios-tests-delivery.png"
+  mobileImage: "./_assets/scenarios-tests-delivery-mobile.png"
+  imageDark: "./_assets/scenarios-tests-delivery-dark.png"
+  mobileImageDark: "./_assets/scenarios-tests-delivery-mobile-dark.png"
+  alt: "Detailed scenarios are confirmed with product, then become acceptance tests that guide AI implementation and human review."
 ---
 
 ## A critical loan tool, rebuilt with proof it still worked
 
-I took two legacy systems at a US lender specialising in second mortgages and home equity products and rebuilt both with no regressions. The first was a Vue 2 front end that loan officers used daily to process loans. The second was an estate of more than 50 JavaScript AWS Lambda functions. The rewrite took four months with a team of two. The Lambda migration took four weeks with a team of three. Both times I wanted evidence that the new code behaved the same, not just a belief.
+I took two legacy systems at a US lender specialising in second mortgages and home equity products and rebuilt both with no regressions. The first was a [Vue](https://vuejs.org/) 2 front end that loan officers used daily to process loans. The second was an estate of more than 50 JavaScript [AWS Lambda](https://aws.amazon.com/lambda/) functions. The rewrite took four months with a team of two. The Lambda migration took four weeks with a team of three. Both times I wanted evidence that the new code behaved the same, not just a belief.
 
 ## Two projects, one engagement
 
-**The front end.** A cornerstone Vue 2 application, used every day by more than 200 loan officers, had no tests, no linting and code nobody had looked after. I led its complete rewrite in modern React.
+**The front end.** A cornerstone Vue 2 application, used every day by more than 200 loan officers, had no tests, no linting and code nobody had looked after. I led its complete rewrite in modern [React](https://react.dev/).
 
-**The Lambdas.** More than 50 Lambda functions were written in plain JavaScript and edited directly in the AWS console. No tests, no linting, no shared code. Most sat behind event queues. I led the rewrite into TypeScript with shared code, Terraform and fast CI/CD pipelines.
+**The Lambdas.** More than 50 Lambda functions were written in plain JavaScript and edited directly in the AWS console. No tests, no linting, no shared code. Most sat behind event queues. I led the rewrite into [TypeScript](https://www.typescriptlang.org/) with shared code, [Terraform](https://developer.hashicorp.com/terraform) and fast CI/CD pipelines.
 
 I owned the architecture, delivery, CI/CD, tech stack and how stories were defined, and worked directly with the client's tech lead, product lead and VP of engineering. I line-managed the engineers on both projects and pushed for one of them to be promoted to senior during the work. I also helped with hiring and was pulled into two pre-sales engagements that we won.
 
@@ -52,7 +58,7 @@ Reading the code this closely changed the scope. We removed things nobody used a
 
 ## Tests that cannot see the browser
 
-Each test reads as plain language. It calls a domain-specific language (DSL) layer that handles orchestration and turns failures into human-readable errors. That layer is the only one that touches Playwright. The DSL gets just the page object in its constructor and drives Playwright through public methods, so a test can't reach Playwright even by accident. It's the same pattern I use in [Janggi](/software/janggi/).
+Each test reads as plain language. It calls a domain-specific language (DSL) layer that handles orchestration and turns failures into human-readable errors. That layer is the only one that touches [Playwright](https://playwright.dev/). The DSL gets just the page object in its constructor and drives Playwright through public methods, so a test can't reach Playwright even by accident. It's the same pattern I use in [Janggi](/software/janggi/).
 
 That separation matters for a rewrite. The tests describe behaviour, not implementation. People and coding tools can both read them, and they survive changes underneath.
 
@@ -64,7 +70,7 @@ The result was a full replacement of the Vue 2 application with no regressions. 
 
 ## Working with AI on two different setups
 
-All the code was written with AI tools and reviewed by people. On the React rewrite one of us used Claude Code and the other GitHub Copilot. No `AGENTS.md` existed yet, so we had to support both tools. Over the four months our use of AI and our harnesses matured enormously. By the end I think we could have done it in four weeks with what we'd learnt.
+All the code was written with AI tools and reviewed by people. On the React rewrite one of us used [Claude Code](https://claude.com/product/claude-code) and the other [GitHub Copilot](https://github.com/features/copilot). No `AGENTS.md` existed yet, so we had to support both tools. Over the four months our use of AI and our harnesses matured enormously. By the end I think we could have done it in four weeks with what we'd learnt.
 
 ## The Lambda migration
 
@@ -74,11 +80,45 @@ The first task was to pull the Lambdas into a repository, make the code reusable
 
 - **TypeScript**, with types wherever they were easy to add, plus extensive tests and linting.
 - **Shared code**, including database access services, and a single codebase for UAT and production.
-- **Real configuration.** Environment variables injected properly, and plain text credentials moved into Secrets Manager.
+- **Real configuration.** Environment variables injected properly, and plain text credentials moved into [Secrets Manager](https://aws.amazon.com/secrets-manager/).
 - **Less code.** Dead code deleted and complex logic rewritten as small functions.
 - **Atomic, deterministic deployments.** The same code goes to both environments, configured through Terraform.
 - **Opt-in permissions.** Infrastructure moved to a strict, opt-in permission model in Terraform, and I worked with the DevOps team to customise and update their core modules.
 - **Minification**, which cut the average bundle from about 10 MB to about 200 KB and improved cold starts.
+
+<figure class="relative left-1/2 my-12 w-[min(62.5rem,calc(100vw-3rem))] -translate-x-1/2 [&_p]:m-0 [&_img]:w-full [&_img]:h-auto">
+
+<div class="block dark:hidden">
+<div class="hidden md:block">
+
+![Console-edited JavaScript functions gain shared TypeScript services, tests, and Terraform deployments. Minification cuts the average bundle from about 10 MB to about 200 KB.](./_assets/shared-lambda-foundations.png)
+
+</div>
+
+<div class="md:hidden">
+
+![Console-edited JavaScript functions gain shared TypeScript services, tests, and Terraform deployments. Minification cuts the average bundle from about 10 MB to about 200 KB.](./_assets/shared-lambda-foundations-mobile.png)
+
+</div>
+
+</div>
+
+<div class="hidden dark:block">
+<div class="hidden md:block">
+
+![Console-edited JavaScript functions gain shared TypeScript services, tests, and Terraform deployments. Minification cuts the average bundle from about 10 MB to about 200 KB.](./_assets/shared-lambda-foundations-dark.png)
+
+</div>
+
+<div class="md:hidden">
+
+![Console-edited JavaScript functions gain shared TypeScript services, tests, and Terraform deployments. Minification cuts the average bundle from about 10 MB to about 200 KB.](./_assets/shared-lambda-foundations-mobile-dark.png)
+
+</div>
+
+</div>
+
+</figure>
 
 A migration like this would normally have taken me closer to four months just to reach an MVP, without the TypeScript and everything else. With our approach to AI and the expertise behind it, it took four weeks with no regressions. This time the repository had an `AGENTS.md` from the start.
 

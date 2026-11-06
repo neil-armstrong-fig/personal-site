@@ -1,0 +1,193 @@
+---
+interface SectionNavItem {
+  href: string;
+  label: string;
+}
+
+interface Props {
+  items: SectionNavItem[];
+}
+
+const {items} = Astro.props;
+---
+
+<nav
+  aria-label="On this page"
+  class="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] left-4 z-10 min-[88rem]:top-1/2 min-[88rem]:bottom-auto min-[88rem]:left-3 min-[88rem]:-translate-y-1/2"
+  data-section-nav
+>
+  <details class="group relative min-[88rem]:hidden">
+    <summary class="flex min-h-11 max-w-[calc(100vw-2rem)] cursor-pointer list-none items-center gap-2 rounded-sm border border-line bg-paper px-3 py-2 text-[0.8rem] font-bold tracking-[0.06em] text-ink uppercase shadow-[0.25rem_0.25rem_0_var(--color-moss)] group-open:bg-fill-ink group-open:text-on-fill [&::-webkit-details-marker]:hidden">
+      <svg
+        aria-hidden="true"
+        class="shrink-0"
+        viewBox="0 0 24 24"
+        width="20"
+        height="20"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.75"
+        stroke-linecap="round"
+      >
+        <path d="M9 7h11M9 12h11M9 17h11M4.5 7h.01M4.5 12h.01M4.5 17h.01"></path>
+      </svg>
+
+      <span class="shrink-0">On this page</span>
+
+      <span
+        class="max-w-36 truncate border-l border-current/30 pl-2 text-[0.85rem] tracking-normal text-forest normal-case group-open:text-on-fill empty:hidden"
+        data-section-nav-current
+      ></span>
+    </summary>
+
+    <ul class="absolute bottom-[calc(100%+0.75rem)] left-0 min-w-[min(18rem,calc(100vw-2rem))] list-none border border-line bg-paper p-3 shadow-[0.5rem_0.5rem_0_var(--color-moss)]">
+      {items.map(item => (
+        <li>
+          <a
+            class="block p-3 text-ink no-underline hover:bg-action hover:text-on-action aria-[current=true]:shadow-[inset_0_-0.2rem_var(--color-copper)]"
+            href={item.href}
+          >
+            {item.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </details>
+
+  <ul class="m-0 hidden list-none flex-col gap-3 p-0 min-[88rem]:flex">
+    {items.map(item => (
+      <li>
+        <a class="group relative flex size-6 items-center justify-center rounded-full no-underline" href={item.href}>
+          <span
+            class="block size-2.5 rounded-full bg-moss opacity-70 transition group-hover:scale-125 group-hover:bg-copper group-hover:opacity-100 group-focus-visible:scale-125 group-focus-visible:bg-copper group-focus-visible:opacity-100 motion-reduce:transition-none"
+            aria-hidden="true"
+          />
+
+          <span class="pointer-events-none absolute left-8 border border-line bg-paper px-3 py-1 text-sm font-bold whitespace-nowrap text-forest opacity-0 transition group-hover:opacity-100 group-focus-visible:opacity-100 motion-reduce:transition-none">
+            {item.label}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>
+
+<script>
+  import {activeSectionId} from "@src/pages/_components/section-nav/active-section/ActiveSection";
+  import type {SectionPosition} from "@src/pages/_components/section-nav/active-section/ActiveSection";
+
+  // The line down the viewport that a section's top must reach to count as current, as a percentage of its height.
+  const ACTIVATION_LINE_PERCENT = 35;
+
+  interface SectionLink {
+    link: HTMLAnchorElement;
+    target: HTMLElement;
+  }
+
+  // Enhancement only: without JavaScript the pill still opens and every link still jumps to its section.
+  initSectionNav();
+
+  function initSectionNav(): void {
+    const nav = document.querySelector<HTMLElement>("[data-section-nav]");
+
+    if (nav === null) {
+      return;
+    }
+
+    const disclosure = nav.querySelector<HTMLDetailsElement>("details");
+    const summary = nav.querySelector<HTMLElement>("summary");
+    const current = nav.querySelector<HTMLElement>("[data-section-nav-current]");
+
+    if (disclosure === null || summary === null || current === null) {
+      return;
+    }
+
+    const sectionLinks = collectSectionLinks(disclosure);
+
+    trackCurrentSection(sectionLinks, current);
+    closeOnLeave(nav, disclosure, summary);
+    hideOverFooter(disclosure);
+  }
+
+  function collectSectionLinks(disclosure: HTMLDetailsElement): SectionLink[] {
+    const sectionLinks: SectionLink[] = [];
+
+    disclosure.querySelectorAll<HTMLAnchorElement>("a[href^='#']").forEach(link => {
+      const target = document.getElementById(link.hash.slice(1));
+
+      if (target !== null) {
+        sectionLinks.push({link, target});
+      }
+    });
+
+    return sectionLinks;
+  }
+
+  function trackCurrentSection(sectionLinks: SectionLink[], current: HTMLElement): void {
+    // A zero-height band at the activation line: a section's edge crossing it is exactly when the current one changes.
+    const observer = new IntersectionObserver(() => showCurrentSection(sectionLinks, current), {
+      rootMargin: `-${ACTIVATION_LINE_PERCENT}% 0px -${100 - ACTIVATION_LINE_PERCENT}% 0px`,
+    });
+
+    sectionLinks.forEach(({target}) => observer.observe(target));
+  }
+
+  function showCurrentSection(sectionLinks: SectionLink[], current: HTMLElement): void {
+    const positions: SectionPosition[] = sectionLinks.map(({target}) => ({
+      id: target.id,
+      top: target.getBoundingClientRect().top,
+    }));
+    const activationLine = window.innerHeight * (ACTIVATION_LINE_PERCENT / 100);
+    const activeId = activeSectionId(positions, activationLine);
+    let label = "";
+
+    sectionLinks.forEach(({link, target}) => {
+      if (target.id === activeId) {
+        link.setAttribute("aria-current", "true");
+        label = link.textContent.trim();
+        return;
+      }
+
+      link.removeAttribute("aria-current");
+    });
+
+    current.textContent = label;
+  }
+
+  // The pill is fixed to the bottom of the viewport, so at the end of the page it would sit on the footer controls.
+  function hideOverFooter(disclosure: HTMLDetailsElement): void {
+    const footer = document.querySelector("footer");
+
+    if (footer === null) {
+      return;
+    }
+
+    new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        disclosure.open = false;
+        disclosure.hidden = entry.isIntersecting;
+      });
+    }).observe(footer);
+  }
+
+  function closeOnLeave(nav: HTMLElement, disclosure: HTMLDetailsElement, summary: HTMLElement): void {
+    disclosure.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        disclosure.open = false;
+      });
+    });
+
+    document.addEventListener("click", event => {
+      if (disclosure.open && event.target instanceof Node && !nav.contains(event.target)) {
+        disclosure.open = false;
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (disclosure.open && event.key === "Escape") {
+        disclosure.open = false;
+        summary.focus();
+      }
+    });
+  }
+</script>

@@ -21,9 +21,11 @@ interface Props {
   openGraphType?: OpenGraphType;
   structuredData?: readonly JsonLdNode[];
   noindex?: boolean;
+  /** Leaves out the skip link, backdrop, header and footer, for a page that is one object in the middle of the screen. */
+  bare?: boolean;
 }
 
-const {title, description, openGraphType = "website", structuredData = [], noindex = false} = Astro.props;
+const {title, description, openGraphType = "website", structuredData = [], noindex = false, bare = false} = Astro.props;
 const canonicalUrl = absoluteUrl(Astro.url.pathname);
 const socialImageUrl = absoluteUrl("/default-social-card.png");
 const socialImageAlt = `${siteConfig.identity.name}, ${siteConfig.identity.publicTitle.toLowerCase()} in Belfast`;
@@ -115,16 +117,16 @@ const socialImageAlt = `${siteConfig.identity.name}, ${siteConfig.identity.publi
   </head>
 
   <body class="relative flex min-h-svh min-w-80 flex-col text-[clamp(1rem,0.97rem+0.15vw,1.125rem)] leading-[1.65]">
-    <SkipLink />
+    {!bare && <SkipLink />}
 
-    <SiteBackdrop />
+    {!bare && <SiteBackdrop />}
 
-    <SiteHeader />
+    {!bare && <SiteHeader />}
 
     <main id="main-content" class="flex-1">
       <slot />
     </main>
 
-    <SiteFooter />
+    {!bare && <SiteFooter />}
   </body>
 </html>

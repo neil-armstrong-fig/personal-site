@@ -7,6 +7,8 @@ import {assertCyclingOutput} from "@src/scripts/validate-build/cycling/AssertCyc
 import {assertLinkSpacing} from "@src/scripts/validate-build/html/AssertLinkSpacing";
 import {findHtmlFiles} from "@src/scripts/validate-build/html-files/FindHtmlFiles";
 import {routeForHtmlPath} from "@src/scripts/validate-build/html-files/RouteForHtmlPath";
+import {redirectTargetOf} from "@src/scripts/validate-build/redirects/RedirectTarget";
+import {assertPendingPages} from "@src/scripts/validate-build/pending-pages/AssertPendingPages";
 import {assertUniquePageProperties} from "@src/scripts/validate-build/page-summary/AssertUniquePageProperties";
 import type {PageSummary} from "@src/scripts/validate-build/page-summary/types/PageSummary";
 import {assertRouteData} from "@src/scripts/validate-build/route-data/AssertRouteData";
@@ -23,6 +25,14 @@ async function validateBuild(): Promise<void> {
   for (const htmlPath of await findHtmlFiles(buildDirectory)) {
     const html = await readFile(htmlPath, "utf8");
     const route = routeForHtmlPath(htmlPath, buildDirectory);
+    const redirectTarget = redirectTargetOf(html);
+
+    // A redirect page has no content of its own: it only has to point at something that was built.
+    if (redirectTarget !== undefined) {
+      await assertBuilt(redirectTarget, route);
+      continue;
+    }
+
     const h1Count = [...html.matchAll(/<h1\b/gi)].length;
 
     if (h1Count !== 1) {
@@ -48,6 +58,7 @@ async function validateBuild(): Promise<void> {
   }
 
   assertUniquePageProperties(pages);
+  await assertPendingPages();
   await assertSitemaps();
   await assertBuilt("/indexnow-key.txt", "/indexnow-key.txt");
   await assertBuilt("/llms.txt", "/llms.txt");

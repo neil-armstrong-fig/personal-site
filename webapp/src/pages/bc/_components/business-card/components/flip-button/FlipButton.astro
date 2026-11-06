@@ -1,0 +1,49 @@
+---
+// The keyboard and screen reader way to turn the card. Clicking anywhere on the card does the same, so for a pointer
+// this stays out of sight to keep the card clean, and it appears only while it has keyboard focus. Without JavaScript the
+// card shows both faces, so there is nothing to turn.
+type FlipButtonTone = "paper" | "fill";
+
+interface Props {
+  /** The part of the name that is not visible, so the button reads "Flip to see the back". */
+  hiddenLabel: string;
+  /** Which face the button sits on: the light front or the dark back. */
+  tone: FlipButtonTone;
+}
+
+const {hiddenLabel, tone} = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={[
+    "inline-flex min-h-[max(1.75rem,8cqw)] items-center gap-[1.2cqw] rounded-sm border px-[2.4cqw] text-[max(0.7rem,2.8cqw)] leading-none font-bold tracking-[0.06em] uppercase sr-only focus:not-sr-only noscript:hidden",
+    tone === "paper" && "border-line/60 bg-paper-muted hover:bg-fill-forest hover:text-on-fill",
+    tone === "fill" && "border-on-fill/60 bg-fill-forest hover:bg-on-fill hover:text-fill-forest",
+  ]}
+  data-card-flip
+>
+  <svg
+    class="size-[max(0.8rem,3.2cqw)]"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path d="M21 12a9 9 0 0 0-15.5-6.2L3 8" />
+
+    <path d="M3 3v5h5" />
+
+    <path d="M3 12a9 9 0 0 0 15.5 6.2L21 16" />
+
+    <path d="M21 21v-5h-5" />
+  </svg>
+
+  <span>Flip</span>
+
+  <span class="sr-only"> {hiddenLabel}</span>
+</button>

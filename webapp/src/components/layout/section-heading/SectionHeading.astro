@@ -6,7 +6,7 @@ type HeadingLevel = 1 | 2;
 interface Props {
   eyebrow: string;
   heading: string;
-  intro: string;
+  intro?: string;
   level?: HeadingLevel;
   compact?: boolean;
 }
@@ -20,7 +20,7 @@ const Heading = `h${level}` as const;
 
   <Heading class:list={[compact && "max-w-none text-[clamp(2.5rem,2rem+2.5vw,4rem)]"]}>{heading}</Heading>
 
-  <p class="max-w-[38rem] text-[1.2rem]">{intro}</p>
+  {intro && <p class="max-w-[38rem] text-[1.2rem]">{intro}</p>}
 
   <slot />
 </header>

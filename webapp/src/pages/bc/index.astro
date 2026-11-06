@@ -1,0 +1,27 @@
+---
+import Button from "@src/components/actions/button/Button.astro";
+import BaseLayout from "@src/layouts/BaseLayout.astro";
+import BusinessCard from "@src/pages/bc/_components/business-card/BusinessCard.astro";
+
+// A card to hand to someone as a link, so it is unlisted: noindex here, and left out of the sitemap by UnlistedPages.
+// BaseLayout already supplies the one <main>, so the card sits at the top middle in a wrapper inside it.
+---
+
+<BaseLayout
+  bare
+  noindex
+  title="Neil Armstrong | Business card"
+  description="Neil Armstrong's business card: a software architect and developer in Belfast. Flip it for his experience, ways of working, and a little cycling."
+>
+  <div class="flex min-h-svh flex-col items-center gap-6 px-4 pt-8 pb-8 sm:pt-12">
+    <BusinessCard />
+
+    <div class="flex flex-col items-center gap-3 text-center">
+      <p class="m-0 text-[0.85rem] noscript:hidden">Tap the card to flip it.</p>
+
+      <Button variant="secondary" href="/">
+        Visit the full site
+      </Button>
+    </div>
+  </div>
+</BaseLayout>

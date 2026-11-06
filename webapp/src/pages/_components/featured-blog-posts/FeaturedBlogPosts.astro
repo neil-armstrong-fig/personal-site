@@ -1,0 +1,20 @@
+---
+import type {CollectionEntry} from "astro:content";
+
+import BlogPostCard from "@src/pages/_components/blog-post-card/BlogPostCard.astro";
+import CardRail from "@src/pages/_components/card-rail/CardRail.astro";
+
+interface Props {
+  posts: CollectionEntry<"blogPosts">[];
+}
+
+const {posts} = Astro.props;
+---
+
+<CardRail label="Featured opinions" columns="two">
+  {posts.map(post => (
+    <li>
+      <BlogPostCard post={post} level={3} compact />
+    </li>
+  ))}
+</CardRail>

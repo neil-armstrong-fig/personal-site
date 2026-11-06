@@ -3,15 +3,27 @@ import Container from "@src/components/layout/container/Container.astro";
 import Section from "@src/components/layout/section/Section.astro";
 import SectionHeading from "@src/components/layout/section-heading/SectionHeading.astro";
 import BaseLayout from "@src/layouts/BaseLayout.astro";
+import {getPublishedBlogPosts} from "@src/content/blog/GetPublishedBlogPosts";
+import BlogPostCard from "@src/pages/_components/blog-post-card/BlogPostCard.astro";
+import CardRail from "@src/pages/_components/card-rail/CardRail.astro";
 import {getPublishedProfessionalCaseStudies} from "@src/content/professional-case-study/GetPublishedProfessionalCaseStudies";
 import {getPublishedProjects} from "@src/content/project/GetPublishedProjects";
 import HowIWork from "./_components/how-i-work/HowIWork.astro";
 import ProfessionalCaseStudyCard from "./_components/professional-case-study-card/ProfessionalCaseStudyCard.astro";
 import ProjectCard from "./_components/project-card/ProjectCard.astro";
+import SectionNav from "@src/pages/_components/section-nav/SectionNav.astro";
 import {buildSoftwareCollectionPageNode} from "./_components/software-collection-page-node/SoftwareCollectionPageNode";
 
 const projects = await getPublishedProjects();
 const professionalCaseStudies = await getPublishedProfessionalCaseStudies();
+const blogPosts = await getPublishedBlogPosts();
+const sectionNavItems = [
+  {href: "#professional-work", label: "Professional work"},
+  {href: "#open-source", label: "Open source"},
+];
+if (blogPosts.length > 0) {
+  sectionNavItems.unshift({href: "#blog", label: "Opinions"});
+}
 const description =
   "Software architecture and engineering work by Neil Armstrong: new product delivery, event-driven AWS systems, AI-native engineering, and safe modernisation.";
 ---
@@ -28,20 +40,47 @@ const description =
     }),
   ]}
 >
-  <Section>
+  <SectionNav items={sectionNavItems} />
+
+  <Section compact>
     <Container>
       <SectionHeading
         compact
         eyebrow="Software"
         heading="Software architecture and engineering"
-        intro="I’m Neil Armstrong, a Belfast software architect and developer. I take products from early ideas to working software, transform systems that are hard to change, and use tests written in the language of the product as evidence."
+        intro="I’m Neil Armstrong, a Belfast software architect and developer. I take products from early ideas to working software, transform systems that are hard to change, and use tests written in the language of the product as evidence. Below are my opinions on how to build software, the professional work behind them, and the open-source projects I maintain."
       />
     </Container>
   </Section>
 
   <HowIWork />
 
-  <Section id="professional-work">
+  {blogPosts.length > 0 && (
+    <Section compact class="scroll-mt-4 border-b border-moss md:scroll-mt-24" id="blog">
+      <Container>
+        <SectionHeading
+          level={2}
+          eyebrow="Opinions"
+          heading="How I like to build software"
+          intro="Shorter pieces on technique, written to sit beside the case studies."
+        />
+      </Container>
+
+      <CardRail label="Opinions">
+        {blogPosts.map(post => (
+          <li>
+            <BlogPostCard post={post} level={3} compact />
+          </li>
+        ))}
+      </CardRail>
+    </Section>
+  )}
+
+  <Section
+    compact
+    class="scroll-mt-4 [contain-intrinsic-size:auto_57rem] [content-visibility:auto] md:scroll-mt-24 md:[contain-intrinsic-size:auto_160rem] lg:[contain-intrinsic-size:auto_131rem]"
+    id="professional-work"
+  >
     <Container>
       <SectionHeading
         level={2}
@@ -49,15 +88,22 @@ const description =
         heading="What I have delivered"
         intro="These case studies are anonymised, but the systems, decisions, and outcomes are real."
       />
-
-      <div class="grid gap-4 md:grid-cols-2">
-        {professionalCaseStudies.map(caseStudy => (
-          <ProfessionalCaseStudyCard caseStudy={caseStudy} />
-        ))}
-      </div>
     </Container>
+
+    <CardRail label="Professional work">
+      {professionalCaseStudies.map(caseStudy => (
+        <li>
+          <ProfessionalCaseStudyCard caseStudy={caseStudy} level={3} compact />
+        </li>
+      ))}
+    </CardRail>
   </Section>
-  <Section class="border-t border-moss bg-paper-muted" id="open-source">
+
+  <Section
+    compact
+    class="scroll-mt-4 border-t border-moss bg-paper-muted [contain-intrinsic-size:auto_48rem] [content-visibility:auto] md:scroll-mt-24 md:[contain-intrinsic-size:auto_70rem] lg:[contain-intrinsic-size:auto_97rem]"
+    id="open-source"
+  >
     <Container>
       <SectionHeading
         level={2}
@@ -67,14 +113,16 @@ const description =
       />
 
       {projects.length === 0 && <p>Open-source case studies are in preparation.</p>}
-
-      {projects.length > 0 && (
-        <div class="grid gap-4 md:grid-cols-2">
-          {projects.map(project => (
-            <ProjectCard project={project} />
-          ))}
-        </div>
-      )}
     </Container>
+
+    {projects.length > 0 && (
+      <CardRail label="Open source" columns="two">
+        {projects.map(project => (
+          <li>
+            <ProjectCard project={project} level={3} compact />
+          </li>
+        ))}
+      </CardRail>
+    )}
   </Section>
 </BaseLayout>

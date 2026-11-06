@@ -1,0 +1,91 @@
+---
+import type {ImageMetadata} from "astro";
+import {getImage, Image} from "astro:assets";
+
+interface Props {
+  src: ImageMetadata;
+  darkSrc?: ImageMetadata;
+  mobileSrc?: ImageMetadata;
+  darkMobileSrc?: ImageMetadata;
+  alt: string;
+  widths: number[];
+  sizes: string;
+  quality?: number;
+  eager?: boolean;
+  contain?: boolean;
+  class?: string;
+}
+
+interface ImageVariant {
+  src: ImageMetadata;
+  mobileSrc?: ImageMetadata;
+  dark: boolean;
+}
+
+const {
+  src,
+  darkSrc,
+  mobileSrc,
+  darkMobileSrc,
+  alt,
+  widths,
+  sizes,
+  quality,
+  eager = false,
+  contain = false,
+  class: className,
+} = Astro.props;
+const hasDark = darkSrc !== undefined;
+const imageVariants: ImageVariant[] = [{src, mobileSrc, dark: false}];
+if (darkSrc !== undefined) {
+  imageVariants.push({src: darkSrc, mobileSrc: darkMobileSrc, dark: true});
+}
+---
+
+{imageVariants.map(async imageVariant => {
+  let mobileSrcSet: string | undefined;
+  if (imageVariant.mobileSrc !== undefined) {
+    const mobileImage = await getImage({src: imageVariant.mobileSrc, widths: [390, 780], format: "webp", quality});
+    mobileSrcSet = mobileImage.srcSet.attribute;
+  }
+  let loading: "eager" | "lazy" = "lazy";
+  let fetchpriority: "high" | "auto" = "auto";
+  if (eager && !imageVariant.dark) {
+    loading = "eager";
+    fetchpriority = "high";
+  }
+  return (
+    <picture
+      class:list={[
+        className,
+        !imageVariant.dark && "block",
+        !imageVariant.dark && hasDark && "dark:hidden",
+        imageVariant.dark && "hidden dark:block",
+      ]}
+    >
+      {imageVariant.mobileSrc !== undefined && (
+        <source
+          media="(max-width: 47.999rem)"
+          srcset={mobileSrcSet}
+          sizes="calc(100vw - 3rem)"
+          width={imageVariant.mobileSrc.width}
+          height={imageVariant.mobileSrc.height}
+          type="image/webp"
+        />
+      )}
+
+      <Image
+        class:list={["block w-full", contain && "h-full object-contain", !contain && "h-auto"]}
+        src={imageVariant.src}
+        alt={alt}
+        widths={widths}
+        sizes={sizes}
+        format="webp"
+        quality={quality}
+        layout="none"
+        loading={loading}
+        fetchpriority={fetchpriority}
+      />
+    </picture>
+  );
+})}

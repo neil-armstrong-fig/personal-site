@@ -13,6 +13,12 @@ technologies:
   - Incremental migration
 draft: false
 seoDescription: "An anonymised case study about recovering two struggling teams on a time-critical PHP platform modernisation, using a rough end-to-end frontend and a proxy layer."
+diagram:
+  image: "./_assets/fuzzy-flow-refinement.png"
+  mobileImage: "./_assets/fuzzy-flow-refinement-mobile.png"
+  imageDark: "./_assets/fuzzy-flow-refinement-dark.png"
+  mobileImageDark: "./_assets/fuzzy-flow-refinement-mobile-dark.png"
+  alt: "A rough but complete signup and renewal flow lets product and design try the choices before engineers refine the screens in parallel."
 ---
 
 ## Two struggling teams, one deadline
@@ -53,7 +59,7 @@ Throughout, I worked out what we would deliver and how, ran demos, and delivered
 
 The second team was four engineers and me, and all four were my direct reports. I worked with the client's product owner and engineering manager, and held most of the control over architecture, approach and delivery: the direction, the timelines and milestones, the alternatives that could hit the deadline, and the scope cuts.
 
-After that I took over another struggling team: the four-engineer team building the new backend services behind signup and the "my account" pages. It was stuck in the mud and a bit rudderless, and had missed the year-end deadline before I joined. This was at the start of the following year, on SST and AWS Lambda.
+After that I took over another struggling team: the four-engineer team building the new backend services behind signup and the "my account" pages. It was stuck in the mud and a bit rudderless, and had missed the year-end deadline before I joined. This was at the start of the following year, on [SST](https://sst.dev/) and [AWS Lambda](https://aws.amazon.com/lambda/).
 
 First I took stock of what was in progress. The team had been downsized from 7 to 4 engineers, which left about ten orphaned pull requests and a lot of half-done work. I asked the team to pause and swarm on those first. It took two weeks and served two purposes:
 
@@ -70,6 +76,40 @@ As with the frontend, I created an extremely lightweight end-to-end flow in the 
 
 It became clear that other parts of the product wouldn't be ready in time. To hit the extended deadline we built a proxy layer. Areas that could use the new way of working went to the new "V2" services and everything else went to the old API. Environment variables decided the routing, which also made it easy to A/B test per environment.
 
-Moving everything off the old system needed a data migration, because the PHP database differed from the DynamoDB used in V2. I wasn't part of that migration as the contract ended first, but I laid the foundation for it. The backend had missed the year-end deadline and the client asked its board and investors for an extension. Recovering it in the new year fell to me, and the proxy shipped at the end of March 2025. Testing was a mix of unit and manual tests.
+<figure class="relative left-1/2 my-12 w-[min(62.5rem,calc(100vw-3rem))] -translate-x-1/2 [&_p]:m-0 [&_img]:w-full [&_img]:h-auto">
+
+<div class="block dark:hidden">
+<div class="hidden md:block">
+
+![Environment configuration controls a proxy between the frontend and two backends. Ready areas use the new V2 services, while the remaining areas use the old API.](./_assets/configured-proxy-routing.png)
+
+</div>
+
+<div class="md:hidden">
+
+![Environment configuration controls a proxy between the frontend and two backends. Ready areas use the new V2 services, while the remaining areas use the old API.](./_assets/configured-proxy-routing-mobile.png)
+
+</div>
+
+</div>
+
+<div class="hidden dark:block">
+<div class="hidden md:block">
+
+![Environment configuration controls a proxy between the frontend and two backends. Ready areas use the new V2 services, while the remaining areas use the old API.](./_assets/configured-proxy-routing-dark.png)
+
+</div>
+
+<div class="md:hidden">
+
+![Environment configuration controls a proxy between the frontend and two backends. Ready areas use the new V2 services, while the remaining areas use the old API.](./_assets/configured-proxy-routing-mobile-dark.png)
+
+</div>
+
+</div>
+
+</figure>
+
+Moving everything off the old system needed a data migration, because the PHP database differed from the [DynamoDB](https://aws.amazon.com/dynamodb/) used in V2. I wasn't part of that migration as the contract ended first, but I laid the foundation for it. The backend had missed the year-end deadline and the client asked its board and investors for an extension. Recovering it in the new year fell to me, and the proxy shipped at the end of March 2025. Testing was a mix of unit and manual tests.
 
 It was intense and needed a keen eye to stop the code turning into spaghetti. I believe we landed a really clean abstraction layer, so the team would be in a good place after we rolled off. I believe they did fully migrate, but I'm not certain. The client carried on building V2 and stripping back V1. A missed deadline put the board and investors in play, and we found a compromise that kept everyone reasonably happy while still delivering real value.

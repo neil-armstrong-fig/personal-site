@@ -6,8 +6,9 @@ import ExternalLink from "@src/components/actions/external-link/ExternalLink.ast
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
 import {siteConfig} from "@src/site/SiteConfig";
 import SelfLinkToast from "@src/pages/software/_components/open-source-case-study/components/self-link-toast/SelfLinkToast.astro";
-import ThemedImage from "@src/pages/software/_components/themed-image/ThemedImage.astro";
-import ArticleLayout from "@src/pages/software/_components/article-layout/ArticleLayout.astro";
+import ThemedImage from "@src/pages/_components/themed-image/ThemedImage.astro";
+import ArticleLayout from "@src/pages/_components/article-layout/ArticleLayout.astro";
+import ArticleDiagram from "@src/pages/_components/article-diagram/ArticleDiagram.astro";
 import ProjectCard from "@src/pages/software/_components/project-card/ProjectCard.astro";
 import ProjectLinks from "@src/pages/software/_components/open-source-case-study/components/project-links/ProjectLinks.astro";
 import {buildBreadcrumbListNode} from "@src/pages/_components/breadcrumb-list-node/BreadcrumbListNode";
@@ -27,7 +28,9 @@ const {
   liveUrl,
   liveLabel,
   heroImage,
+  heroImageMobile,
   heroImageDark,
+  heroImageMobileDark,
   heroAlt,
   heroBordered = false,
   datePublished,
@@ -75,7 +78,29 @@ const {Content} = await render(project);
   </Fragment>
 
   <Fragment slot="figure">
-    {(liveUrl === undefined || selfLink) && (
+    {heroImageMobile !== undefined && (liveUrl === undefined || selfLink) && (
+      <ArticleDiagram
+        image={heroImage}
+        mobileImage={heroImageMobile}
+        imageDark={heroImageDark}
+        mobileImageDark={heroImageMobileDark}
+        alt={heroAlt}
+      />
+    )}
+
+    {heroImageMobile !== undefined && liveUrl !== undefined && !selfLink && (
+      <ExternalLink class="block" href={liveUrl.href} aria-label={`Visit the live ${title} site`}>
+        <ArticleDiagram
+          image={heroImage}
+          mobileImage={heroImageMobile}
+          imageDark={heroImageDark}
+          mobileImageDark={heroImageMobileDark}
+          alt={heroAlt}
+        />
+      </ExternalLink>
+    )}
+
+    {heroImageMobile === undefined && (liveUrl === undefined || selfLink) && (
       <ThemedImage
         class:list={["mb-12 w-full", heroBordered && "border border-line/20"]}
         src={heroImage}
@@ -87,7 +112,7 @@ const {Content} = await render(project);
       />
     )}
 
-    {liveUrl !== undefined && !selfLink && (
+    {heroImageMobile === undefined && liveUrl !== undefined && !selfLink && (
       <ExternalLink class="mb-12 block" href={liveUrl.href} aria-label={`Visit the live ${title} site`}>
         <ThemedImage
           class:list={["w-full", heroBordered && "border border-line/20"]}

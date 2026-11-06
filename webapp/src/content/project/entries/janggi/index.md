@@ -34,7 +34,7 @@ Janggi is often called Korean chess. If you know chess or xiangqi, parts of it f
 
 The app is fully playable on a phone or desktop. Play a friend across the table, invite one to a private online room, or take on a bot. Pick casual or scored rules for local games. Follow the illustrated guide. Install it from the browser and keep playing offline. An optional Google account carries your progress between devices, and the playable core is available in Korean.
 
-Behind all that sit more than 1,200 unit tests and over 1,500 browser test cases. That's over 750 Playwright scenarios, each run at desktop and mobile sizes.
+Behind all that sit more than 1,200 unit tests and over 1,500 browser test cases. That's over 750 [Playwright](https://playwright.dev/) scenarios, each run at desktop and mobile sizes.
 
 ## Building the version I wanted to play
 
@@ -54,7 +54,7 @@ I also started putting the game into Korean to reach players in Korea. A native 
 
 I didn't want to stop at a technically correct board game. Finishing games earns XP that unlocks new boards and piece sets. Animations, sound effects and haptics give moves some weight. An adaptive soundtrack changes as the match develops. It's synthesised in the browser with Korean instruments. Don't like it? You can turn all of it down.
 
-The bot was another chance to stretch myself. Fairy-Stockfish gives eight nominal Elo strengths, and the app's own rules engine checks every move it plays. Each ladder keeps its own ratings, results and progress.
+The bot was another chance to stretch myself. [Fairy-Stockfish](https://github.com/fairy-stockfish/Fairy-Stockfish) gives eight nominal Elo strengths, and the app's own rules engine checks every move it plays. Each ladder keeps its own ratings, results and progress.
 
 Everything still persists locally with no account required. Sign in with Google and progress, ratings, selected preferences and custom styles stay in step across devices. Your current game stays on the device. If the API is unavailable, sync pauses and local play carries on.
 
@@ -62,23 +62,57 @@ Online play is for invited friends. One player makes an eight-character room cod
 
 ## Architecture that makes mistakes harder
 
-First decision: keep the rules independent of the interface. They're plain TypeScript with no React, store or DOM. A state goes in and a state comes out. That makes them cheap to test thoroughly. The same engine now referees local players, the bot and online rooms. That lets the same engine run in the web app and the Cloudflare Worker.
+First decision: keep the rules independent of the interface. They're plain [TypeScript](https://www.typescriptlang.org/) with no [React](https://react.dev/), store or DOM. A state goes in and a state comes out. That makes them cheap to test thoroughly. The same engine now referees local players, the bot and online rooms. That lets the same engine run in the web app and the [Cloudflare Worker](https://www.cloudflare.com/products/workers/).
 
-That boundary runs through the whole app. Lint stops the rules engine importing React or Redux. It stops the store importing components. Cross one of those lines and the build fails, instead of waiting for someone to spot it in review. Files sit beside the one thing that uses them and only rise as far as their nearest shared caller. Where a file lives tells you how much breaks if you change it.
+<figure class="relative left-1/2 my-12 w-[min(62.5rem,calc(100vw-3rem))] -translate-x-1/2 [&_p]:m-0 [&_img]:w-full [&_img]:h-auto">
+
+<div class="block dark:hidden">
+<div class="hidden md:block">
+
+![The independent TypeScript rules engine is reused for local play, the browser bot, and online rooms. Moves are checked in the browser, and the online room has the final say on online moves.](./_assets/shared-janggi-rules.png)
+
+</div>
+
+<div class="md:hidden">
+
+![The independent TypeScript rules engine is reused for local play, the browser bot, and online rooms. Moves are checked in the browser, and the online room has the final say on online moves.](./_assets/shared-janggi-rules-mobile.png)
+
+</div>
+
+</div>
+
+<div class="hidden dark:block">
+<div class="hidden md:block">
+
+![The independent TypeScript rules engine is reused for local play, the browser bot, and online rooms. Moves are checked in the browser, and the online room has the final say on online moves.](./_assets/shared-janggi-rules-dark.png)
+
+</div>
+
+<div class="md:hidden">
+
+![The independent TypeScript rules engine is reused for local play, the browser bot, and online rooms. Moves are checked in the browser, and the online room has the final say on online moves.](./_assets/shared-janggi-rules-mobile-dark.png)
+
+</div>
+
+</div>
+
+</figure>
+
+That boundary runs through the whole app. Lint stops the rules engine importing React or [Redux](https://redux.js.org/). It stops the store importing components. Cross one of those lines and the build fails, instead of waiting for someone to spot it in review. Files sit beside the one thing that uses them and only rise as far as their nearest shared caller. Where a file lives tells you how much breaks if you change it.
 
 Offline play still shapes the rest. Fairy-Stockfish runs in the browser as WebAssembly, and the app's own engine validates every move it returns. Local storage remains the source of truth. Google sign-in is optional, asks only for an OpenID identifier and stores no Google name or email address.
 
-The online service is a Cloudflare Worker with D1 and one Durable Object per room. Both browsers and the room run the same rules engine, but the room has the final say on every move. Getting the lifecycle right was the hard part. A room rebuilds a player's board after a dropped connection, can hibernate between moves and expires itself when it is no longer needed. Idle games therefore cost nothing to run, which keeps a project with no revenue inside Cloudflare's free tier.
+The online service is a Cloudflare Worker with [D1](https://developers.cloudflare.com/d1/) and one [Durable Object](https://developers.cloudflare.com/durable-objects/) per room. Both browsers and the room run the same rules engine, but the room has the final say on every move. Getting the lifecycle right was the hard part. A room rebuilds a player's board after a dropped connection, can hibernate between moves and expires itself when it is no longer needed. Idle games therefore cost nothing to run, which keeps a project with no revenue inside Cloudflare's free tier.
 
-The Korean work has boundaries too. Translated components read from a typed message object, so a missing Korean entry does not compile. Sentences are functions because Korean cannot be assembled in English word order. A static `/ko/` page and language-aware addresses give Google and Naver Korean crawler copy without waiting for JavaScript.
+The Korean work has boundaries too. Translated components read from a typed message object, so a missing Korean entry does not compile. Sentences are functions because Korean cannot be assembled in English word order. A static `/ko/` page and language-aware addresses give Google and [Naver](https://www.naver.com/) Korean crawler copy without waiting for JavaScript.
 
 ## Testing the rules and the real interface
 
 - **Acceptance tests first.** Each feature starts as a Playwright spec in plain given/when/then language. I watch it fail for the right reason before writing any code. The main, PWA and bot suites hold over 750 scenarios. Each runs at desktop and mobile sizes, so that's over 1,500 browser test cases. The specs talk to a small domain-specific language, and only its Playwright layer touches locators. Lint keeps it that way.
-- **Property-based tests.** On top of 1,200+ Vitest unit tests, fast-check plays thousands of random legal games and checks what must hold after every move.
+- **Property-based tests.** On top of 1,200+ [Vitest](https://vitest.dev/) unit tests, [fast-check](https://fast-check.dev/) plays thousands of random legal games and checks what must hold after every move.
 - **Full UI testing.** The same acceptance suite drives the real interface on desktop and phone viewports. It covers account sync, two-player rooms, reconnection, Korean and the service worker that shows turn notifications. Most runs use reduced motion, with dedicated full-motion scenarios too. Pretty rare for a game!
 - **Mutation as a habit.** A test I've never seen fail isn't one I trust, so I deliberately break the code to check the test notices.
-- **A strict pipeline.** TypeScript at its strictest. ESLint with no warnings. One command for the whole gate. GitHub Actions runs the checks, tests a production build and deploys. Then it runs the acceptance tests again against the live site.
+- **A strict pipeline.** TypeScript at its strictest. [ESLint](https://eslint.org/) with no warnings. One command for the whole gate. [GitHub Actions](https://github.com/features/actions) runs the checks, tests a production build and deploys. Then it runs the acceptance tests again against the live site.
 - **Written for agents as well as people.** I build with AI coding agents every day, so the repository has `AGENTS.md` files that describe the architecture and conventions. I review and commit everything.
 
 ## A game and a reusable reference

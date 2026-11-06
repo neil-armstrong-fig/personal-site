@@ -15,6 +15,12 @@ technologies:
   - Acceptance testing
 draft: false
 seoDescription: "How I led a ground-up rethink of audio installation software, with acceptance-test-driven delivery, and reverse-engineered a file export that shipped."
+diagram:
+  image: "./_assets/reusable-audio-controls.png"
+  mobileImage: "./_assets/reusable-audio-controls-mobile.png"
+  imageDark: "./_assets/reusable-audio-controls-dark.png"
+  mobileImageDark: "./_assets/reusable-audio-controls-mobile-dark.png"
+  alt: "Reusable dials, buttons, and toggles become mixer, equaliser, and compressor panels, supported by a shared acceptance-test DSL."
 ---
 
 ## A ground-up rethink, and the part that shipped
@@ -25,7 +31,7 @@ For a global professional-audio manufacturer, I was engineering lead on a ground
 
 Professional audio has a bit of a modernisation problem. A lot of the big software products are extremely old and have the UX to match.
 
-Our task was to completely rethink the model for audio system installation. A rethink from the ground up made it a true "product trio" project. Product, design and engineering worked super closely together to solve problems quickly, all with the end user in mind. I was engineering lead for five engineers. I worked with two client-side QA engineers, two product people (one client, one ours) and three designers, all reporting to one manager across the three disciplines. A separate three-engineer backend team worked in Elixir.
+Our task was to completely rethink the model for audio system installation. A rethink from the ground up made it a true "product trio" project. Product, design and engineering worked super closely together to solve problems quickly, all with the end user in mind. I was engineering lead for five engineers. I worked with two client-side QA engineers, two product people (one client, one ours) and three designers, all reporting to one manager across the three disciplines. A separate three-engineer backend team worked in [Elixir](https://elixir-lang.org/).
 
 Audio installation is such a wide problem. You could be installing a system in a café or an entire sports stadium. A concert venue might have three or four input locations and two or three output zones. A stadium might have three or four locations and more than fifty zones. How do you support both scales in one software suite that is extremely easy to use and understand?
 
@@ -37,11 +43,11 @@ The old model was placing boxes on a canvas, drawing lines between them and adju
 
 ## An open canvas for when the rules run out
 
-The fixed model was the default, not a cage. Sometimes an engineer needed to leave locations and zones and draw DSP signal paths on an open canvas. So I built a version of the old boxes-and-cables approach for exactly that. It was a tool, not a rule. You drew separate "circuits" (signal in from an input, processing, signal out, all isolated), so it never got as complex as an open canvas by default. You could place any control panel, edit it and wire them together. A small minimap made it easy to scroll about if it did get busy. All pure React and TypeScript.
+The fixed model was the default, not a cage. Sometimes an engineer needed to leave locations and zones and draw DSP signal paths on an open canvas. So I built a version of the old boxes-and-cables approach for exactly that. It was a tool, not a rule. You drew separate "circuits" (signal in from an input, processing, signal out, all isolated), so it never got as complex as an open canvas by default. You could place any control panel, edit it and wire them together. A small minimap made it easy to scroll about if it did get busy. All pure [React](https://react.dev/) and [TypeScript](https://www.typescriptlang.org/).
 
 ## No reference to copy
 
-Nobody had tried this before, so it was a huge challenge. Where is the design reference? Where is the product reference? They obviously didn't exist, so we looked elsewhere. GarageBand and Logic were big references. We also had to build the signal-processing panels from scratch: compressors, equalisers, mixers and more. Not exactly something webapps provide "out of the box".
+Nobody had tried this before, so it was a huge challenge. Where is the design reference? Where is the product reference? They obviously didn't exist, so we looked elsewhere. [GarageBand](https://www.apple.com/mac/garageband/) and [Logic](https://www.apple.com/logic-pro/) were big references. We also had to build the signal-processing panels from scratch: compressors, equalisers, mixers and more. Not exactly something webapps provide "out of the box".
 
 ## The panels I'm proudest of
 
@@ -51,7 +57,7 @@ We built modern reproductions of more than 20 audio control panels, from compres
 
 Technically, we focused on speed of delivery. We wanted to make ideas real as fast as possible without constantly writing throwaway code. That was an extremely tough challenge, especially long before AI tools were useful.
 
-The approach was a careful mix. Quick, cheap prototypes (made clear in the code) proved ideas fast. Once a concept was approved we switched to fully committed Acceptance Test Driven Development. The prototypes used the same "fuzzy frontend" idea I describe in [a later delivery](/software/platform-modernisation-back-on-track/): mostly developer art, focused on interactions and output rather than design correctness. Product and design approval came first, then a formal user story, then full implementation in React, TypeScript and Electron. Playwright ran the tests and Ionic powered the mobile panels. An Android app was planned and we were building towards it near the end, though we didn't get that far.
+The approach was a careful mix. Quick, cheap prototypes (made clear in the code) proved ideas fast. Once a concept was approved we switched to fully committed Acceptance Test Driven Development. The prototypes used the same "fuzzy frontend" idea I describe in [a later delivery](/software/platform-modernisation-back-on-track/): mostly developer art, focused on interactions and output rather than design correctness. Product and design approval came first, then a formal user story, then full implementation in React, TypeScript and [Electron](https://www.electronjs.org/). [Playwright](https://playwright.dev/) ran the tests and [Ionic](https://ionic.io/) powered the mobile panels. An Android app was planned and we were building towards it near the end, though we didn't get that far.
 
 So we could move extremely fast when we needed to, and deliver extremely regression-proof work once we were locked in. A medium-sized but fairly junior team did it, many of them fresh graduates, and it worked amazingly well. More than 1,000 UI tests covered the whole application and took about 20 minutes to run. Everyone could build knowing they weren't breaking anyone else's delivery. The tests used a reusable domain-specific language (DSL), so when things changed it was easy to update them. Tests don't need to stop innovation, they are there to stop fear of change.
 
@@ -72,6 +78,40 @@ The concept we threw together was to use the modern UI but export a file that th
 ## Teaching the new world to speak the old
 
 That took extensive reverse engineering. We worked from sample files, disassembly and code review of the old software, plus a lot of trial and error. We had to understand its XML format, its limitations and how it protected the file with a hash.
+
+<figure class="relative left-1/2 my-12 w-[min(62.5rem,calc(100vw-3rem))] -translate-x-1/2 [&_p]:m-0 [&_img]:w-full [&_img]:h-auto">
+
+<div class="block dark:hidden">
+<div class="hidden md:block">
+
+![The modern audio-installation UI exports legacy XML with the correct integrity hash. The unchanged legacy software loads the file, while unit and acceptance tests protect the export.](./_assets/legacy-file-export.png)
+
+</div>
+
+<div class="md:hidden">
+
+![The modern audio-installation UI exports legacy XML with the correct integrity hash. The unchanged legacy software loads the file, while unit and acceptance tests protect the export.](./_assets/legacy-file-export-mobile.png)
+
+</div>
+
+</div>
+
+<div class="hidden dark:block">
+<div class="hidden md:block">
+
+![The modern audio-installation UI exports legacy XML with the correct integrity hash. The unchanged legacy software loads the file, while unit and acceptance tests protect the export.](./_assets/legacy-file-export-dark.png)
+
+</div>
+
+<div class="md:hidden">
+
+![The modern audio-installation UI exports legacy XML with the correct integrity hash. The unchanged legacy software loads the file, while unit and acceptance tests protect the export.](./_assets/legacy-file-export-mobile-dark.png)
+
+</div>
+
+</div>
+
+</figure>
 
 The old tool is a fully open-ended editor where you add as many or as few elements as you like. Our model was more fixed, so we had to map one onto the other. Concepts that didn't exist in the old software, like stereo inputs and outputs, had to be expressed in its line drawing. We worked out how it draws lines and drew them in a way that matched the new visuals. Then we added pre-programmed configuration for the mixers and the correct order of processing blocks such as compressors.
 

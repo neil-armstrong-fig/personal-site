@@ -1,0 +1,25 @@
+---
+import type {CollectionEntry} from "astro:content";
+import type {GetStaticPaths} from "astro";
+
+import {getPublishedBlogPosts} from "@src/content/blog/GetPublishedBlogPosts";
+import BlogPost from "./_components/blog-post/BlogPost.astro";
+
+interface PageProps {
+  post: CollectionEntry<"blogPosts">;
+  related: CollectionEntry<"blogPosts">[];
+}
+
+export const getStaticPaths = (async () => {
+  const posts = await getPublishedBlogPosts();
+
+  return posts.map(post => ({
+    params: {slug: post.id},
+    props: {post, related: posts.filter(other => other.id !== post.id)},
+  }));
+}) satisfies GetStaticPaths;
+
+const {post, related}: PageProps = Astro.props;
+---
+
+<BlogPost post={post} related={related} />

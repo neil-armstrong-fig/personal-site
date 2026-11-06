@@ -8,7 +8,23 @@ it("dates the home page by the page and everything it lists", () => {
     "src/pages/_components",
     "src/content/project/entries",
     "src/content/professional-case-study/entries",
+    "src/content/blog/entries",
     "src/content/trip/entries",
+  ]);
+});
+
+it("does not date the blog index, which is only a redirect to the software page", () => {
+  expect(() => sitemapSourcesOf("/blog/")).toThrow("SitemapSources does not know");
+});
+
+it("dates a blog post by its route, the shared layout and card, and its own entry", () => {
+  expect(sitemapSourcesOf("/blog/fuzzy-frontend/")).toEqual([
+    "src/pages/blog/[slug].astro",
+    "src/pages/blog/_components",
+    "src/pages/_components/article-layout",
+    "src/pages/_components/blog-post-card",
+    "src/pages/_components/blog-post-date",
+    "src/content/blog/entries/fuzzy-frontend",
   ]);
 });
 
@@ -18,19 +34,25 @@ it("dates a standalone page by its own folder", () => {
   expect(sitemapSourcesOf("/privacy/")).toEqual(["src/pages/privacy"]);
 });
 
-it("dates the software index by the page and the two kinds of entry it lists", () => {
+it("dates the software index by the page, the section rail, the card rail and the entries it lists, blog posts included", () => {
   expect(sitemapSourcesOf("/software/")).toEqual([
     "src/pages/software/index.astro",
     "src/pages/software/_components",
+    "src/pages/_components/section-nav",
+    "src/pages/_components/card-rail",
+    "src/pages/_components/blog-post-card",
+    "src/pages/_components/blog-post-date",
     "src/content/project/entries",
     "src/content/professional-case-study/entries",
+    "src/content/blog/entries",
   ]);
 });
 
-it("dates a software page by its route and whichever entry carries its slug", () => {
+it("dates a software page by its route, the shared layout and whichever entry carries its slug", () => {
   expect(sitemapSourcesOf("/software/janggi/")).toEqual([
     "src/pages/software/[slug].astro",
     "src/pages/software/_components",
+    "src/pages/_components/article-layout",
     "src/content/project/entries/janggi",
     "src/content/professional-case-study/entries/janggi",
   ]);

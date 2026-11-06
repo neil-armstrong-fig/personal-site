@@ -8,7 +8,6 @@ export function assertRequestedCopy(html: string, route: string): void {
       "I’m Neil Armstrong, a software architect in Belfast",
       "Products and systems I’ve delivered",
       "Reinventing audio installation software",
-      "A serverless insurance platform",
       "Build it again, but better",
       "Projects built in the open",
       "Read Tokyo to Seoul",

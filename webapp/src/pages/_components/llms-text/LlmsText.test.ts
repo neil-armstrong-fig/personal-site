@@ -8,6 +8,7 @@ const options: LlmsTextOptions = {
   description: "A Belfast software architect.",
   caseStudies: [{title: "Serverless insurance", summary: "A twelve-month delivery.", path: "/software/serverless/"}],
   projects: [{title: "Janggi", summary: "A Korean chess app.", path: "/software/janggi/"}],
+  blogPosts: [{title: "Fuzzy frontend", summary: "Show the whole flow early.", path: "/blog/fuzzy-frontend/"}],
   profiles: [{label: "GitHub", href: "https://github.com/example"}],
 };
 
@@ -24,6 +25,16 @@ it("lists case studies and projects as absolute links with their summaries", () 
   expect(text).toContain(
     "## Open-source projects\n\n- [Janggi](https://neilarmstrong.dev/software/janggi/): A Korean chess app.",
   );
+});
+
+it("lists blog posts as absolute links with their summaries", () => {
+  expect(buildLlmsText(options)).toContain(
+    "## Blog\n\n- [Fuzzy frontend](https://neilarmstrong.dev/blog/fuzzy-frontend/): Show the whole flow early.",
+  );
+});
+
+it("leaves the blog section out while there are no published posts", () => {
+  expect(buildLlmsText({...options, blogPosts: []})).not.toContain("## Blog");
 });
 
 it("links the key pages and the public profiles", () => {

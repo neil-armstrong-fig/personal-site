@@ -1,6 +1,6 @@
 # AGENTS.md — open-source project content
 
-Open-source project write-ups (Janggi, TQCC). Shared rules and the A/B editorial review are in `../AGENTS.md`; read
+Open-source project write-ups. Shared rules and the A/B editorial review are in `../AGENTS.md`; read
 `../WRITEUP-ADVICE.md` before drafting or restructuring one.
 
 ## Audience and voice
@@ -17,6 +17,10 @@ project is useful in its own right, and the write-up shows the decisions behind 
   `cardTitle` replaces the title on list cards only (the card adds the full title for screen readers).
 - Projects require at least one technology. Case studies and projects have no chapter-splitting mechanism today, so a
   draft long enough to need one is a scope question for the developer, not something to build unilaterally.
+- An illustrated hero can add `heroImageMobile` alongside `heroImage` and `heroAlt`. The shared `ArticleDiagram` figure
+  shows the narrow composition below 48rem. Pair `heroImageDark` with `heroImageMobileDark` for matching dark artwork.
+  Cards contain the wide image in a fixed 16:10 frame. Follow `../AGENTS.md`'s editorial illustration workflow for generated
+  diagrams, and the real-page capture workflow below for screenshots.
 
 ## Adding or replacing a project screenshot
 

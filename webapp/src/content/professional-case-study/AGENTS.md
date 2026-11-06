@@ -1,6 +1,6 @@
 # AGENTS.md — professional case studies
 
-Anonymised case studies of professional software work. Shared rules and the A/B editorial review are in
+Case studies of professional software work, named by default and anonymised only when the developer asks. Shared rules and the A/B editorial review are in
 `../AGENTS.md`; read `../WRITEUP-ADVICE.md` before drafting, reviewing, or restructuring one.
 
 ## Audience and voice
@@ -16,11 +16,18 @@ what changed for the business.
 - Concrete over inflated: no marketing language. Never describe a client's internal politics, a colleague's
   circumstances, what the contract paid, or the developer's private circumstances.
 
-## Anonymisation and evidence
+## Naming and evidence
 
-- Do not publish current or former employer names or client names in the professional biography, About page, or software case studies in v1; professional work must be anonymised.
-- Anonymise fully: no employer, agency, client or product names, and no internal system names. Research about the
-  client stays in `research.md`; describe the business generically (“a US lender specialising in second mortgages”).
+- A case study names the employer or client by default, from the point the developer said so (October 2026). He can ask for any entry to be anonymised, and then it is anonymised fully. Existing entries stay
+  anonymous until he asks otherwise. The professional biography and About page keep the same split, so check them before
+  adding a name there.
+- Internal system, product and feature names are published only if the company shows them on its own public website. Check the
+  site before using one and record the pages you checked in `research.md`. Never publish colleagues' names, a client's internal
+  politics, or the contract rate.
+- Describe the business in the company's own public wording. Research about the client stays in `research.md`. For an
+  anonymised entry, describe the business generically (“a US lender specialising in second mortgages”).
+- When anonymising a use case, check its sector, personas, examples, diagrams, accessible descriptions, metadata and
+  URL as well as names. Generalise supported behaviour without inventing another industry or customer example.
 - Every figure or superlative (“zero regressions”, “4x”, test counts, sizes) needs evidence from the developer stated in
   `qa.md`, and the copy says what it measures (an average, a representative case, his own experience).
 - Keep a figure out unless the developer stated evidence for it in `qa.md`. His presumption about what a client does
@@ -30,6 +37,11 @@ what changed for the business.
 
 - Follow `../WRITEUP-ADVICE.md` for length and structure.
 - Keep an entry's `sortOrder`, and avoid repeating a claim another entry makes.
+- An optional `diagram` supplies local `image` and `mobileImage` paths and non-blank `alt` text. Keep both compositions
+  in the entry's `_assets/` folder. The shared article figure shows the narrow composition below 48rem and the wide one
+  above it, with Astro image optimisation and dimensions on both sources. Optional `imageDark` and `mobileImageDark`
+  supply matching dark versions. Retain editable SVGs with the PNGs. Card thumbnails contain the wide artwork in a
+  fixed 16:10 frame. Adding a diagram does not require body edits.
 - Say what the evidence was (tests, comparisons, demos), not only that work was correct, and cross-link a related
   open-source project where it shows the same technique (for example Janggi's acceptance-test DSL).
 - Verify technical claims against the private CV or public repositories. The CV is private reference only: never

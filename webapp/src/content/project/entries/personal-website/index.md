@@ -25,7 +25,7 @@ This is my own website, and it has two jobs. The first is to be a reference for 
 
 ## Static, but not only static
 
-The site is static Astro, built once and served from GitHub Pages. It still does more than a pile of pages. Each trip pulls its figures from Strava at build time and shows them in metric and imperial. The ride maps are Leaflet and OpenStreetMap, and they only load when you open a ride log and scroll to the map. Without JavaScript you still get every ride name, distance and photograph.
+The site is static [Astro](https://astro.build/), built once and served from [GitHub Pages](https://pages.github.com/). It still does more than a pile of pages. Each trip pulls its figures from [Strava](https://www.strava.com/) at build time and shows them in metric and imperial. The ride maps are [Leaflet](https://leafletjs.com/) and [OpenStreetMap](https://www.openstreetmap.org/), and they only load when you open a ride log and scroll to the map. Without JavaScript you still get every ride name, distance and photograph.
 
 ## A dark mode I can read
 
@@ -33,9 +33,9 @@ I rarely use dark mode, because it usually tires my eyes. So I built one I'd act
 
 ## The principles from my other projects
 
-It takes the principles from my other projects, [Janggi](/software/janggi/) most of all. Strict TypeScript. Lint that fails the build if a file imports something it shouldn't. Files that live next to the one thing that uses them. I left out acceptance-test-driven development. For a website it would be overkill.
+It takes the principles from my other projects, [Janggi](/software/janggi/) most of all. Strict [TypeScript](https://www.typescriptlang.org/). Lint that fails the build if a file imports something it shouldn't. Files that live next to the one thing that uses them. I left out acceptance-test-driven development. For a website it would be overkill.
 
-Testing is Vitest for the logic that is worth testing on its own, like unit conversion, sorting, URL building and structured data. After the build, a validation step checks the generated pages for broken links, duplicate titles and missing SEO basics. I also use AI tools to check design claims directly in the browser, such as whether a page really fits a phone.
+Testing is [Vitest](https://vitest.dev/) for the logic that is worth testing on its own, like unit conversion, sorting, URL building and structured data. After the build, a validation step checks the generated pages for broken links, duplicate titles and missing SEO basics. I also use AI tools to check design claims directly in the browser, such as whether a page really fits a phone.
 
 ## AI native, in my own voice
 
@@ -45,17 +45,17 @@ Adding content works like this. I paste in a rough first-person draft. The agent
 
 ## Cloudflare for what GitHub can't do
 
-Trip videos were the problem. With them in the repository it grew to around 850MB, close to the 1GB GitHub repository limit. The first git push took a long time as a result. That wasn't sustainable. The clips now live in a Cloudflare R2 bucket and play from `media.neilarmstrong.dev`, meaning the repository is now about 100MB. `pnpm dev` plays local copies so I can still iterate and review new posts quickly, and the production build checks that every clip exists on the media origin as a gated check.
+Trip videos were the problem. With them in the repository it grew to around 850MB, close to the 1GB GitHub repository limit. The first git push took a long time as a result. That wasn't sustainable. The clips now live in a [Cloudflare R2](https://developers.cloudflare.com/r2/) bucket and play from `media.neilarmstrong.dev`, meaning the repository is now about 100MB. `pnpm dev` plays local copies so I can still iterate and review new posts quickly, and the production build checks that every clip exists on the media origin as a gated check.
 
-The contact form runs on a Cloudflare Worker, so my email address never appears on the page or in the repository. It's a Worker secret. The Worker checks a Turnstile token, a hidden honeypot field and field length limits before it sends anything through Email Routing. Those checks are essential for a form on the open web. The Worker deploys by itself, but only when its own source changes.
+The contact form runs on a [Cloudflare Worker](https://www.cloudflare.com/products/workers/), so my email address never appears on the page or in the repository. It's a Worker secret. The Worker checks a [Turnstile](https://www.cloudflare.com/products/turnstile/) token, a hidden honeypot field and field length limits before it sends anything through [Email Routing](https://developers.cloudflare.com/email-routing/). Those checks are essential for a form on the open web. The Worker deploys by itself, but only when its own source changes.
 
 ## Open source means easy hosting
 
-I used the same simple approach as Janggi. Cloudflare holds the domain and GitHub Pages hosts the site. Every pull request runs the full build. A push to `main` also deploys and then tells IndexNow, so search engines hear about new pages quickly.
+I used the same simple approach as Janggi. Cloudflare holds the domain and GitHub Pages hosts the site. Every pull request runs the full build. A push to `main` also deploys and then tells [IndexNow](https://www.indexnow.org/), so search engines hear about new pages quickly.
 
 ## Findable by people and by AI
 
-I put a lot of effort into SEO and AI indexing. Pages carry structured data for me, for the FAQ, for each project and for breadcrumbs. `llms.txt` and the sitemaps are generated from the content, so they can't drift from it. Lighthouse runs against the built site and the targets are 95 for SEO, accessibility and best practices, and 90 for performance.
+I put a lot of effort into SEO and AI indexing. Pages carry structured data for me, for the FAQ, for each project and for breadcrumbs. `llms.txt` and the sitemaps are generated from the content, so they can't drift from it. [Lighthouse](https://developer.chrome.com/docs/lighthouse/overview) runs against the built site and the targets are 95 for SEO, accessibility and best practices, and 90 for performance.
 
 I'm fighting an uphill battle, because my name is Neil Armstrong. Still, searching for "Neil Armstrong Belfast" already puts this site first or second, alongside my LinkedIn profile. Though that is currently from my own manual searches, so treat it as an observation for now rather than a strict measurement!
 

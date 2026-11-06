@@ -2,39 +2,63 @@
 import type {CollectionEntry} from "astro:content";
 
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
-import ThemedImage from "@src/pages/software/_components/themed-image/ThemedImage.astro";
+import ThemedImage from "@src/pages/_components/themed-image/ThemedImage.astro";
 import type {CaseStudyHeadingLevel} from "@src/pages/software/_components/types/CaseStudyHeadingLevel";
+import {COMPACT_CARD_IMAGE} from "@src/pages/_components/card-rail/CompactCardImage";
 
 interface Props {
   project: CollectionEntry<"projects">;
   level?: CaseStudyHeadingLevel;
+  compact?: boolean;
 }
 
-const {project, level = 2} = Astro.props;
+const {project, level = 2, compact = false} = Astro.props;
 const Heading = `h${level}` as const;
+let imageWidths = [400, 800];
+let imageSizes = "(min-width: 60rem) 30rem, 100vw";
+if (compact) {
+  imageWidths = COMPACT_CARD_IMAGE.widths;
+  imageSizes = COMPACT_CARD_IMAGE.sizes;
+}
 const {title, cardTitle, summary, technologies, heroImage, heroImageDark, heroAlt} = project.data;
 ---
 
-<article class="group relative flex min-h-84 flex-col border border-line bg-paper p-[clamp(1.5rem,4vw,3rem)] transition duration-160 hover:-translate-y-1 hover:shadow-[0.4rem_0.4rem_0_var(--color-moss)] motion-reduce:transition-none motion-reduce:hover:transform-none">
-  <a class="mb-6 block" href={`/software/${project.id}/`} tabindex="-1">
+<article
+  class:list={[
+    "group relative flex h-full flex-col border border-line bg-paper transition duration-160 hover:-translate-y-1 hover:shadow-[0.4rem_0.4rem_0_var(--color-moss)] motion-reduce:transition-none motion-reduce:hover:transform-none",
+    !compact && "min-h-84 p-[clamp(1.5rem,4vw,3rem)]",
+    compact && "p-5 md:p-6",
+  ]}
+>
+  <a
+    class:list={["block aspect-[16/10] shrink-0 overflow-hidden bg-paper", !compact && "mb-6", compact && "mb-4"]}
+    href={`/software/${project.id}/`}
+    tabindex="-1"
+  >
     <ThemedImage
-      class="w-full"
+      class="h-full w-full"
+      contain
       src={heroImage}
       darkSrc={heroImageDark}
       alt={heroAlt}
-      widths={[400, 800]}
-      sizes="(min-width: 60rem) 30rem, 100vw"
+      widths={imageWidths}
+      sizes={imageSizes}
     />
   </a>
 
-  <Heading class="text-[clamp(1.75rem,1.4rem+1vw,2.4rem)]">
+  <Heading
+    class:list={[
+      !compact && "text-[clamp(1.75rem,1.4rem+1vw,2.4rem)]",
+      compact && "text-[1.35rem] leading-[1.2] md:text-[1.5rem]",
+    ]}
+  >
     <a class="after:absolute after:inset-0" href={`/software/${project.id}/`}>
       {cardTitle ?? title}
       {cardTitle !== undefined && <span class="sr-only"> {title}</span>}
     </a>
   </Heading>
 
-  <p class="max-w-[34rem]">{summary}</p>
+  <p class:list={["max-w-[34rem]", compact && "line-clamp-3"]}>{summary}</p>
 
-  <Eyebrow>{technologies.join(" · ")}</Eyebrow>
+  {!compact && <Eyebrow>{technologies.join(" · ")}</Eyebrow>}
 </article>

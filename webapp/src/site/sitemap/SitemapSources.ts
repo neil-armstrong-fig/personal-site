@@ -1,6 +1,14 @@
 const PROJECTS = "src/content/project/entries";
 const CASE_STUDIES = "src/content/professional-case-study/entries";
+const BLOG_POSTS = "src/content/blog/entries";
 const TRIPS = "src/content/trip/entries";
+
+/** Shared page components that more than one section draws, so a change to one re-dates every page that uses it. */
+const ARTICLE_LAYOUT = "src/pages/_components/article-layout";
+const SECTION_NAV = "src/pages/_components/section-nav";
+const CARD_RAIL = "src/pages/_components/card-rail";
+const BLOG_POST_CARD = "src/pages/_components/blog-post-card";
+const BLOG_POST_DATE = "src/pages/_components/blog-post-date";
 
 /** Pages with one folder of their own and nothing else behind them. */
 const STANDALONE_PAGES: readonly string[] = ["about", "contact", "privacy"];
@@ -10,6 +18,7 @@ const HOME_SOURCES: readonly string[] = [
   "src/pages/_components",
   PROJECTS,
   CASE_STUDIES,
+  BLOG_POSTS,
   TRIPS,
 ];
 
@@ -38,6 +47,7 @@ function sourcesOfSection(
   if (section === undefined) return HOME_SOURCES;
   if (section === "software") return softwareSources(slug, chapter);
   if (section === "cycling") return cyclingSources(slug, chapter);
+  if (section === "blog") return blogSources(slug, chapter);
   if (STANDALONE_PAGES.includes(section) && slug === undefined) return [`src/pages/${section}`];
 
   return undefined;
@@ -47,14 +57,41 @@ function softwareSources(slug: string | undefined, chapter: string | undefined):
   if (chapter !== undefined) return undefined;
 
   if (slug === undefined) {
-    return ["src/pages/software/index.astro", "src/pages/software/_components", PROJECTS, CASE_STUDIES];
+    return [
+      "src/pages/software/index.astro",
+      "src/pages/software/_components",
+      SECTION_NAV,
+      CARD_RAIL,
+      BLOG_POST_CARD,
+      BLOG_POST_DATE,
+      PROJECTS,
+      CASE_STUDIES,
+      BLOG_POSTS,
+    ];
   }
 
   return [
     "src/pages/software/[slug].astro",
     "src/pages/software/_components",
+    ARTICLE_LAYOUT,
     `${PROJECTS}/${slug}`,
     `${CASE_STUDIES}/${slug}`,
+  ];
+}
+
+function blogSources(slug: string | undefined, chapter: string | undefined): readonly string[] | undefined {
+  if (chapter !== undefined) return undefined;
+
+  // /blog/ is only a redirect to /software/#blog, so it has no sources and is never in the sitemap.
+  if (slug === undefined) return undefined;
+
+  return [
+    "src/pages/blog/[slug].astro",
+    "src/pages/blog/_components",
+    ARTICLE_LAYOUT,
+    BLOG_POST_CARD,
+    BLOG_POST_DATE,
+    `${BLOG_POSTS}/${slug}`,
   ];
 }
 

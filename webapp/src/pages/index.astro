@@ -1,16 +1,21 @@
 ---
 import Button from "@src/components/actions/button/Button.astro";
 import Portrait from "@src/pages/_components/portrait/Portrait.astro";
+import SectionNav from "@src/pages/_components/section-nav/SectionNav.astro";
 import Container from "@src/components/layout/container/Container.astro";
 import Section from "@src/components/layout/section/Section.astro";
 import SectionHeading from "@src/components/layout/section-heading/SectionHeading.astro";
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
 import portraitImage from "@src/assets/portrait/neil-armstrong.jpg";
 import BaseLayout from "@src/layouts/BaseLayout.astro";
+import {getPublishedBlogPosts} from "@src/content/blog/GetPublishedBlogPosts";
 import {getPublishedProfessionalCaseStudies} from "@src/content/professional-case-study/GetPublishedProfessionalCaseStudies";
 import {getPublishedProjects} from "@src/content/project/GetPublishedProjects";
 import {getPublishedTrips} from "@src/content/trip/GetPublishedTrips";
 import {siteConfig} from "@src/site/SiteConfig";
+import CardRail from "./_components/card-rail/CardRail.astro";
+import FeaturedBlogPosts from "./_components/featured-blog-posts/FeaturedBlogPosts.astro";
+import {selectHomepageBlogPosts} from "./_components/featured-blog-posts/homepage-blog-posts/SelectHomepageBlogPosts";
 import FeaturedCaseStudies from "./_components/featured-case-studies/FeaturedCaseStudies.astro";
 import FeaturedProject from "./_components/featured-project/FeaturedProject.astro";
 import FeaturedTrip from "./_components/featured-trip/FeaturedTrip.astro";
@@ -20,9 +25,21 @@ import RouteLine from "./_components/route-line/RouteLine.astro";
 const featuredProjects = (await getPublishedProjects()).filter(project => project.data.featured);
 const caseStudies = await getPublishedProfessionalCaseStudies();
 const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured);
+const homepageBlogPosts = selectHomepageBlogPosts(await getPublishedBlogPosts());
+const sectionNavItems = [
+  {href: "#professional-work", label: "Professional work"},
+  {href: "#open-source", label: "Open source"},
+  {href: "#cycling", label: "Cycling"},
+  {href: "#about", label: "About"},
+];
+if (homepageBlogPosts.length > 0) {
+  sectionNavItems.splice(1, 0, {href: "#blog", label: "Opinions"});
+}
 ---
 
 <BaseLayout title={siteConfig.title} description={siteConfig.description}>
+  <SectionNav items={sectionNavItems} />
+
   <Section class="min-h-[calc(100svh-5rem)] overflow-hidden pt-[clamp(3rem,7vw,6rem)]">
     <Container class="relative z-1 grid items-center gap-12 md:grid-cols-[minmax(0,1.25fr)_minmax(18rem,0.75fr)]">
       <div>
@@ -63,50 +80,79 @@ const featuredTrip = (await getPublishedTrips()).find(trip => trip.data.featured
     </Container>
   </Section>
 
-  <Section id="professional-work">
+  <Section
+    compact
+    class="scroll-mt-4 [contain-intrinsic-size:auto_113rem] [content-visibility:auto] md:scroll-mt-24 md:[contain-intrinsic-size:auto_110rem] lg:[contain-intrinsic-size:auto_135rem]"
+    id="professional-work"
+  >
     <Container>
       <SectionHeading
         level={2}
         eyebrow="Professional work"
         heading="Products and systems I’ve delivered"
         intro="Anonymised case studies, from bespoke new products from scratch to critical system migrations."
-      />
-
-      <FeaturedCaseStudies caseStudies={caseStudies} />
-
-      <p class="mt-8 mb-0">
-        <a class="font-bold" href="/software/#professional-work">
-          See all software work →
-        </a>
-      </p>
+      >
+        <Button variant="secondary" href="/software/#professional-work">
+          See all software work
+        </Button>
+      </SectionHeading>
     </Container>
+
+    <FeaturedCaseStudies caseStudies={caseStudies} />
+
+    {homepageBlogPosts.length > 0 && (
+      <div
+        class="mt-16 scroll-mt-4 [contain-intrinsic-size:auto_47rem] [content-visibility:auto] md:scroll-mt-24 md:[contain-intrinsic-size:auto_45rem] lg:[contain-intrinsic-size:auto_58rem]"
+        id="blog"
+      >
+        <Container>
+          <SectionHeading level={2} eyebrow="Opinions" heading="How I like to build software">
+            <Button variant="secondary" href="/software/#blog">
+              See all posts
+            </Button>
+          </SectionHeading>
+        </Container>
+
+        <FeaturedBlogPosts posts={homepageBlogPosts} />
+      </div>
+    )}
   </Section>
 
-  <Section class="overflow-hidden border-y border-moss bg-paper-muted" id="open-source">
-    <Container class="relative">
+  <Section
+    compact
+    class="scroll-mt-4 overflow-hidden border-y border-moss bg-paper-muted [contain-intrinsic-size:auto_58rem] [content-visibility:auto] md:scroll-mt-24 md:[contain-intrinsic-size:auto_52rem] lg:[contain-intrinsic-size:auto_67rem]"
+    id="open-source"
+  >
+    <Container>
       <SectionHeading
         level={2}
         eyebrow="Open source"
         heading="Projects built in the open"
         intro="Software I build in the open, and how I approach architecture."
-      />
-
-      <div class="grid gap-4 md:grid-cols-2">
-        {featuredProjects.map((project, index) => (
-          <FeaturedProject project={project} featured={index === 0} />
-        ))}
-      </div>
+      >
+        <Button variant="secondary" href="/software/#open-source">
+          See all open source
+        </Button>
+      </SectionHeading>
     </Container>
+
+    <CardRail label="Featured open source" columns="two">
+      {featuredProjects.map((project, index) => (
+        <li>
+          <FeaturedProject project={project} featured={index === 0} compact />
+        </li>
+      ))}
+    </CardRail>
   </Section>
 
   <Section
-    class="grid min-h-152 items-center bg-fill-forest bg-[linear-gradient(90deg,var(--color-fill-ink)_0_0.35rem,transparent_0.35rem)] text-on-fill"
+    class="grid min-h-152 scroll-mt-4 items-center bg-fill-forest bg-[linear-gradient(90deg,var(--color-fill-ink)_0_0.35rem,transparent_0.35rem)] [contain-intrinsic-size:auto_54rem] [content-visibility:auto] text-on-fill md:scroll-mt-24 md:[contain-intrinsic-size:auto_38rem] lg:[contain-intrinsic-size:auto_44rem]"
     id="cycling"
   >
     <Container>{featuredTrip && <FeaturedTrip trip={featuredTrip} />}</Container>
   </Section>
 
-  <Section class="bg-paper-muted" id="about">
+  <Section class="scroll-mt-4 bg-paper-muted md:scroll-mt-24" id="about">
     <Container class="grid items-end gap-8 py-6 md:grid-cols-[minmax(0,1.15fr)_minmax(18rem,0.85fr)]">
       <div>
         <Eyebrow>Open to conversations</Eyebrow>

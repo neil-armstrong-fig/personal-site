@@ -1,0 +1,137 @@
+---
+import CardBack from "@src/pages/bc/_components/business-card/components/card-back/CardBack.astro";
+import CardFront from "@src/pages/bc/_components/business-card/components/card-front/CardFront.astro";
+
+// A UK business card is 85 x 55 mm. The card keeps that ratio and is never wider than the viewport or taller than it, so
+// it also fits a phone held sideways. Both faces share one grid cell from first paint, so the script that turns it adds
+// behaviour and never changes the layout. Without scripting (the noscript: variants) the faces stack as two plain cards.
+---
+
+<div
+  class="group @container w-[min(calc(100vw_-_2rem),36rem,calc((100svh_-_11rem)_*_85_/_55))] cursor-pointer [-webkit-tap-highlight-color:transparent] perspective-[1400px] transition-[scale] duration-150 active:scale-[0.98] motion-reduce:transition-none motion-reduce:active:scale-100 noscript:cursor-auto"
+  data-business-card
+  data-face="front"
+>
+  <div class="grid transform-3d transition-transform duration-[800ms] ease-[cubic-bezier(0.34,1.3,0.5,1)] group-data-[face=back]:rotate-y-180 motion-reduce:transition-none noscript:gap-6 noscript:transform-none">
+    <div
+      class="col-start-1 row-start-1 aspect-[85/55] backface-hidden noscript:col-auto noscript:row-auto"
+      data-card-face="front"
+    >
+      <CardFront />
+    </div>
+
+    <div
+      class="col-start-1 row-start-1 aspect-[85/55] rotate-y-180 backface-hidden noscript:col-auto noscript:row-auto noscript:rotate-y-0"
+      data-card-face="back"
+    >
+      <CardBack />
+    </div>
+  </div>
+</div>
+
+<script>
+  interface CardFaces {
+    front: HTMLElement;
+    back: HTMLElement;
+  }
+
+  const LIFT_DURATION_MS = 800;
+  const LIFT_SCALE = 1.06;
+
+  const card = document.querySelector<HTMLElement>("[data-business-card]");
+
+  if (card) {
+    const faces = findFaces(card);
+
+    if (faces) {
+      bindFlip(card, faces);
+    }
+  }
+
+  function findFaces(card: HTMLElement): CardFaces | undefined {
+    const front = card.querySelector<HTMLElement>('[data-card-face="front"]');
+    const back = card.querySelector<HTMLElement>('[data-card-face="back"]');
+
+    if (front && back) {
+      return {front, back};
+    }
+
+    return undefined;
+  }
+
+  function bindFlip(card: HTMLElement, faces: CardFaces): void {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let showingBack = false;
+
+    // The back starts inert here rather than in the markup, so a visitor without scripting can still reach it.
+    render();
+
+    card.addEventListener("click", event => {
+      const target = event.target;
+
+      // A link keeps its own job. A drag that selected text is someone copying, not asking for the card to turn.
+      if (!(target instanceof Element) || target.closest("a")) {
+        return;
+      }
+
+      const fromButton = target.closest("button") !== null;
+
+      if (!fromButton && hasSelectedText()) {
+        return;
+      }
+
+      flip(fromButton);
+    });
+
+    function flip(moveFocus: boolean): void {
+      showingBack = !showingBack;
+      render();
+      lift();
+
+      // The button that was pressed is now on the hidden face, so keyboard users follow the card to the new one.
+      if (moveFocus) {
+        visibleFace().querySelector<HTMLElement>("[data-card-flip]")?.focus();
+      }
+    }
+
+    // The hidden face is inert so its links and button cannot be tabbed to or read out while they are out of sight.
+    function render(): void {
+      card.dataset.face = faceName();
+      faces.front.inert = showingBack;
+      faces.back.inert = !showingBack;
+    }
+
+    function faceName(): string {
+      if (showingBack) {
+        return "back";
+      }
+
+      return "front";
+    }
+
+    function visibleFace(): HTMLElement {
+      if (showingBack) {
+        return faces.back;
+      }
+
+      return faces.front;
+    }
+
+    function lift(): void {
+      if (reducedMotion.matches) {
+        return;
+      }
+
+      card.animate([{scale: 1}, {scale: LIFT_SCALE, offset: 0.4}, {scale: 1}], {
+        duration: LIFT_DURATION_MS,
+        easing: "ease-in-out",
+      });
+    }
+  }
+
+  function hasSelectedText(): boolean {
+    const selection = window.getSelection();
+
+    return selection !== null && selection.toString() !== "";
+  }
+</script>

@@ -1,5 +1,6 @@
 ---
 import Button from "@src/components/actions/button/Button.astro";
+import InlineLink from "@src/components/actions/inline-link/InlineLink.astro";
 import Container from "@src/components/layout/container/Container.astro";
 import Section from "@src/components/layout/section/Section.astro";
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
@@ -42,6 +43,12 @@ import ContactForm from "./_components/contact-form/ContactForm.astro";
           <li>My availability changes over time, so ask and I’ll tell you where it stands.</li>
 
           <li>I’m happy to send my CV on request.</li>
+
+          <li>
+            If you want all my details, go to the
+            <InlineLink href="/about/">about page</InlineLink>. For a simplified version, here’s my
+            <InlineLink href="/bc/">digital business card</InlineLink>.
+          </li>
         </ul>
 
         <h2 class="mt-14">Send me a message</h2>

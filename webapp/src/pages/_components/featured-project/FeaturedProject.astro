@@ -3,14 +3,23 @@ import type {CollectionEntry} from "astro:content";
 
 import ExternalLink from "@src/components/actions/external-link/ExternalLink.astro";
 import Eyebrow from "@src/components/typography/eyebrow/Eyebrow.astro";
+import ThemedImage from "@src/pages/_components/themed-image/ThemedImage.astro";
+import {COMPACT_CARD_IMAGE} from "@src/pages/_components/card-rail/CompactCardImage";
 
 interface Props {
   project: CollectionEntry<"projects">;
   featured?: boolean;
+  compact?: boolean;
 }
 
-const {project, featured = false} = Astro.props;
-const {title, summary, liveUrl, repositoryUrl} = project.data;
+const {project, featured = false, compact = false} = Astro.props;
+let imageWidths = [400, 800];
+let imageSizes = "(min-width: 60rem) 30rem, 100vw";
+if (compact) {
+  imageWidths = COMPACT_CARD_IMAGE.widths;
+  imageSizes = COMPACT_CARD_IMAGE.sizes;
+}
+const {title, summary, liveUrl, repositoryUrl, heroImage, heroImageDark, heroAlt} = project.data;
 const externalLinks = [
   liveUrl && {href: liveUrl.href, label: `Visit ${title}`},
   {href: repositoryUrl.href, label: "View repository"},
@@ -19,22 +28,40 @@ const externalLinks = [
 
 <article
   class:list={[
-    "flex min-h-84 flex-col border border-line p-[clamp(1.5rem,4vw,3rem)]",
+    "flex h-full flex-col border border-line",
+    !compact && "min-h-84 p-[clamp(1.5rem,4vw,3rem)]",
+    compact && "p-5 md:p-6",
     featured && "bg-fill-petrol text-on-fill",
     !featured && "bg-paper",
   ]}
 >
+  <a
+    class:list={["block aspect-[16/10] shrink-0 overflow-hidden bg-paper", !compact && "mb-6", compact && "mb-4"]}
+    href={`/software/${project.id}/`}
+    tabindex="-1"
+  >
+    <ThemedImage
+      class="h-full w-full"
+      contain
+      src={heroImage}
+      darkSrc={heroImageDark}
+      alt={heroAlt}
+      widths={imageWidths}
+      sizes={imageSizes}
+    />
+  </a>
+
   {featured && <Eyebrow tone="inverse">Software</Eyebrow>}
 
   {!featured && <Eyebrow tone="copper">Software</Eyebrow>}
 
-  <h3>
+  <h3 class:list={[compact && "text-[1.35rem] leading-[1.2] md:text-[1.5rem]"]}>
     <a class:list={[featured && "text-on-fill hover:text-on-fill"]} href={`/software/${project.id}/`}>
       {title}
     </a>
   </h3>
 
-  <p class="max-w-[34rem]">{summary}</p>
+  <p class:list={["max-w-[34rem]", compact && "line-clamp-3"]}>{summary}</p>
 
   <div class="mt-auto flex flex-wrap gap-x-6 gap-y-3">
     <a class:list={[featured && "text-on-fill hover:text-on-fill"]} href={`/software/${project.id}/`}>
