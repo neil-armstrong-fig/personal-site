@@ -6,6 +6,7 @@ import type {ImageMetadata} from "astro";
 import type {TripFerryRoute} from "@src/content/trip/ferries/types/TripFerryRoute";
 import type {TripTransitGap} from "@src/content/trip/transit-gaps/types/TripTransitGap";
 import type {TripTransitRoute} from "@src/content/trip/transit-routes/types/TripTransitRoute";
+import DeferredTripImages from "@src/pages/cycling/_components/deferred-trip-images/DeferredTripImages.astro";
 import RouteKey from "./components/route-key/RouteKey.astro";
 import RoutePicker from "./components/route-picker/RoutePicker.astro";
 import {defaultRouteSelectionLabel} from "./labels/DefaultRouteSelectionLabel";
@@ -95,15 +96,17 @@ function buildMapLabel(): string {
   data-highlighted-route-ids={highlightedRouteIds !== undefined ? highlightedRouteIds.join(",") : undefined}
 >
   {variant === "detail" && fallbackImage !== undefined && (
-    <Image
-      class="absolute inset-0 h-full w-full object-cover"
-      src={fallbackImage}
-      alt={fallbackAlt}
-      widths={[480, 750, 960, 1280, 1600]}
-      sizes="(min-width: 76rem) 76rem, 100vw"
-      loading="lazy"
-      data-trip-route-map-fallback
-    />
+    <DeferredTripImages>
+      <Image
+        class="absolute inset-0 h-full w-full object-cover"
+        src={fallbackImage}
+        alt={fallbackAlt}
+        widths={[480, 750, 960, 1280, 1600]}
+        sizes="(min-width: 76rem) 76rem, 100vw"
+        loading="lazy"
+        data-trip-route-map-fallback
+      />
+    </DeferredTripImages>
   )}
 
   {hasRoutes && (

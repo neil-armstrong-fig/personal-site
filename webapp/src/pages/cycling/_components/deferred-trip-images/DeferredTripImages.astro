@@ -1,0 +1,18 @@
+---
+import {deferTripImages} from "./markup/DeferTripImages";
+
+interface Props {
+  story?: boolean;
+}
+
+const {story = false} = Astro.props;
+const html = deferTripImages(await Astro.slots.render("default"), story);
+---
+
+<Fragment set:html={html} />
+
+<script>
+  import {initialiseDeferredTripImages} from "./loading/InitialiseDeferredTripImages";
+
+  initialiseDeferredTripImages();
+</script>

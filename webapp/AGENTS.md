@@ -243,6 +243,10 @@ webapp/src/pages/cycling/
 - Use real trip photography and project-owned imagery; do not add generic stock photos.
 - Avoid astronaut/moon references, generic terminal aesthetics, neon gradients, and excessive animation.
 - Meaningful content must remain available without client-side JavaScript.
+- Trip story photos and detail-map fallback photos use `DeferredTripImages` under `pages/cycling/_components/`:
+  optimised WebP markup stays in a template until within 200 px of the viewport, with a native `noscript` fallback.
+  Story wrappers reserve the image's aspect ratio and sizes match the 60rem figure width and 3rem total gutter.
+  Keep this shared across overview and chapter pages, and retain all captions and image-sitemap metadata.
 - Respect `prefers-reduced-motion`, keyboard navigation, semantic HTML, and WCAG 2.2 AA contrast.
 
 ## SEO rules
