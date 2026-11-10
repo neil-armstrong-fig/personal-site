@@ -2,21 +2,21 @@ import {expect, it} from "vitest";
 
 import {isPendingSoftwarePath, pendingSoftwareSlugs, selectPlaceholderSlugs} from "./PendingPages";
 
-it("lists the AI-delivery case study while it waits for the client's approval", () => {
-  expect(pendingSoftwareSlugs()).toEqual(["ai-native-delivery"]);
+it("has no case studies waiting for approval", () => {
+  expect(pendingSoftwareSlugs()).toEqual([]);
 });
 
-it("generates a placeholder route until a published entry carries the slug", () => {
-  expect(selectPlaceholderSlugs([])).toEqual(["ai-native-delivery"]);
-  expect(selectPlaceholderSlugs(["janggi"])).toEqual(["ai-native-delivery"]);
+it("generates no placeholder routes when there are no pending case studies", () => {
+  expect(selectPlaceholderSlugs([])).toEqual([]);
+  expect(selectPlaceholderSlugs(["janggi"])).toEqual([]);
 });
 
 it("drops the placeholder once the real page is published", () => {
   expect(selectPlaceholderSlugs(["janggi", "ai-native-delivery"])).toEqual([]);
 });
 
-it("keeps the pending case study out of the sitemap", () => {
-  expect(isPendingSoftwarePath("/software/ai-native-delivery/")).toBe(true);
+it("allows the approved AI-delivery case study into the sitemap", () => {
+  expect(isPendingSoftwarePath("/software/ai-native-delivery/")).toBe(false);
 });
 
 it("does not treat other paths as pending, including near misses", () => {

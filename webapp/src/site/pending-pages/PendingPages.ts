@@ -4,10 +4,7 @@
  *
  * Keep this list short and temporary. Delete a slug once its page is published: the build fails and says so if you forget.
  */
-const PENDING_SOFTWARE_SLUGS: readonly string[] = [
-  // A draft until the client approves it. The "Fuzzy frontend" post links here.
-  "ai-native-delivery",
-];
+const PENDING_SOFTWARE_SLUGS: readonly string[] = [];
 
 /** The pending slugs that still need a placeholder, because no published page carries that slug yet. */
 export function selectPlaceholderSlugs(publishedIds: readonly string[]): string[] {
