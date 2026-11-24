@@ -22,6 +22,10 @@ export function assertRequestedCopy(html: string, route: string): void {
       "Key facts",
       "How I work",
       "Frequently asked questions",
+      "Did you work at Instil?",
+      // Only the visible About paragraph emits an href. The Person JSON-LD names Instil on every page, so a name check
+      // here would pass without the paragraph.
+      'href="https://www.linkedin.com/company/instilhq"',
       '"@type":"FAQPage"',
     ],
     "/cycling/": ["Pedals instead of pull requests"],

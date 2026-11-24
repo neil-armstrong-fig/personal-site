@@ -30,10 +30,17 @@ interface ContactFormConfiguration {
   turnstileSiteKey: string;
 }
 
+interface EmployerReference {
+  name: string;
+  // The company's LinkedIn page, which is also what the Person structured data uses as the employer's `sameAs`.
+  href: string;
+}
+
 interface SiteConfiguration {
   alternateSiteNames: readonly string[];
   contactForm: ContactFormConfiguration;
   description: string;
+  formerEmployer: EmployerReference;
   identity: SiteIdentity;
   navigation: readonly NavigationItem[];
   origin: string;
@@ -59,6 +66,7 @@ export const siteConfig = {
   },
   description:
     "Neil Armstrong is a Belfast software architect who builds new products, transforms critical systems, and leads teams with readable tests and AI-native engineering. He also cycles long trips.",
+  formerEmployer: {name: "Instil Software", href: "https://www.linkedin.com/company/instilhq"},
   identity: {
     location: "Belfast, Northern Ireland",
     name: "Neil Armstrong",

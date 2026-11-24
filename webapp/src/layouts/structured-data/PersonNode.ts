@@ -14,7 +14,11 @@ export function buildPersonNode(): JsonLdNode {
     url: absoluteUrl("/"),
     image: absoluteUrl(portraitImageUrl),
     homeLocation: {"@type": "Place", name: siteConfig.identity.location},
-    alumniOf: {"@type": "CollegeOrUniversity", name: "Ulster University"},
+    // alumniOf is the schema.org property for a past organisation. worksFor would claim a current job.
+    alumniOf: [
+      {"@type": "CollegeOrUniversity", name: "Ulster University"},
+      {"@type": "Organization", name: siteConfig.formerEmployer.name, sameAs: siteConfig.formerEmployer.href},
+    ],
     sameAs: Object.values(siteConfig.socialLinks).map(link => link.href),
   };
 }

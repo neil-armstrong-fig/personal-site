@@ -12,7 +12,10 @@ it("describes and disambiguates the person", () => {
     name: "Neil Armstrong",
     jobTitle: "Software architect and developer",
     homeLocation: {"@type": "Place", name: "Belfast, Northern Ireland"},
-    alumniOf: {"@type": "CollegeOrUniversity", name: "Ulster University"},
+    alumniOf: [
+      {"@type": "CollegeOrUniversity", name: "Ulster University"},
+      {"@type": "Organization", name: "Instil Software", sameAs: "https://www.linkedin.com/company/instilhq"},
+    ],
     image: expect.stringMatching(/^https:\/\/neilarmstrong\.dev\//),
   });
   expect(node["sameAs"]).toEqual([

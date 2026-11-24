@@ -8,6 +8,11 @@ export const faqEntries: readonly FaqEntry[] = [
       "I’m a software architect and developer in Belfast. I build TypeScript, React, and AWS serverless products and lead the teams doing it, while staying close to the code and the pipelines.",
   },
   {
+    question: "Did you work at Instil?",
+    answer:
+      "I was at Instil Software in Belfast from August 2013 to June 2026. I joined as a Graduate Software Engineer and left as a Software Architect / Distinguished Engineer.",
+  },
+  {
     question: "Do you work on new products or on legacy systems?",
     answer:
       "Both. I’ve taken new products to production quickly, including a full motor-insurance journey on AWS serverless in twelve months. I’ve also replaced an end-of-life document editor in a single summer and got a time-critical PHP modernisation back on track.",

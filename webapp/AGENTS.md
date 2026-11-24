@@ -258,6 +258,10 @@ webapp/src/pages/cycling/
 - Reuse one stable Person `@id` across structured data.
 - Link LinkedIn, GitHub, Strava, and Instagram through visible links and `sameAs`.
 - Use only truthful structured data that matches visible content.
+- The past employer (Instil Software) is `siteConfig.formerEmployer`, emitted as `alumniOf` on the Person node and named
+  in the About paragraph, FAQ and Key facts. It is never `worksFor` (that claims a current job) and never in
+  `socialLinks` (which feeds `sameAs`, the Profiles list and `llms.txt`). Because the Person JSON-LD names it on every
+  page, a build check for the name alone proves nothing: `AssertRequestedCopy` checks the About paragraph's `href`.
 - Generate a canonical sitemap, cycling image sitemap, and `robots.txt`.
 - Every sitemap entry carries a `lastmod`: the day of the last commit to touch the route and content that draw the page
   (`src/site/sitemap/`), never the build day, which would tell a crawler every page changed on every deploy. A new kind
